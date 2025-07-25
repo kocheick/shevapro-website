@@ -17,7 +17,7 @@ version = "1.0-SNAPSHOT"
 kobweb {
     app {
         index {
-            description.set("Made with ❤ by Shevapro")
+//            description.set("Made with ❤ by Shevapro")
         }
     }
 
