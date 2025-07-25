@@ -1,0 +1,12 @@
+User-agent: *
+
+Disallow: /music
+
+Allow: /
+Allow: /blog
+Allow: /portfolio
+Allow: /services
+Allow: /music
+
+
+Sitemap: https://www.shevapro.com/sitemap.xml
