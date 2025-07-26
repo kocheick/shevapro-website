@@ -22,6 +22,18 @@ kobweb {
     }
 
 }
+//
+//tasks.register<Copy>("copy404") {
+//    // Adjust the path if your export location is different
+//    from("$rootDir/site/.kobweb/site/notfound.html")
+//    into("$rootDir/site/.kobweb/site")
+//    rename("notfound.html", "404.html")
+//}
+//
+//tasks.named("kobwebExport").configure {
+//    finalizedBy("copy404")
+//}
+
 
 
 kotlin {

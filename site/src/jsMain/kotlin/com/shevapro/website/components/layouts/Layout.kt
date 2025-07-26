@@ -57,15 +57,16 @@ fun Layout(
                         "justify-center"
                     )
                     style {
-                        property("flex", "1")
+//                        property("flex", "1")
 //                        property("overflow-y", "auto")
-                        property("overflow-x", "hidden")
+//                        property("overflow-x", "hidden")
                         overflowY(Overflow.Scroll)
-                        width(100.percent)
+//                        width(100.percent)
                         display(DisplayStyle.Flex)
-                        justifyContent(JustifyContent.Center)
-                        alignItems(AlignItems.FlexStart)
-                        padding(16.px)
+                        flexGrow(1)
+//                        justifyContent(JustifyContent.Center)
+//                        alignItems(AlignItems.FlexStart)
+//                        padding(16.px)
                     }
                 }
             ) {
