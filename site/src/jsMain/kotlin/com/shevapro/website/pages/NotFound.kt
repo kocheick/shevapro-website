@@ -14,7 +14,7 @@ import org.jetbrains.compose.web.dom.H1
 import org.jetbrains.compose.web.dom.P
 import org.jetbrains.compose.web.dom.Text
 
-@Page(routeOverride = "/{...}")
+@Page(routeOverride = "{...}")
 @Composable
 fun NotFound() {
     Layout(title = "Page Not Found | Shevapro", description = "The page you're looking for doesn't exist.") {
