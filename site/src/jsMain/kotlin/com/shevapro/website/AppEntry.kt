@@ -1,6 +1,7 @@
 package com.shevapro.website
 
 import androidx.compose.runtime.*
+import com.shevapro.website.pages.NotFound
 import com.varabyte.kobweb.compose.ui.Modifier
 import com.varabyte.kobweb.compose.ui.modifiers.*
 import com.varabyte.kobweb.core.App
@@ -14,6 +15,8 @@ import com.varabyte.kobweb.silk.style.toModifier
 import com.shevapro.website.styles.AppStyles
 import com.shevapro.website.styles.MarkdownStyles
 import com.varabyte.kobweb.compose.ui.styleModifier
+import com.varabyte.kobweb.core.init.InitKobweb
+import com.varabyte.kobweb.core.init.InitKobwebContext
 import org.jetbrains.compose.web.css.*
 
 @InitSilk
@@ -36,6 +39,13 @@ fun initStyles(ctx: InitSilkContext) {
 //    val style = kotlinx.browser.document.createElement("style")
 //    style.textContent = "${AppStyles.globalAppCSS}\n\n${MarkdownStyles.markdownContentCSS}"
 //    kotlinx.browser.document.head?.appendChild(style)
+}
+
+@InitKobweb
+fun initKobweb(ctx: InitKobwebContext) {
+    ctx.router.setErrorPage {
+        NotFound()
+    }
 }
 
 @App
