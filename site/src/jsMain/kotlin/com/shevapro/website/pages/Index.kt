@@ -1,78 +1,115 @@
 package com.shevapro.website.pages
 
 import androidx.compose.runtime.*
-import com.varabyte.kobweb.compose.foundation.layout.Box
-import com.varabyte.kobweb.compose.foundation.layout.Column
-import com.varabyte.kobweb.compose.ui.Alignment
-import com.varabyte.kobweb.compose.ui.Modifier
-import com.varabyte.kobweb.compose.ui.modifiers.*
 import com.varabyte.kobweb.core.Page
 import com.shevapro.website.components.layouts.Layout
 import com.shevapro.website.components.ui.HeroSection
 import com.shevapro.website.styles.SiteTheme
-import org.jetbrains.compose.web.css.*
-import org.jetbrains.compose.web.dom.H1
-import org.jetbrains.compose.web.dom.P
-import org.jetbrains.compose.web.dom.Text
+import org.jetbrains.compose.web.css.color
+import org.jetbrains.compose.web.css.fontSize
+import org.jetbrains.compose.web.css.fontWeight
+import org.jetbrains.compose.web.css.lineHeight
+import org.jetbrains.compose.web.css.marginBottom
+import org.jetbrains.compose.web.css.px
+import org.jetbrains.compose.web.css.textAlign
+import org.jetbrains.compose.web.dom.*
 
 @Page
 @Composable
 fun HomePage() {
     Layout(title = "Cheick's brand | Software Engineer | Artist") {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .maxWidth(1200.px)
-                .padding(SiteTheme.Spacing.xxl),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
+        Div(attrs = {
+            classes(
+                "min-h-full",
+                "bg-opacity-40",
+                "bg-gradient-to-tr",
+                "from-purple-600",
+                "to-blue-300",
+                "rounded-2xl"
+            )
+        }) {
             // Hero Section
-            HeroSection()
+            Section(attrs = { classes("my-2") }) {
+                HeroSection()
+            }
+            Br {}
 
-            // Migration status section
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .maxWidth(1200.px)
-                    .padding(SiteTheme.Spacing.xl)
-                    .backgroundColor(SiteTheme.Colors.gray50)
-                    .borderRadius(12.px),
-                contentAlignment = Alignment.Center
-            ) {
-                Column(
-                    modifier = Modifier.padding(SiteTheme.Spacing.xl),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    H1(
-                        attrs = {
-                            style {
-                                fontSize(24.px)
-                                fontWeight("bold")
-                                color(SiteTheme.Colors.primary)
-                                marginBottom(SiteTheme.Spacing.md)
-                            }
-                        }
-                    ) {
-                        Text("🚧 Under Construction")
-                    }
-
-                    P(
-                        attrs = {
-                            style {
-                                fontSize(16.px)
-                                color(SiteTheme.Colors.textSecondary)
-                                textAlign("center")
-                                lineHeight("1.5")
-                            }
-                        }
-                    ) {
-                        Text(
-                            "This portfolio is currently being migrated from React to Kobweb. " +
-                                    "The original hero content has been preserved above. Check back soon for the complete experience!"
+            // Latest Articles Section (stub)
+            Section(attrs = {
+                classes(
+                    "m-4",
+                    "md:m-8",
+                    "lg:m-12",
+                    "w-full",
+                    "max-w-md",
+                    "md:max-w-lg",
+                    "lg:max-w-2xl",
+                    "mx-auto",
+                    "mb-8",
+                    "p-6",
+                    "md:p-10",
+                    "rounded-xl",
+                    "bg-gradient-to-br",
+                    "from-yellow-200",
+                    "via-pink-200",
+                    "to-purple-200",
+                    "shadow-lg"
+                )
+            }) {
+                H1(
+                    attrs = {
+                        classes(
+                            "text-2xl",
+                            "md:text-3xl",
+                            "font-bold",
+                            "mb-4",
+                            "text-gray-900",
+                            "text-center"
                         )
                     }
+                ) {
+                    Text("🚧 Under Construction")
+                }
+
+                P(
+                    attrs = {
+                        classes(
+                            "text-base",
+                            "md:text-lg",
+                            "text-gray-900",
+                            "text-center",
+                            "leading-relaxed"
+                        )
+                    }
+                ) {
+                    Text(
+                        "This portfolio is currently being migrated from React to Kobweb. " +
+                                "The original hero content has been preserved above. Check back soon for the complete experience!"
+                    )
                 }
             }
+
+//            // Latest Designs Section (stub)
+//            Section(attrs = { classes("mb-8") }) {
+//                H2(attrs = { classes("text-3xl", "font-bold", "mb-4", "text-blue-800") }) { Text("Latest Designs") }
+//                // TODO: Replace with ImageList equivalent
+//                Div(attrs = { classes("bg-white", "rounded-lg", "shadow", "p-6", "text-gray-700") }) {
+//                    Text("Design preview content coming soon...")
+//                }
+//            }
+
+            // Music Section (stub)
+//            Section(attrs = { }) {
+//                H2(attrs = {
+//                    classes(
+//                        "text-3xl",
+//                        "font-bold",
+//                        "mb-4",
+//                        "text-pink-800"
+//                    )
+//                }) { Text("Music COMING SOON..") }
+//                // TODO: Future music section
+//            }
         }
     }
 }
