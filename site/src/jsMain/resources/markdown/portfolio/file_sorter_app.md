@@ -48,7 +48,7 @@ Hit the "Sort Now" button, and File Sorter will quickly move the selected files 
 * #### ☑️ <u>Create Custom Rules (Coming Soon!):</u>
 Set up rules for automatic sorting, saving you time and effort in the future.
 
-[Download File Sorter now](https://shevapro.com/portfolio/file-sorter) and experience the joy of having an organized digital life!
+[Download File Sorter now](https://play.google.com/store/apps/details?id=com.shevapro.filesorter&hl=en_US) and experience the joy of having an organized digital life!
 
 
 ## Screenshots
