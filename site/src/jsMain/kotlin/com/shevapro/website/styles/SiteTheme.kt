@@ -1,9 +1,18 @@
 package com.shevapro.website.styles
 
 import androidx.compose.runtime.*
+import com.varabyte.kobweb.compose.css.autoLength
+import com.varabyte.kobweb.compose.css.functions.LinearGradient
+import com.varabyte.kobweb.compose.css.functions.linearGradient
 import com.varabyte.kobweb.compose.ui.Modifier
 import com.varabyte.kobweb.compose.ui.modifiers.*
+import com.varabyte.kobweb.silk.style.CssStyle
+import com.varabyte.kobweb.silk.style.base
+import com.varabyte.kobweb.silk.style.toModifier
+import com.varabyte.kobweb.silk.theme.name
 import org.jetbrains.compose.web.css.*
+import org.jetbrains.compose.web.css.rgb
+import org.jetbrains.compose.web.css.rgba
 import org.jetbrains.compose.web.dom.Div
 import org.w3c.dom.Window
 import org.w3c.dom.get
@@ -114,6 +123,25 @@ object SiteTheme {
     }
 }
 
+val RootStyle = CssStyle.base {
+    Modifier
+        .display(DisplayStyle.Flex)
+        .position(Position.Fixed)
+        .top(0.px)
+        .right(0.px)
+        .bottom(0.px)
+        .left(0.px)
+        .backgroundImage(
+            linearGradient(
+                rgb(0x7C, 0x3A, 0xED),
+                rgb(0x93, 0xC5, 0xFD),
+                LinearGradient.Direction.ToTopRight
+            )
+        )
+        .flexDirection(FlexDirection.Column)
+        .margin(leftRight = autoLength)
+}
+
 @Composable
 fun ThemeProvider(
     mode: ThemeMode = ThemeMode.System,
@@ -130,7 +158,7 @@ fun ThemeProvider(
     ) {
         Div(
             attrs = {
-                classes(if (isDark) "dark" else "light")
+                classes(if (isDark) "dark" else "light", RootStyle.name)
             }
         ) {
             content()
