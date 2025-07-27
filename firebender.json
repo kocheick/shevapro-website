@@ -3,17 +3,17 @@
     "Project is a personal portfolio website built with Kobweb",
     "we are migrating from old project shevapro-webapp to the current one shevapro-website",
     "use the latest docs of koweb(https://kobweb.varabyte.com/docs/concepts/foundation/), for example use CssStyle {} instead of ComponentStyle(\"header\"){}",
-    "Use Kobweb framework with Compose HTML for UI, let's use more html syntax (ie: Div, h2 etc) than compose syntax (Box,Column etc..) refer to latest docs (https://kobweb.varabyte.com/docs/concepts/foundation/layouts)",
-    "Leverage Silk components and styling system",
+    "Use Compose HTML for UI, let's use more html syntax (ie: Div, h2 etc) than compose syntax (Box,Column etc..) refer to latest docs (https://kobweb.varabyte.com/docs/concepts/foundation/layouts)",
+    "When applying Tailwind CSS utility classes using the classes modifier, list each class as a separate comma-separated argument e.g., classes(\"a\", \"b\", \"c\"), with no spaces around the commas. Do not provide all classes in a single space-separated string.",
+    "When migrating or implementing UI components, use the classes Modifier to directly apply Tailwind CSS utility classes wherever possible. Avoid using style {} or Modifier-based inlined styles unless the previous implementation used custom CSS not represented by Tailwind. Prefer semantic HTML structure as in referenced React versions.",
     "Create pages in site/src/jsMain/kotlin/pages/ with @Page annotation",
     "Create reusable components in site/src/jsMain/kotlin/components/",
     "Use @Composable functions for all UI components",
     "Follow Kotlin naming conventions: camelCase for variables/functions, PascalCase for classes and Composable functions",
-    "Use Silk's responsive breakpoint system for mobile-first design",
-    "Implement CSS-in-Kotlin styling approach with Silk modifiers",
+    "Use tailwind responsive breakpoint system for mobile-first design",
     "Use Kobweb's routing system for navigation between pages",
     "Run development server with 'kobweb run' in site/ directory",
     "Export production builds with 'kobweb export'",
-    "Write clean, modern portfolio sections: Hero, About, Projects, Skills, Contact"
+    "Write clean, modern portfolio,blog, home sections"
   ]
 }
