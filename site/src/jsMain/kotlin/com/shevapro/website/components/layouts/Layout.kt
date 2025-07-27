@@ -34,12 +34,6 @@ fun Layout(
 
 
     ThemeProvider(mode = themeMode) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .height(100.vh),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
             // Header - will be sticky due to CSS in Header component
             Header()
 
@@ -47,10 +41,6 @@ fun Layout(
             Main(
                 attrs = {
                     classes(
-                        "min-h-full",
-                        "bg-gradient-to-tr",
-                        "from-purple-600",
-                        "to-blue-300",
                         "p-2",
                         "border-red-700",
                         "items-center",
@@ -76,7 +66,7 @@ fun Layout(
 
             // Footer - stays at bottom of screen
             Footer()
-        }
+
     }
 }
 
