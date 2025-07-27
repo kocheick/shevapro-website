@@ -44,16 +44,18 @@ fun Layout(
                         "p-2",
                         "border-red-700",
                         "items-center",
-                        "justify-center"
+                        "justify-center",
+                        "flex-grow",
+                        "overflow-y-scroll"
                     )
                     style {
 //                        property("flex", "1")
 //                        property("overflow-y", "auto")
 //                        property("overflow-x", "hidden")
-                        overflowY(Overflow.Scroll)
+//                        overflowY(Overflow.Scroll)
 //                        width(100.percent)
-                        display(DisplayStyle.Flex)
-                        flexGrow(1)
+//                        display(DisplayStyle.Flex)
+//                        flexGrow(1)
 //                        justifyContent(JustifyContent.Center)
 //                        alignItems(AlignItems.FlexStart)
 //                        padding(16.px)
@@ -75,7 +77,7 @@ private fun Document.setPageMetadata(title: String, description: String) {
     val head = this.head!!
     (head.querySelector("meta[name='description']")
         ?: this.createElement("meta").apply {
-            setAttribute("name", description)
+            setAttribute("name", "description")
             head.appendChild(this)
         }
     ).setAttribute("content", description)
