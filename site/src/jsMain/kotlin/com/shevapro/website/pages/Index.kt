@@ -1,17 +1,11 @@
 package com.shevapro.website.pages
 
-import androidx.compose.runtime.*
-import com.varabyte.kobweb.core.Page
+import androidx.compose.runtime.Composable
 import com.shevapro.website.components.layouts.Layout
 import com.shevapro.website.components.ui.HeroSection
-import com.shevapro.website.styles.SiteTheme
-import org.jetbrains.compose.web.css.color
-import org.jetbrains.compose.web.css.fontSize
-import org.jetbrains.compose.web.css.fontWeight
-import org.jetbrains.compose.web.css.lineHeight
-import org.jetbrains.compose.web.css.marginBottom
-import org.jetbrains.compose.web.css.px
-import org.jetbrains.compose.web.css.textAlign
+import com.varabyte.kobweb.compose.css.margin
+import com.varabyte.kobweb.core.Page
+import org.jetbrains.compose.web.css.percent
 import org.jetbrains.compose.web.dom.*
 
 @Page
@@ -37,56 +31,15 @@ fun HomePage() {
             // Latest Articles Section (stub)
             Section(attrs = {
                 classes(
-                    "m-4",
-                    "md:m-8",
-                    "lg:m-12",
-                    "w-full",
-                    "max-w-md",
-                    "md:max-w-lg",
-                    "lg:max-w-2xl",
-                    "mx-auto",
-                    "mb-8",
-                    "p-6",
-                    "md:p-10",
-                    "rounded-xl",
-                    "bg-gradient-to-br",
-                    "from-yellow-200",
-                    "via-pink-200",
-                    "to-purple-200",
-                    "shadow-lg"
-                )
-            }) {
-                H1(
-                    attrs = {
-                        classes(
-                            "text-2xl",
-                            "md:text-3xl",
-                            "font-bold",
-                            "mb-4",
-                            "text-gray-900",
-                            "text-center"
-                        )
-                    }
-                ) {
-                    Text("🚧 Under Construction")
-                }
+//
+                    "my-2"
 
-                P(
-                    attrs = {
-                        classes(
-                            "text-base",
-                            "md:text-lg",
-                            "text-gray-900",
-                            "text-center",
-                            "leading-relaxed"
-                        )
-                    }
-                ) {
-                    Text(
-                        "This portfolio is currently being migrated from React to Kobweb. " +
-                                "The original hero content has been preserved above. Check back soon for the complete experience!"
-                    )
+                )
+                style {
+                    margin(top = 50.percent)
                 }
+            }) {
+                UnderConstructionSection()
             }
 
 //            // Latest Designs Section (stub)
@@ -110,6 +63,63 @@ fun HomePage() {
 //                }) { Text("Music COMING SOON..") }
 //                // TODO: Future music section
 //            }
+        }
+    }
+}
+
+@Composable
+private fun UnderConstructionSection() {
+    Div({
+        classes(
+//            "m-4",
+//                    "md:m-8",
+//                    "lg:m-12",
+            "mt-12","md:mt-[%30]","lg:mt-[50%]",
+            "w-full",
+            "max-w-md",
+            "md:max-w-lg",
+            "lg:max-w-2xl",
+            "mx-auto",
+            "mb-8",
+            "p-6",
+            "md:p-10",
+            "rounded-xl",
+            "bg-gradient-to-br",
+            "from-yellow-200",
+            "via-pink-200",
+            "to-purple-200",
+            "shadow-lg")
+    }){
+        H1(
+            attrs = {
+                classes(
+                    "text-2xl",
+                    "md:text-3xl",
+                    "font-bold",
+                    "mb-4",
+                    "text-gray-900",
+                    "text-center"
+                )
+            }
+        ) {
+            Text("🚧 Under Construction")
+        }
+
+        P(
+            attrs = {
+                classes(
+                    "text-base",
+                    "md:text-lg",
+                    "text-gray-900",
+                    "text-center",
+                    "leading-relaxed"
+                )
+            }
+        ) {
+            Text(
+                "This portfolio is currently being migrated from React to Kobweb. " +
+                        "The original hero content has been preserved above. Check back soon for the complete experience!"
+            )
         }
     }
 }
