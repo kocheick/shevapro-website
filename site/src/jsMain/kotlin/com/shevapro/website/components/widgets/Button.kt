@@ -9,6 +9,8 @@ import com.varabyte.kobweb.compose.css.Cursor
 import com.varabyte.kobweb.compose.css.FontWeight
 import com.varabyte.kobweb.compose.css.TextAlign
 import com.varabyte.kobweb.compose.css.TextDecorationLine
+import com.varabyte.kobweb.compose.ui.toAttrs
+import com.varabyte.kobweb.compose.ui.toStyles
 import org.jetbrains.compose.web.css.*
 import org.jetbrains.compose.web.dom.Button as HtmlButton
 import org.jetbrains.compose.web.dom.Text
@@ -57,16 +59,10 @@ fun Button(
             text = text
         )
     } else if (onClick != null) {
-        HtmlButton(
-            attrs = {
-                style {
-                    // Apply all the modifiers as inline styles
-                    // Note: This is a simplified approach, ideally would use CSS classes
-                }
-                onClick { onClick() }
-            }
-        ) {
-            Text(text)
-        }
+        Link(
+            path ="",
+            modifier = buttonModifier.onClick { onClick() }.textDecorationLine(TextDecorationLine.None),
+            text = text
+        )
     }
 }

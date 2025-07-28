@@ -100,30 +100,46 @@ fun NotFound() {
                 }
                 
                 // Back to Home Button
-                Button(attrs = {
-                    classes(
-                        "bg-blue-600",
-                        "hover:bg-blue-700",
-                        "text-white",
-                        "font-bold",
-                        "py-3",
-                        "px-8",
-                        "rounded-lg",
-                        "text-lg",
-                        "transition",
-                        "duration-200",
-                        "shadow"
-                    )
-                    onClick {
+//                Button(attrs = {
+//                    classes(
+//                        "bg-blue-600",
+//                        "hover:bg-blue-700",
+//                        "text-white",
+//                        "font-bold",
+//                        "py-3",
+//                        "px-8",
+//                        "rounded-lg",
+//                        "text-lg",
+//                        "transition",
+//                        "duration-200",
+//                        "shadow"
+//                    )
+//                    onClick {
+//                        if (window.history.length > 1) {
+//                            window.history.back()
+//                        } else {
+//                            window.location.href = "/"
+//                        }
+//                    }
+//                }) {
+//                    Text("Take Me Back")
+//                }
+
+                // Back to Home Button
+                Button(
+                    text = "Back to Home",
+//                    path = "/",
+                    onClick = {
                         if (window.history.length > 1) {
                             window.history.back()
                         } else {
                             window.location.href = "/"
                         }
-                    }
-                }) {
-                    Text("Take Me Back")
-                }
+                    },
+                    variant = ButtonVariant.Primary,
+                    modifier = Modifier
+                        .margin(SiteTheme.Spacing.md)
+                )
             }
         }
     }
