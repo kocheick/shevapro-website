@@ -95,6 +95,7 @@ fun BlogPage() {
             articlesWithTags.filter {
                 it.title.contains(searchQuery, ignoreCase = true) ||
                         it.description.contains(searchQuery, ignoreCase = true)
+                        it.tags.contains(searchQuery)
             }
         }
     }
@@ -118,7 +119,9 @@ fun BlogPage() {
                 }
             }
 
-            BlogListSection(filteredArticles)
+            Section(attrs = { attr("class", "w-full max-w-4xl mx-auto p-2 md:p-4") }) {
+
+            BlogListSection(filteredArticles) }
         }
     }
 }
@@ -183,7 +186,6 @@ private fun BlogFiltersSection(
 private fun BlogListSection(
     articles: List<Article>
 ) {
-    Section(attrs = { attr("class", "w-full max-w-4xl mx-auto p-2 md:p-4") }) {
         if (articles.isEmpty()) {
             P(attrs = { attr("class", "text-center text-white text-lg my-8") }) {
                 Text("No blog articles found.")
@@ -201,7 +203,7 @@ private fun BlogListSection(
                 }
             }
         }
-    }
+
 }
 
 @Composable
