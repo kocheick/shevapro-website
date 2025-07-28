@@ -1,37 +1,38 @@
 package com.shevapro.website.components.widgets
 
 import androidx.compose.runtime.*
-import com.varabyte.kobweb.compose.foundation.layout.Row
-import com.varabyte.kobweb.compose.ui.Alignment
 import com.varabyte.kobweb.compose.ui.Modifier
-import com.varabyte.kobweb.compose.ui.modifiers.*
 import com.shevapro.website.styles.SiteTheme
 import org.jetbrains.compose.web.css.*
 import org.jetbrains.compose.web.dom.Div
+import org.jetbrains.compose.web.dom.Li
 import org.jetbrains.compose.web.dom.Text
+import org.jetbrains.compose.web.dom.Ul
 
 @Composable
 fun FiltersBar(
     tags: List<String>,
     activeTags: List<String>,
     onTagClick: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier // Accept for extension but no longer used directly
 ) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .flexWrap(FlexWrap.Wrap)
-            .justifyContent(JustifyContent.Center)
-            .gap(SiteTheme.Spacing.sm)
-            .padding(SiteTheme.Spacing.lg),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        tags.forEach { tag ->
-            FilterTag(
-                tag = tag,
-                isActive = activeTags.contains(tag),
-                onClick = { onTagClick(tag) }
+    // Outer container div for width/flex
+    Div(attrs = {
+        classes("w-full", "md:w-4/5", "mx-auto")
+    }) {
+        // Tag bar as unordered list flex row
+        Ul(attrs = {
+            classes(
+                "flex", "my-3", "list-none", "flex-wrap", "justify-around", "w-full", "p-2"
             )
+        }) {
+            tags.forEach { tag ->
+                FilterTag(
+                    tag = tag,
+                    isActive = activeTags.contains(tag),
+                    onClick = { onTagClick(tag) }
+                )
+            }
         }
     }
 }
@@ -41,24 +42,30 @@ private fun FilterTag(
     tag: String,
     isActive: Boolean,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier // Accept for extension
 ) {
-    Div(
+    val activeTagClasses = if (isActive)
+        arrayOf("bg-gray-200", "scale-110", "font-bold")
+    else
+        arrayOf("md:hover:bg-gray-200", "md:hover:bg-opacity-60")
+
+    Li(
         attrs = {
             onClick { onClick() }
-            style {
-                padding(8.px, 16.px)
-                borderRadius(12.px)
-                border(1.px, LineStyle.Solid, SiteTheme.Colors.textSecondary)
-                backgroundColor(
-                    if (isActive) SiteTheme.Colors.gray100 else rgba(0, 0, 0, 0.0)
-                )
-                color(SiteTheme.Colors.text)
-                cursor("pointer")
-                fontWeight(if (isActive) "bold" else "500")
-                fontSize(14.px)
-                margin(4.px)
-            }
+            classes(
+                *activeTagClasses,
+                "text-zinc-800",
+                "border",
+                "cursor-pointer",
+                "rounded-xl",
+                "p-2",
+                "m-1",
+                "font-medium",
+                "text-sm",
+                "md:text-base",
+                "transition-all",
+                "duration-300"
+            )
         }
     ) {
         Text(tag)

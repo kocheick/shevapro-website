@@ -20,7 +20,7 @@ fun HomePage() {
     Layout(title = "Cheick's brand | Software Engineer | Artist") {
         Div(attrs = {
             classes(
-                "min-h-full",
+                "min-h-full", "pt-16",
                 "bg-opacity-40",
                 "bg-gradient-to-tr",
                 "from-purple-600",
