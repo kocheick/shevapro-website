@@ -5,22 +5,33 @@ import com.shevapro.website.components.layouts.Layout
 import com.shevapro.website.models.Article
 import com.shevapro.website.styles.SiteTheme
 import com.varabyte.kobweb.compose.css.*
+import com.varabyte.kobweb.compose.foundation.layout.Arrangement
 import com.varabyte.kobweb.compose.foundation.layout.Box
 import com.varabyte.kobweb.compose.foundation.layout.Column
+import com.varabyte.kobweb.compose.foundation.layout.Row
 import com.varabyte.kobweb.compose.ui.Alignment
 import com.varabyte.kobweb.compose.ui.Modifier
-import com.varabyte.kobweb.compose.ui.modifiers.*
-import com.varabyte.kobweb.compose.ui.toAttrs
+import com.varabyte.kobweb.compose.ui.modifiers.classNames
 import com.varabyte.kobweb.core.Page
+import com.varabyte.kobweb.navigation.BasePath.Companion.value
 import com.varabyte.kobweb.silk.components.navigation.Link
+import org.jetbrains.compose.web.attributes.InputType
+import org.jetbrains.compose.web.attributes.placeholder
 import org.jetbrains.compose.web.css.*
 import org.jetbrains.compose.web.css.AlignItems
-import org.jetbrains.compose.web.dom.*
+import org.jetbrains.compose.web.dom.Div
+import org.jetbrains.compose.web.dom.H3
+import org.jetbrains.compose.web.dom.Input
+import org.jetbrains.compose.web.dom.Li
+import org.jetbrains.compose.web.dom.P
+import org.jetbrains.compose.web.dom.Section
+import org.jetbrains.compose.web.dom.Span
+import org.jetbrains.compose.web.dom.Text
+import org.jetbrains.compose.web.dom.Ul
 
 @Page("/blog")
 @Composable
 fun BlogPage() {
-    // Sample blog articles (will be replaced with real markdown articles later)
     val blogArticles = remember {
         listOf(
             Article(
@@ -64,104 +75,73 @@ fun BlogPage() {
             )
         )
     }
-    var isLoading by remember { mutableStateOf(false) }
-
-    // Filter state
+    var searchQuery by remember { mutableStateOf("") }
     val allTags = remember(blogArticles) {
         blogArticles.flatMap { it.tags }.distinct().sorted()
     }
     var activeTags by remember { mutableStateOf<List<String>>(emptyList()) }
 
-    // Filtered blog articles
-    val filteredArticles = remember(blogArticles, activeTags) {
-        if (activeTags.isEmpty()) {
+    val filteredArticles = remember(blogArticles, activeTags, searchQuery) {
+        val articlesWithTags = if (activeTags.isEmpty()) {
             blogArticles
         } else {
             blogArticles.filter { article ->
                 article.tags.any { tag -> activeTags.contains(tag) }
             }
         }
+        if (searchQuery.isBlank()) {
+            articlesWithTags
+        } else {
+            articlesWithTags.filter {
+                it.title.contains(searchQuery, ignoreCase = true) ||
+                        it.description.contains(searchQuery, ignoreCase = true)
+            }
+        }
     }
 
     Layout(title = "Blog - Shevapro | Thoughts, stories, and ideas") {
         Div(attrs = {
-            classes("display-block")
-//            style {
-//                display(DisplayStyle.Block)
-//            }
+            attr(
+                "class",
+                "min-h-screen w-full bg-gradient-to-tr from-purple-600 to-blue-300 p-2"
+            )
         }) { // Blog page content
-            BlogHeroSection()
-            BlogFiltersSection(allTags, activeTags) { clickedTag ->
-                activeTags = if (clickedTag == "") {
-                    // Clear all tags when "All" is clicked
-                    emptyList()
-                } else if (activeTags.contains(clickedTag)) {
-                    activeTags - clickedTag
-                } else {
-                    activeTags + clickedTag
+
+            Section(attrs = { attr("class", "w-full p-2 md:p-4") }) {
+                SearchBar(onQueryChange = { query -> searchQuery = query })
+                BlogFiltersSection(allTags, activeTags) { clickedTag ->
+                    activeTags = if (activeTags.contains(clickedTag)) {
+                        activeTags - clickedTag
+                    } else {
+                        activeTags + clickedTag
+                    }
                 }
             }
-            BlogListSection(filteredArticles, isLoading)
+
+            BlogListSection(filteredArticles)
         }
     }
 }
 
 @Composable
-private fun BlogHeroSection() {
-    // TODO: Implement Blog hero section
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .minHeight(40.vh)
-            .padding(topBottom = SiteTheme.Spacing.xxl)
-            .backgroundColor(SiteTheme.Colors.gray50),
-        contentAlignment = Alignment.Center
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth(90.percent)
-                .maxWidth(1200.px)
-                .margin(topBottom = 0.px, leftRight = 0.px)
-                .textAlign(TextAlign.Center),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            // Page Title
-            H1(
-                attrs = Modifier
-                    .color(SiteTheme.Colors.text)
-                    .fontSize(SiteTheme.Typography.h1)
-                    .fontWeight(FontWeight.Bold)
-                    .margin(bottom = SiteTheme.Spacing.md)
-                    .toAttrs()
-            ) {
-                Text("Blog")
+private fun SearchBar(onQueryChange: (String) -> Unit) {
+    var query by remember { mutableStateOf("") }
+    Div(attrs = { attr("class", "relative w-full max-w-md mx-auto my-4") }) {
+        Input(
+            type = InputType.Text,
+            attrs = {
+                attr(
+                    "class",
+                    "w-full p-3 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                )
+                attr("placeholder", "Search articles...")
+                value(query)
+                onInput { event ->
+                    query = event.value
+                    onQueryChange(event.value)
+                }
             }
-            
-            // Subtitle
-            H2(
-                attrs = Modifier
-                    .color(SiteTheme.Colors.textSecondary)
-                    .fontSize(SiteTheme.Typography.h4)
-                    .fontWeight(FontWeight.Normal)
-                    .margin(bottom = SiteTheme.Spacing.lg)
-                    .toAttrs()
-            ) {
-                Text("Thoughts, stories, and ideas")
-            }
-            
-            // Brief introduction
-            P(
-                attrs = Modifier
-                    .color(SiteTheme.Colors.textSecondary)
-                    .fontSize(SiteTheme.Typography.body)
-                    .maxWidth(800.px)
-                    .margin(bottom = SiteTheme.Spacing.xl)
-                    .lineHeight(1.6)
-                    .toAttrs()
-            ) {
-                Text("Explore my latest articles on technology, design, and development. I share insights, tutorials, and personal experiences from my journey in the tech world.")
-            }
-        }
+        )
     }
 }
 
@@ -171,88 +151,28 @@ private fun BlogFiltersSection(
     activeTags: List<String>,
     onTagClick: (String) -> Unit
 ) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(topBottom = SiteTheme.Spacing.lg),
-        contentAlignment = Alignment.Center
-    ) {
-        Div(
-            attrs = Modifier
-                .fillMaxWidth(90.percent)
-                .maxWidth(1200.px)
-                .display(DisplayStyle.Flex)
-                .flexWrap(FlexWrap.Wrap)
-                .justifyContent(org.jetbrains.compose.web.css.JustifyContent.Center)
-                .gap(SiteTheme.Spacing.md)
-                .toAttrs()
-        ) {
-            // Search bar placeholder - will be implemented later
-            Div(
-                attrs = Modifier
-                    .width(300.px)
-                    .height(40.px)
-                    .padding(leftRight = SiteTheme.Spacing.md)
-                    .border(1.px, LineStyle.Solid, SiteTheme.Colors.gray100)
-                    .borderRadius(SiteTheme.BorderRadius.md)
-                    .backgroundColor(SiteTheme.Colors.surface)
-                    .display(DisplayStyle.Flex)
-                    .alignItems(AlignItems.Center)
-                    .toAttrs()
-            ) {
-                Text("Search articles...")
-            }
-            
-            // Tag filter buttons
-            if (tags.isEmpty()) {
-                // Show placeholder categories if no tags are available
-                listOf("All", "Technology", "Design", "Development", "Personal").forEach { category ->
-                    Button(
-                        attrs = Modifier
-                            .padding(SiteTheme.Spacing.sm)
-                            .backgroundColor(if (category == "All") SiteTheme.Colors.primary else SiteTheme.Colors.surface)
-                            .color(if (category == "All") rgb(255, 255, 255) else SiteTheme.Colors.text)
-                            .borderRadius(SiteTheme.BorderRadius.md)
-                            .padding(leftRight = SiteTheme.Spacing.md, topBottom = SiteTheme.Spacing.sm)
-                            .border(1.px, LineStyle.Solid, if (category == "All") SiteTheme.Colors.primary else rgba(0, 0, 0, 0.1))
-                            .cursor(Cursor.Pointer)
-                            .toAttrs()
-                    ) {
-                        Text(category)
-                    }
-                }
-            } else {
-                // Show actual tags from articles
-                Button(
-                    attrs = Modifier
-                        .padding(SiteTheme.Spacing.sm)
-                        .backgroundColor(if (activeTags.isEmpty()) SiteTheme.Colors.primary else SiteTheme.Colors.surface)
-                        .color(if (activeTags.isEmpty()) rgb(255, 255, 255) else SiteTheme.Colors.text)
-                        .borderRadius(SiteTheme.BorderRadius.md)
-                        .padding(leftRight = SiteTheme.Spacing.md, topBottom = SiteTheme.Spacing.sm)
-                        .border(1.px, LineStyle.Solid, if (activeTags.isEmpty()) SiteTheme.Colors.primary else rgba(0, 0, 0, 0.1))
-                        .cursor(Cursor.Pointer)
-                        .onClick { /* Clear all active tags */ onTagClick("") }
-                        .toAttrs()
-                ) {
-                    Text("All")
-                }
-                
-                tags.forEach { tag ->
-                    Button(
-                        attrs = Modifier
-                            .padding(SiteTheme.Spacing.sm)
-                            .backgroundColor(if (activeTags.contains(tag)) SiteTheme.Colors.primary else SiteTheme.Colors.surface)
-                            .color(if (activeTags.contains(tag)) rgb(255, 255, 255) else SiteTheme.Colors.text)
-                            .borderRadius(SiteTheme.BorderRadius.md)
-                            .padding(leftRight = SiteTheme.Spacing.md, topBottom = SiteTheme.Spacing.sm)
-                            .border(1.px, LineStyle.Solid, if (activeTags.contains(tag)) SiteTheme.Colors.primary else rgba(0, 0, 0, 0.1))
-                            .cursor(Cursor.Pointer)
-                            .onClick { onTagClick(tag) }
-                            .toAttrs()
-                    ) {
-                        Text(tag)
-                    }
+    Div(attrs = { classes("w-full", "md:w-4/5", "mx-auto") }) {
+        Ul(attrs = { classes("flex", "my-3", "list-none", "flex-wrap", "justify-center", "p-0") }) {
+            tags.forEach { tag ->
+                val isActive = activeTags.contains(tag)
+                val tagClass = if (isActive)
+                    "bg-sky-700 text-white scale-110"
+                else
+                    "bg-sky-100 text-sky-800 hover:bg-sky-200"
+                Li(attrs = {
+                     classes(
+                        "m-1",
+                        "cursor-pointer",
+                        "p-2",
+                        "rounded-lg",
+                        "text-sm",
+                        "font-medium",
+                        "transition-all",
+                        *tagClass.split(" ").toTypedArray()
+                    )
+                    onClick { onTagClick(tag) }
+                }) {
+                    Text(tag)
                 }
             }
         }
@@ -261,46 +181,15 @@ private fun BlogFiltersSection(
 
 @Composable
 private fun BlogListSection(
-    articles: List<Article>,
-    isLoading: Boolean
+    articles: List<Article>
 ) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(topBottom = SiteTheme.Spacing.xl),
-        contentAlignment = Alignment.Center
-    ) {
-        if (isLoading) {
-            // Loading state
-            P(
-                attrs = Modifier
-                    .fontSize(18.px)
-                    .color(SiteTheme.Colors.textSecondary)
-                    .textAlign(TextAlign.Center)
-                    .toAttrs()
-            ) {
-                Text("Loading blog articles...")
-            }
-        } else if (articles.isEmpty()) {
-            // No articles state
-            P(
-                attrs = Modifier
-                    .fontSize(18.px)
-                    .color(SiteTheme.Colors.textSecondary)
-                    .textAlign(TextAlign.Center)
-                    .toAttrs()
-            ) {
+    Section(attrs = { attr("class", "w-full max-w-4xl mx-auto p-2 md:p-4") }) {
+        if (articles.isEmpty()) {
+            P(attrs = { attr("class", "text-center text-white text-lg my-8") }) {
                 Text("No blog articles found.")
             }
         } else {
-            // Display articles
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth(90.percent)
-                    .maxWidth(1200.px)
-                    .gap(SiteTheme.Spacing.xl),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
+            Div(attrs = { attr("class", "grid grid-cols-1 gap-8") }) {
                 articles.forEach { article ->
                     BlogPostCard(
                         title = article.title,
@@ -317,92 +206,47 @@ private fun BlogListSection(
 
 @Composable
 private fun BlogPostCard(
-    title: String, 
-    summary: String, 
-    date: String, 
+    title: String,
+    summary: String,
+    date: String,
     tags: List<String>,
     slug: String
 ) {
-    Div(
-        attrs = Modifier
-            .fillMaxWidth()
-            .padding(SiteTheme.Spacing.lg)
-            .backgroundColor(SiteTheme.Colors.background)
-            .borderRadius(SiteTheme.Spacing.sm)
-            .boxShadow(offsetX = 0.px, offsetY = 4.px, blurRadius = 6.px, color = rgba(0, 0, 0, 0.1))
-            .toAttrs()
-    ) {
-        // Title with link to article
-        Link(
-            path = "/blog/$slug",
-            modifier = Modifier
-                .textDecorationLine(TextDecorationLine.None)
-                .fillMaxWidth()
-        ) {
-            H3(
-                attrs = Modifier
-                    .color(SiteTheme.Colors.text)
-                    .fontSize(SiteTheme.Typography.h3)
-                    .fontWeight(FontWeight.Bold)
-                    .margin(bottom = SiteTheme.Spacing.sm)
-                    .toAttrs()
-            ) {
+    Div(attrs = {
+        attr("class", "w-full p-6 bg-white rounded-lg shadow-md transition-all hover:shadow-xl")
+    }) {
+        Link(path = "/blog/$slug", modifier = Modifier.classNames(*"no-underline w-full".split(" ").toTypedArray())) {
+            H3(attrs = {
+                attr("class", "text-gray-900 text-2xl font-bold mb-2")
+            }) {
                 Text(title)
             }
         }
-        
-        P(
-            attrs = Modifier
-                .color(SiteTheme.Colors.textSecondary)
-                .fontSize(SiteTheme.Typography.small)
-                .margin(bottom = SiteTheme.Spacing.md)
-                .toAttrs()
-        ) {
+        P(attrs = { attr("class", "text-gray-600 text-xs mb-4") }) {
             Text(date)
         }
-        
-        P(
-            attrs = Modifier
-                .color(SiteTheme.Colors.textSecondary)
-                .fontSize(SiteTheme.Typography.body)
-                .margin(bottom = SiteTheme.Spacing.md)
-                .lineHeight(1.6)
-                .toAttrs()
-        ) {
+        P(attrs = { attr("class", "text-gray-700 text-base mb-4 leading-relaxed") }) {
             Text(summary)
         }
-        
-        // Read more link
         Link(
             path = "/blog/$slug",
-            modifier = Modifier
-                .color(SiteTheme.Colors.primary)
-                .fontSize(SiteTheme.Typography.body)
-                .fontWeight(FontWeight.SemiBold)
-                .margin(bottom = SiteTheme.Spacing.md)
-                .textDecorationLine(TextDecorationLine.None)
-                .display(DisplayStyle.Block)
+            modifier = Modifier.classNames(
+                "text-blue-500",
+                "text-base",
+                "font-semibold",
+                "mb-4",
+                "no-underline",
+                "inline-block",
+                "hover:text-blue-700"
+            )
         ) {
             Text("Read more →")
         }
-        
-        Div(
-            attrs = Modifier
-                .display(DisplayStyle.Flex)
-                .flexWrap(FlexWrap.Wrap)
-                .gap(SiteTheme.Spacing.sm)
-                .toAttrs()
-        ) {
+        Div(attrs = { attr("class", "flex flex-wrap gap-2") }) {
             tags.forEach { tag ->
-                Span(
-                    attrs = Modifier
-                        .backgroundColor(SiteTheme.Colors.gray100)
-                        .color(SiteTheme.Colors.textSecondary)
-                        .padding(leftRight = SiteTheme.Spacing.sm, topBottom = SiteTheme.Spacing.xs)
-                        .borderRadius(SiteTheme.Spacing.xs)
-                        .fontSize(SiteTheme.Typography.small)
-                        .toAttrs()
-                ) {
+                Span(attrs = {
+                    attr("class", "bg-gray-200 text-gray-800 px-2 py-1 rounded text-xs")
+                }) {
                     Text(tag)
                 }
             }
