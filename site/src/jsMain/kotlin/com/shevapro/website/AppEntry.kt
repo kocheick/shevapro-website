@@ -44,9 +44,9 @@ fun initStyles(ctx: InitSilkContext) {
 
 @InitKobweb
 fun initKobweb(ctx: InitKobwebContext) {
-//    ctx.router.setErrorPage {
-//        NotFound()
-//    }
+    ctx.router.setErrorPage {
+        NotFound()
+    }
 
 
 }
