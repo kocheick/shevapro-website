@@ -109,74 +109,46 @@ fun PortfolioPage() {
     }
 
     Layout(title = "Portfolio - Freelance Android Developer | Custom Apps and projects for Clients Across Industries.") {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .minHeight(100.vh)
-                .backgroundColor(rgba(147, 197, 253, 0.2)) // Simple blue background instead of gradient
-                .padding(SiteTheme.Spacing.lg),
-            horizontalAlignment = Alignment.CenterHorizontally
+        // Page flex container (main background)
+        Div(
+            attrs = {
+                classes(
+                    "rounded-2xl", "min-h-screen", "flex", "flex-col", "items-center",
+                    "bg-opacity-40", "bg-gradient-to-bl", "from-red-200", "via-purple-300", "to-blue-500", "pt-8"
+                )
+            }
         ) {
-            // Header Section
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth(75.percent)
-                    .backgroundColor(rgba(253, 224, 71, 0.8)) // Simple yellow background
-                    .borderRadius(16.px)
-                    .padding(SiteTheme.Spacing.lg)
-                    .margin(topBottom = SiteTheme.Spacing.md)
+            // Header section (banner)
+            Section(
+                attrs = {
+                    classes("w-3/4", "my-3", "bg-gradient-to-bl", "from-yellow-300", "to-red-200", "rounded-2xl", "p-4")
+                }
             ) {
-                Column {
-                    H1(
-                        attrs = {
-                            style {
-                                fontSize(32.px) // text-2xl md:text-4xl
-                                fontWeight("bold")
-                                color(SiteTheme.Colors.text)
-                                margin(4.px)
-                                marginBottom(SiteTheme.Spacing.md)
-                            }
-                        }
-                    ) {
+                Div(attrs = { classes("text-lg", "rounded-2xl") }) {
+                    H1(attrs = { classes("font-bold", "m-1", "text-2xl", "md:text-4xl") }) {
                         Text("Projects, Concepts exploration and Playground..")
                     }
-
-                    Br()
-
-                    P(
-                        attrs = {
-                            style {
-                                fontSize(16.px) // md:text-lg
-                                color(SiteTheme.Colors.text)
-                                marginBottom(SiteTheme.Spacing.md)
-                            }
-                        }
-                    ) {
+                    Br {}
+                    P(attrs = { classes("md:m-1", "text-sm", "md:text-lg") }) {
                         Text("Showcasing a few projects I have worked on (from creation to finish), challenges on the way and lessons learned.")
                     }
-
-                    P(
-                        attrs = {
-                            style {
-                                fontSize(14.px) // text-sm md:text-lg
-                                backgroundColor(rgba(249, 250, 251, 0.6)) // bg-gray-50 bg-opacity-60
-                                padding(8.px)
-                                borderRadius(12.px)
-                                maxWidth("fit-content")
-                            }
-                        }
-                    ) {
+                    P(attrs = {
+                        classes(
+                            "w-fit",
+                            "p-2",
+                            "bg-gray-50",
+                            "bg-opacity-60",
+                            "rounded-xl",
+                            "text-sm",
+                            "md:text-lg"
+                        )
+                    }) {
                         Text("You can filter articles by using tags right below!")
                     }
                 }
             }
-
-            // Filters Section
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .margin(top = 20.px)
-            ) {
+            // Filters (Tags) bar
+            Section(attrs = { classes("mt-5", "w-full") }) {
                 FiltersBar(
                     tags = allTags,
                     activeTags = activeTags,
@@ -186,50 +158,26 @@ fun PortfolioPage() {
                         } else {
                             activeTags + clickedTag
                         }
-                    }
+                    },
                 )
             }
-
-            // Projects Grid
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(4.px),
-                contentAlignment = Alignment.Center
-            ) {
+            // Project cards grid
+            Section(attrs = { classes("flex", "justify-around", "flex-wrap", "w-full", "p-1") }) {
                 if (filteredProjects.isEmpty()) {
-                    P(
-                        attrs = {
-                            style {
-                                fontSize(16.px)
-                                color(SiteTheme.Colors.textSecondary)
-                                textAlign("center")
-                                marginTop(SiteTheme.Spacing.xl)
-                            }
-                        }
-                    ) {
+                    P(attrs = { classes("text-lg", "text-gray-700", "text-center", "mt-10") }) {
                         Text(if (activeTags.isEmpty()) "No projects available." else "No projects found with the selected tags.")
                     }
                 } else {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .flexWrap(FlexWrap.Wrap)
-                            .justifyContent(JustifyContent.SpaceAround)
-                            .gap(SiteTheme.Spacing.md)
-                    ) {
-                        filteredProjects.forEach { project ->
-                            ProjectCard(
-                                project = project,
-                                onTagClick = { clickedTag ->
-                                    activeTags = if (activeTags.contains(clickedTag)) {
-                                        activeTags - clickedTag
-                                    } else {
-                                        activeTags + clickedTag
-                                    }
+                    filteredProjects.forEach { project ->
+                        ProjectCard(
+                            project = project,
+                            onTagClick = { clickedTag ->
+                                activeTags = if (activeTags.contains(clickedTag)) {
+                                    activeTags - clickedTag
+                                } else {
+                                    activeTags + clickedTag
                                 }
-                            )
-                        }
+                            })
                     }
                 }
             }

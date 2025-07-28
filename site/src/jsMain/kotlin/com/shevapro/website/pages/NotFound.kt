@@ -9,10 +9,12 @@ import com.varabyte.kobweb.compose.ui.Modifier
 import com.varabyte.kobweb.compose.ui.modifiers.*
 import com.varabyte.kobweb.core.Page
 import org.jetbrains.compose.web.css.*
+import org.jetbrains.compose.web.dom.Button
 import org.jetbrains.compose.web.dom.Div
 import org.jetbrains.compose.web.dom.H1
 import org.jetbrains.compose.web.dom.P
 import org.jetbrains.compose.web.dom.Text
+import kotlinx.browser.window
 
 //@Page(routeOverride = "{...}")
 @Page
@@ -98,13 +100,30 @@ fun NotFound() {
                 }
                 
                 // Back to Home Button
-                Button(
-                    text = "Back to Home",
-                    path = "/",
-                    variant = ButtonVariant.Primary,
-                    modifier = Modifier
-                        .margin(SiteTheme.Spacing.md)
-                )
+                Button(attrs = {
+                    classes(
+                        "bg-blue-600",
+                        "hover:bg-blue-700",
+                        "text-white",
+                        "font-bold",
+                        "py-3",
+                        "px-8",
+                        "rounded-lg",
+                        "text-lg",
+                        "transition",
+                        "duration-200",
+                        "shadow"
+                    )
+                    onClick {
+                        if (window.history.length > 1) {
+                            window.history.back()
+                        } else {
+                            window.location.href = "/"
+                        }
+                    }
+                }) {
+                    Text("Take Me Back")
+                }
             }
         }
     }
