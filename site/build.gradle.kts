@@ -29,6 +29,7 @@ tasks.register<Copy>("copy404") {
     from("$rootDir/site/.kobweb/site/not-found.html")
     into("$rootDir/site/.kobweb/site")
     rename("not-found.html", "404.html")
+    println("404.html has been copied successfully.")
 }
 
 tasks.named("kobwebExport").configure {

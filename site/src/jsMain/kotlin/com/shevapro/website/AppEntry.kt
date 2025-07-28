@@ -17,6 +17,7 @@ import com.shevapro.website.styles.MarkdownStyles
 import com.varabyte.kobweb.compose.ui.styleModifier
 import com.varabyte.kobweb.core.init.InitKobweb
 import com.varabyte.kobweb.core.init.InitKobwebContext
+import com.varabyte.kobwebx.markdown.MarkdownContext
 import org.jetbrains.compose.web.css.*
 
 @InitSilk
@@ -43,9 +44,11 @@ fun initStyles(ctx: InitSilkContext) {
 
 @InitKobweb
 fun initKobweb(ctx: InitKobwebContext) {
-    ctx.router.setErrorPage {
-        NotFound()
-    }
+//    ctx.router.setErrorPage {
+//        NotFound()
+//    }
+
+
 }
 
 @App
