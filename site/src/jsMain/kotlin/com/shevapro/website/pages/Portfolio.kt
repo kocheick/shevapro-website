@@ -13,6 +13,7 @@ import com.shevapro.website.components.sections.HeroSection
 import com.shevapro.website.components.widgets.FiltersBar
 import com.shevapro.website.components.widgets.ProjectCard
 import com.shevapro.website.models.Article
+import com.shevapro.website.utils.Constants
 import com.shevapro.website.utils.getPortfolioArticles
 import com.shevapro.website.styles.SiteTheme
 import org.jetbrains.compose.web.css.*
@@ -41,7 +42,7 @@ fun PortfolioPage() {
         }
     }
 
-    Layout(title = "Portfolio - Freelance Android Developer | Custom Apps and projects for Clients Across Industries.") {
+    Layout(title = Constants.Pages.Portfolio.TITLE, description = Constants.Pages.Portfolio.DESCRIPTION) {
         // Page flex container (main background)
         Div(
             attrs = {
@@ -53,8 +54,8 @@ fun PortfolioPage() {
         ) {
             // Hero section using the reusable component
             HeroSection(
-                title = "Projects, Concepts exploration and Playground..",
-                description = "Showcasing a few projects I have worked on (from creation to finish), challenges on the way and lessons learned."
+                title = Constants.Pages.Portfolio.HEADLINE,
+                description = Constants.Pages.Portfolio.SECONDARY_HEADLINE
                 // Uses default gradient which matches the original
             )
 

@@ -57,8 +57,6 @@ private fun extractMarkdownFromHtml(htmlContent: String): String? {
         return null // Not HTML, no extraction needed
     }
     
-    console.log("Attempting to extract markdown content from HTML...")
-    
     // Try different extraction methods
     
     // Method 1: Look for content between ```markdown and the last ```
@@ -67,7 +65,6 @@ private fun extractMarkdownFromHtml(htmlContent: String): String? {
     
     if (markdownStart > 0 && markdownEnd > markdownStart) {
         // Extract content between ```markdown and the last ```
-        console.log("Found markdown content between code blocks")
         return htmlContent.substring(markdownStart + 11, markdownEnd).trim()
     }
     
@@ -77,7 +74,6 @@ private fun extractMarkdownFromHtml(htmlContent: String): String? {
     
     if (preStart > 0 && preEnd > preStart) {
         // Extract content between <pre> and </pre>
-        console.log("Found content in pre tags")
         return htmlContent.substring(preStart + 5, preEnd).trim()
     }
     
@@ -110,7 +106,6 @@ private fun extractMarkdownFromHtml(htmlContent: String): String? {
                             if (depth == 0) {
                                 // Found the matching closing div
                                 val divContent = htmlContent.substring(divStart, closeTag + 6)
-                                console.log("Found content in div with markdown class")
                                 // Strip HTML tags
                                 val strippedContent = js("divContent.replace(/<[^>]*>/g, '')")
                                 return strippedContent as String
@@ -149,7 +144,6 @@ private fun getMarkdownFilePath(route: String): String {
 // Function to fetch markdown content
 private suspend fun fetchMarkdownContent(filePath: String): String {
     try {
-        console.log("🔍 Fetching markdown from: $filePath")
         val response = kotlinx.browser.window.fetch(filePath).await()
         
         if (!response.ok) {
@@ -157,7 +151,6 @@ private suspend fun fetchMarkdownContent(filePath: String): String {
         }
         
         val text = response.text().await()
-        console.log("📄 Fetched ${text.length} characters")
 
         // Check if we got HTML instead of markdown
         if (text.trim().startsWith("<!DOCTYPE html>") || text.contains("<html")) {
@@ -203,17 +196,14 @@ fun EnhancedMarkdownLayout(content: @Composable () -> Unit) {
 
     LaunchedEffect(markdownFilePath) {
         try {
-            console.log("🔍 Fetching markdown content for: $markdownFilePath")
             isFetching = true
             fetchError = null
 
             markdownContent = fetchMarkdownContent(markdownFilePath)
-            console.log("✅ Markdown content fetched successfully")
         } catch (e: Exception) {
             console.error("❌ Error fetching markdown:", e)
             fetchError = "Error fetching content: ${e.message}"
             markdownContent = getTestContent()
-            console.log("📝 Using fallback test content")
         } finally {
             isFetching = false
         }
@@ -222,10 +212,6 @@ fun EnhancedMarkdownLayout(content: @Composable () -> Unit) {
     LaunchedEffect(markdownContent) {
         if (markdownContent != null) {
             try {
-                console.log("🔄 Starting unified markdown processing...")
-                console.log("Markdown content type: ${markdownContent!!::class.simpleName}")
-                console.log("Markdown content first 100 chars: ${markdownContent!!.take(100)}")
-                
                 isProcessing = true
                 processingError = null
 
@@ -236,16 +222,10 @@ fun EnhancedMarkdownLayout(content: @Composable () -> Unit) {
                     .use(rehypeRaw)
                     .use(rehypeStringify)
 
-                console.log("✨ Processing markdown with unified pipeline...")
                 val result = processor.process(markdownContent!!).await()
                 processedHtml = result.value
-                console.log("✅ Markdown processing completed successfully")
-                console.log("Processed HTML length:", processedHtml?.length.toString())
-                console.log("Processed HTML first 100 chars: ${processedHtml?.take(100)}")
             } catch (e: Exception) {
                 console.error("❌ Error processing markdown:", e)
-                console.error("Error details:", e.message, e.cause)
-                console.error("Problematic content:", markdownContent)
                 processingError = "Error processing markdown: ${e.message}"
                 processedHtml = "<p style='color: red;'>Error processing markdown: ${e.message}</p>"
             } finally {
@@ -257,7 +237,6 @@ fun EnhancedMarkdownLayout(content: @Composable () -> Unit) {
     // If the post is not published, redirect to the home page
     LaunchedEffect(isPosted) {
         if (!isPosted) {
-            console.log("🚫 Attempted to access unpublished post: ${ctx.route.path}")
             // Redirect to the home page or show an error message
             ctx.router.navigateTo("/")
         }
