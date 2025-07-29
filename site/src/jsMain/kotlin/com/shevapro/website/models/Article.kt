@@ -12,7 +12,7 @@ data class Article(
     val author: String,
     val dateAdded: String,
     val tags: List<String> = emptyList(),
-    val imageUrl: String? = "/assets/images/blank-image.jpeg",
+    val imageUrl: String = "/assets/images/blank-image.jpeg",
     val coverImage: String? = null,
     val readTime: Int = 0, // in minutes
     val isPortfolioArticle: Boolean = false,
@@ -27,7 +27,7 @@ data class Article(
             author = "",
             dateAdded = "",
             tags = emptyList(),
-            imageUrl = null
+            imageUrl = "/favicon.ico"
         )
     }
 }
