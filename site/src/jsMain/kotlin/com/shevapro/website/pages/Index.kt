@@ -2,7 +2,7 @@ package com.shevapro.website.pages
 
 import androidx.compose.runtime.Composable
 import com.shevapro.website.components.layouts.Layout
-import com.shevapro.website.components.ui.HeroSection
+import com.shevapro.website.components.ui.HomeHero
 import com.varabyte.kobweb.compose.css.margin
 import com.varabyte.kobweb.core.Page
 import org.jetbrains.compose.web.css.percent
@@ -24,7 +24,7 @@ fun HomePage() {
         }) {
             // Hero Section
             Section(attrs = { classes("my-2") }) {
-                HeroSection()
+                HomeHero()
             }
             Br {}
 

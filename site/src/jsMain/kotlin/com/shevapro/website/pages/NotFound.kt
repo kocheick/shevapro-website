@@ -47,7 +47,7 @@ fun NotFound() {
                     )
                     style {
                         maxWidth(800.px)
-                        padding(SiteTheme.Spacing.xl)
+                        padding(SiteTheme.Spacing.lg)
                         backgroundColor(rgba(26, 27, 38, 0.9)) // Using rgba for surface color with opacity
                         borderRadius(SiteTheme.BorderRadius.xl)
                     }

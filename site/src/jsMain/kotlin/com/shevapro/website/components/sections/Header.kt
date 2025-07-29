@@ -25,8 +25,12 @@ import org.jetbrains.compose.web.dom.*
 const val MEDIUM_SCREEN_SIZE = 768
 const val DARK = "md:border-0 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700"
 
-val navMenuItems = listOf("portfolio", "design", "blog", "about")
-const val menuHeight = "h-48" // equivalent to h-${12 * 4}
+val navMenuItems = listOf("portfolio", "design", "blog", "services",
+//    "music", "contact",
+    "about")
+val size = navMenuItems.size
+// val menuHeight = "h-${12*navMenuItems.size}"
+ const val menuHeight = "h-${12*5}"
 
 @Composable
 fun Header(
@@ -162,7 +166,7 @@ fun Header(
                 attrs = {
                     id("menu")
                     classes(
-                        if (isNavBarOpen) "h-48" else "invisible",
+                        if (isNavBarOpen) menuHeight else "invisible",
                         if (isNavBarOpen) "visible" else "h-0",
                         "font-normal", "md:visible", "md:h-auto", "ease-in-out", "transition-all",
                         "duration-300", "md:transition-none", "md:block", "w-full", "md:w-auto"
