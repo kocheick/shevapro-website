@@ -74,7 +74,7 @@ private fun UnderConstructionSection() {
 //            "m-4",
 //                    "md:m-8",
 //                    "lg:m-12",
-            "mt-12","md:mt-[%30]","lg:mt-[50%]",
+            "mt-12",
             "w-full",
             "max-w-md",
             "md:max-w-lg",

@@ -90,15 +90,6 @@ private val markdownIndex = listOf(
     thumbnail = "blank-image.jpeg"
 ),
     ArticleDescriptor(
-    route = "/portfolio/file-sorter-app",
-    filePath = "/markdown/portfolio/file_sorter_app.md",
-    title = "File Sorter",
-    description = "Your ultimate solution for keeping your digital life neat and tidy! With File Sorter, you can easily organize your files on your Android device by moving them from one folder to another based on their extensions. No more cluttered folders and lost files!",
-    date = "September 8, 2023",
-    tags = listOf("android", "app", "hobby", "productivity"),
-    thumbnail = "file-sorter-logo.png"
-),
-    ArticleDescriptor(
     route = "/portfolio/enhanced-test",
     filePath = "/markdown/portfolio/enhanced_test.md",
     title = "Enhanced Markdown Test",
@@ -124,7 +115,7 @@ fun ArticleDescriptor.toArticle(): Article {
         tags = tags,
         imageUrl = if (thumbnail != null) "/assets/images/$thumbnail" else "/favicon.ico",
         isPortfolioArticle = isPortfolioArticle,
-        posted = true
+        posted = true // All entries in the index are published
     )
 }
 
@@ -132,12 +123,12 @@ fun ArticleDescriptor.toArticle(): Article {
  * Returns a list of blog articles.
  * 
  * This function filters the auto-generated markdownIndex list for articles with routes
- * that start with "/blog" and converts them to Article objects.
+ * that start with "/blog" and are posted, then converts them to Article objects.
  * 
  * The list is automatically updated when new markdown files are added to the blog directory.
  */
 fun getBlogArticles(): List<Article> {
-    // Use the auto-generated markdownIndex list to get blog articles
+    // Use the auto-generated markdownIndex list to get posted blog articles
     return markdownIndex
         .filter { it.route.startsWith("/blog") }
         .map { it.toArticle() }
@@ -147,12 +138,12 @@ fun getBlogArticles(): List<Article> {
  * Returns a list of portfolio articles.
  * 
  * This function filters the auto-generated markdownIndex list for articles with routes
- * that start with "/portfolio" and converts them to Article objects.
+ * that start with "/portfolio" and are posted, then converts them to Article objects.
  * 
  * The list is automatically updated when new markdown files are added to the portfolio directory.
  */
 fun getPortfolioArticles(): List<Article> {
-    // Use the auto-generated markdownIndex list to get portfolio articles
+    // Use the auto-generated markdownIndex list to get posted portfolio articles
     return markdownIndex
         .filter { it.route.startsWith("/portfolio") }
         .map { it.toArticle() }

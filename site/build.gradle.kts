@@ -36,6 +36,17 @@ kobweb {
          * 2. Generate a Kotlin source file (`MarkdownIndex.kt`) that lists metadata for all posts.
          */
         process.set { entries ->
+            // Filter out unpublished entries at the very beginning
+            val publishedEntries = entries.filter { entry ->
+                val isPosted = entry.frontMatter["posted"]?.firstOrNull()?.toBoolean() ?: true
+                isPosted
+            }
+
+            println("📄 Processing markdown files:")
+            println("   📝 Total found: ${entries.size}")
+            println("   ✅ Published: ${publishedEntries.size}")
+            println("   🚫 Unpublished (skipped): ${entries.size - publishedEntries.size}")
+
             val genDir = project.layout.buildDirectory.asFile.get().resolve("generated/kobweb/markdown")
             genDir.mkdirs()
 
@@ -99,7 +110,7 @@ kobweb {
                     tags = tags,
                     imageUrl = if (thumbnail != null) "/assets/images/${'$'}thumbnail" else "/favicon.ico",
                     isPortfolioArticle = isPortfolioArticle,
-                    posted = true
+                    posted = true // All entries in the index are published
                 )
             }
 
@@ -107,12 +118,12 @@ kobweb {
              * Returns a list of blog articles.
              * 
              * This function filters the auto-generated markdownIndex list for articles with routes
-             * that start with "/blog" and converts them to Article objects.
+             * that start with "/blog" and are posted, then converts them to Article objects.
              * 
              * The list is automatically updated when new markdown files are added to the blog directory.
              */
             fun getBlogArticles(): List<Article> {
-                // Use the auto-generated markdownIndex list to get blog articles
+                // Use the auto-generated markdownIndex list to get posted blog articles
                 return markdownIndex
                     .filter { it.route.startsWith("/blog") }
                     .map { it.toArticle() }
@@ -122,12 +133,12 @@ kobweb {
              * Returns a list of portfolio articles.
              * 
              * This function filters the auto-generated markdownIndex list for articles with routes
-             * that start with "/portfolio" and converts them to Article objects.
+             * that start with "/portfolio" and are posted, then converts them to Article objects.
              * 
              * The list is automatically updated when new markdown files are added to the portfolio directory.
              */
             fun getPortfolioArticles(): List<Article> {
-                // Use the auto-generated markdownIndex list to get portfolio articles
+                // Use the auto-generated markdownIndex list to get posted portfolio articles
                 return markdownIndex
                     .filter { it.route.startsWith("/portfolio") }
                     .map { it.toArticle() }
@@ -135,7 +146,7 @@ kobweb {
             """.trimIndent()
 
             // 3. Generate article descriptors
-            val descriptorBlocks = entries.map { entry ->
+            val descriptorBlocks = publishedEntries.map { entry ->
                 // Files are already in public/markdown, extract relative path
                 val relPath = entry.filePath.substringAfter("resources/public/markdown/")
 
@@ -200,7 +211,7 @@ kobweb {
             val currentTimestamp = ZonedDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'"))
 
             if (sitemapFile.exists()) {
-                println("📄 Updating sitemap.xml with ${entries.size} markdown entries...")
+                println("📄 Updating sitemap.xml with ${publishedEntries.size} markdown entries...")
 
                 // Read existing sitemap
                 val existingSitemap = sitemapFile.readText()
@@ -243,10 +254,8 @@ kobweb {
 
                     val sitemapBuilder = StringBuilder(updatedBaseSitemap)
 
-                    // Get posted entries only
-                    val postedEntries = entries.filter { entry ->
-                        entry.frontMatter["posted"]?.firstOrNull() == "true"
-                    }
+                    // All entries are already published - no need to filter again
+                    val postedEntries = publishedEntries
 
                     // Add blog posts
                     val blogEntries = postedEntries.filter { it.route.startsWith("/blog") }
