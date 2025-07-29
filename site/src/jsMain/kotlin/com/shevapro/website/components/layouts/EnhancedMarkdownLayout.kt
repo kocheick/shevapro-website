@@ -187,6 +187,9 @@ fun EnhancedMarkdownLayout(content: @Composable () -> Unit) {
     val thumbnailUrl = ctx.markdown?.frontMatter?.get("thumbnailUrl")?.single()
     val coverUrl = if (thumbnailUrl != null && thumbnailUrl.length > 42) thumbnailUrl
     else "/assets/images/${thumbnailUrl ?: "blank-image.jpeg"}"
+    
+    // Check if the post is published
+    val isPosted = ctx.markdown!!.frontMatter["posted"]?.single()?.toBoolean() ?: true
 
     val currentRoute = ctx.route.path
     val markdownFilePath = remember(currentRoute) { getMarkdownFilePath(currentRoute) }
@@ -251,6 +254,15 @@ fun EnhancedMarkdownLayout(content: @Composable () -> Unit) {
         }
     }
 
+    // If the post is not published, redirect to the home page
+    LaunchedEffect(isPosted) {
+        if (!isPosted) {
+            console.log("🚫 Attempted to access unpublished post: ${ctx.route.path}")
+            // Redirect to the home page or show an error message
+            ctx.router.navigateTo("/")
+        }
+    }
+
     Layout(title = "SHEVAPRO | $title", description = description) {
         Style {
             """
@@ -282,6 +294,17 @@ fun EnhancedMarkdownLayout(content: @Composable () -> Unit) {
                 margin: 1rem 0;
                 color: #856404;
                 border-radius: 4px;
+            }
+            
+            .unpublished-message {
+                background-color: rgba(220, 53, 69, 0.1);
+                border-left: 4px solid #dc3545;
+                padding: 2rem;
+                margin: 2rem 0;
+                color: #dc3545;
+                border-radius: 4px;
+                text-align: center;
+                font-size: 1.2rem;
             }
             """.trimIndent()
         }
