@@ -33,6 +33,18 @@ fun MarkdownLayout(content: @Composable () -> Unit) {
     val thumbnailUrl = ctx.markdown?.frontMatter?.get("thumbnailUrl")?.single()
     val coverUrl =
         if (thumbnailUrl != null && thumbnailUrl.length > 42) thumbnailUrl else "/assets/images/${thumbnailUrl ?: "blank-image.jpeg"}"
+    
+    // Check if the post is published
+    val isPosted = ctx.markdown!!.frontMatter["posted"]?.single()?.toBoolean() ?: true
+    
+    // If the post is not published, redirect to the home page
+    LaunchedEffect(isPosted) {
+        if (!isPosted) {
+            console.log("🚫 Attempted to access unpublished post: ${ctx.route.path}")
+            // Redirect to the home page
+            ctx.router.navigateTo("/")
+        }
+    }
 
     // State for unified processing
     var originalContentHtml by remember { mutableStateOf<String?>(null) }
