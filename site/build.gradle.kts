@@ -157,7 +157,6 @@ fun getPortfolioArticles(): List<Article> {
 
 fun generateMarkdownFiles(
     project: org.gradle.api.Project,
-    publishedEntries: List<Any>,
     descriptorBlocks: List<String>
 ) {
     val genDir = project.layout.buildDirectory.asFile.get().resolve("generated/kobweb/markdown")
@@ -346,7 +345,7 @@ kobweb {
             val descriptorBlocks = generateArticleDescriptors(publishedEntries)
 
             // Generate markdown files
-            generateMarkdownFiles(project, publishedEntries, descriptorBlocks)
+            generateMarkdownFiles(project, descriptorBlocks)
 
             // Update sitemap
             updateSitemap(project, publishedEntries)
