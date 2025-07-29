@@ -128,7 +128,7 @@ fun ServicesPage() {
                             style {
                                 fontSize(32.px)
                                 fontWeight("bold")
-                                color(SiteTheme.Colors.text)
+                                color(SiteTheme.Colors.textSecondary)
                                 marginBottom(SiteTheme.Spacing.md)
                                 textAlign("center")
                             }
