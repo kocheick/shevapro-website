@@ -3,6 +3,7 @@ package com.shevapro.website.pages
 import androidx.compose.runtime.*
 import com.varabyte.kobweb.core.Page
 import com.shevapro.website.components.layouts.Layout
+import com.shevapro.website.components.sections.HeroSection
 import com.shevapro.website.styles.SiteTheme
 import com.varabyte.kobweb.compose.css.*
 import com.varabyte.kobweb.compose.foundation.layout.Box
@@ -18,74 +19,37 @@ import org.jetbrains.compose.web.dom.*
 @Composable
 fun DesignPage() {
     Layout {
-        // Design page content
-        DesignHeroSection()
-        DesignGallerySection()
-    }
-}
-
-@Composable
-private fun DesignHeroSection() {
-    // TODO: Implement Design hero section
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .minHeight(40.vh)
-            .padding(topBottom = SiteTheme.Spacing.xxl)
-            .backgroundColor(SiteTheme.Colors.gray50),
-        contentAlignment = Alignment.Center
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth(90.percent)
-                .maxWidth(1200.px)
-                .margin(topBottom = 0.px, leftRight = 0.px)
-                .textAlign(TextAlign.Center),
-            horizontalAlignment = Alignment.CenterHorizontally
+        // Main container with gradient background
+        Div(
+            attrs = {
+                classes(
+                    "min-h-screen",
+                    "bg-gradient-to-bl",
+                    "from-red-200",
+                    "via-purple-300",
+                    "to-blue-500",
+                    "bg-opacity-40"
+                )
+            }
         ) {
-            // Page Title
-            H1(
-                attrs = Modifier
-                    .color(SiteTheme.Colors.text)
-                    .fontSize(SiteTheme.Typography.h1)
-                    .fontWeight(FontWeight.Bold)
-                    .margin(bottom = SiteTheme.Spacing.md)
-                    .toAttrs()
-            ) {
-                Text("Design")
-            }
-            
-            // Subtitle
-            H2(
-                attrs = Modifier
-                    .color(SiteTheme.Colors.textSecondary)
-                    .fontSize(SiteTheme.Typography.h4)
-                    .fontWeight(FontWeight.Normal)
-                    .margin(bottom = SiteTheme.Spacing.lg)
-                    .toAttrs()
-            ) {
-                Text("Elegant, modern and creative")
-            }
-            
-            // Brief introduction
-            P(
-                attrs = Modifier
-                    .color(SiteTheme.Colors.textSecondary)
-                    .fontSize(SiteTheme.Typography.body)
-                    .maxWidth(800.px)
-                    .margin(bottom = SiteTheme.Spacing.xl)
-                    .lineHeight(1.6)
-                    .toAttrs()
-            ) {
-                Text("Admire a blend of various visual projects I created in no particular order for artists, events and businesses.")
-            }
+            // Hero section using the reusable component
+            HeroSection(
+                title = "Design",
+                subtitle = "Elegant, modern and creative",
+                description = "Admire a blend of various visual projects I created in no particular order for artists, events and businesses.",
+                // Override default gradient for Design page
+                gradientFrom = "from-purple-300",
+                gradientTo = "to-pink-200"
+            )
+
+            // Design gallery section
+            DesignGallerySection()
         }
     }
 }
 
 @Composable
 private fun DesignGallerySection() {
-    // TODO: Implement design gallery section
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -135,13 +99,18 @@ private fun DesignGallerySection() {
 @Composable
 private fun DesignGalleryItem(imageUrl: String, title: String, category: String) {
     Div(
-        attrs = Modifier
-            .backgroundColor(SiteTheme.Colors.surface)
-            .borderRadius(SiteTheme.BorderRadius.lg)
-            .overflow(Overflow.Hidden)
-            .boxShadow(offsetX = 0.px, offsetY = 4.px, blurRadius = 8.px, color = rgba(0, 0, 0, 0.05))
-            .cursor(Cursor.Pointer)
-            .toAttrs()
+        attrs = {
+            classes(
+                "bg-white",
+                "bg-opacity-90",
+                "rounded-2xl",
+                "overflow-hidden",
+                "shadow-lg",
+                "hover:shadow-xl",
+                "transition-all",
+                "cursor-pointer"
+            )
+        }
     ) {
         // Image
         Img(
@@ -161,23 +130,18 @@ private fun DesignGalleryItem(imageUrl: String, title: String, category: String)
         ) {
             // Category
             Span(
-                attrs = Modifier
-                    .color(SiteTheme.Colors.primary)
-                    .fontSize(SiteTheme.Typography.small)
-                    .fontWeight(FontWeight.Medium)
-                    .toAttrs()
+                attrs = {
+                    classes("text-purple-600", "text-sm", "font-medium")
+                }
             ) {
                 Text(category)
             }
             
             // Title
             H3(
-                attrs = Modifier
-                    .color(SiteTheme.Colors.text)
-                    .fontSize(SiteTheme.Typography.body)
-                    .fontWeight(FontWeight.Bold)
-                    .margin(top = SiteTheme.Spacing.xs, bottom = 0.px)
-                    .toAttrs()
+                attrs = {
+                    classes("text-gray-900", "text-lg", "font-bold", "mt-2", "mb-0")
+                }
             ) {
                 Text(title)
             }

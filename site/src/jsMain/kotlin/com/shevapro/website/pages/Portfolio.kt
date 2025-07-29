@@ -9,9 +9,11 @@ import com.varabyte.kobweb.compose.ui.Modifier
 import com.varabyte.kobweb.compose.ui.modifiers.*
 import com.varabyte.kobweb.core.Page
 import com.shevapro.website.components.layouts.Layout
+import com.shevapro.website.components.sections.HeroSection
 import com.shevapro.website.components.widgets.FiltersBar
 import com.shevapro.website.components.widgets.ProjectCard
 import com.shevapro.website.models.Article
+import com.shevapro.website.utils.getPortfolioArticles
 import com.shevapro.website.styles.SiteTheme
 import org.jetbrains.compose.web.css.*
 import org.jetbrains.compose.web.dom.*
@@ -19,77 +21,8 @@ import org.jetbrains.compose.web.dom.*
 @Page("/portfolio")
 @Composable
 fun PortfolioPage() {
-    // Articles that correspond to the markdown files
-    val projectArticles = remember {
-        listOf(
-            Article(
-                id = "file-sorter-app",
-                slug = "file-sorter-app",
-                title = "File Sorter",
-                content = "",
-                description = "Your ultimate solution for keeping your digital life neat and tidy! With File Sorter, you can easily organize your files on your Android device by moving them from one folder to another based on their extensions.",
-                author = "Shevapro",
-                dateAdded = "September 8, 2023",
-                tags = listOf("android", "app", "hobby", "productivity"),
-                imageUrl = "/assets/images/file-sorter-logo.png",
-                isPortfolioArticle = true,
-                posted = true
-            ),
-            Article(
-                id = "example",
-                slug = "example",
-                title = "Example Project",
-                content = "",
-                description = "This is an example project showcasing various markdown features and formatting options.",
-                author = "Shevapro",
-                dateAdded = "January 1, 2024",
-                tags = listOf("example", "demo", "markdown"),
-                imageUrl = "/assets/images/blank-image.jpeg",
-                isPortfolioArticle = true,
-                posted = true
-            ),
-            Article(
-                id = "markdown-example",
-                slug = "markdown-example",
-                title = "Markdown Example",
-                content = "",
-                description = "A comprehensive example showcasing various markdown formatting features and capabilities.",
-                author = "Shevapro",
-                dateAdded = "December 1, 2023",
-                tags = listOf("markdown", "example", "formatting", "demo"),
-//                imageUrl = "/assets/images/file-sorter-logo.png",
-                isPortfolioArticle = true,
-                posted = true
-            ),
-            // Keep some sample articles as well
-            Article(
-                id = "android-music-player",
-                slug = "android-music-player",
-                title = "Android Music Player App",
-                content = "A fully-featured music player app built with Kotlin and modern Android architecture components.",
-                description = "A fully-featured music player app built with Kotlin and modern Android architecture components including MVVM, Room Database, and ExoPlayer.",
-                author = "Shevapro",
-                dateAdded = "March 15, 2024",
-                tags = listOf("Android", "Kotlin", "ExoPlayer", "MVVM", "Room"),
-//                imageUrl = "/favicon.ico",
-                isPortfolioArticle = true,
-                posted = true
-            ),
-            Article(
-                id = "ecommerce-platform",
-                slug = "ecommerce-platform",
-                title = "E-commerce Web Platform",
-                content = "Full-stack e-commerce platform with user authentication, payment processing, and admin dashboard.",
-                description = "Full-stack e-commerce platform with user authentication, payment processing, and admin dashboard built with Ktor and React.",
-                author = "Shevapro",
-                dateAdded = "February 20, 2024",
-                tags = listOf("Ktor", "React", "PostgreSQL", "Stripe", "JavaScript"),
-//                imageUrl = "/favicon.ico",
-                isPortfolioArticle = true,
-                posted = true
-            )
-        )
-    }
+    // Articles from markdown files
+    val projectArticles = remember { getPortfolioArticles() }
 
     // Filter state
     val allTags = remember(projectArticles) {
@@ -118,35 +51,37 @@ fun PortfolioPage() {
                 )
             }
         ) {
-            // Header section (banner)
+            // Hero section using the reusable component
+            HeroSection(
+                title = "Projects, Concepts exploration and Playground..",
+                description = "Showcasing a few projects I have worked on (from creation to finish), challenges on the way and lessons learned."
+                // Uses default gradient which matches the original
+            )
+
+            // Filter instruction note
             Section(
                 attrs = {
-                    classes("w-3/4", "my-3", "bg-gradient-to-bl", "from-yellow-300", "to-red-200", "rounded-2xl", "p-4")
+                    classes("w-4/5", "max-w-4xl", "mb-4")
                 }
             ) {
-                Div(attrs = { classes("text-lg", "rounded-2xl") }) {
-                    H1(attrs = { classes("font-bold", "m-1", "text-2xl", "md:text-4xl") }) {
-                        Text("Projects, Concepts exploration and Playground..")
-                    }
-                    Br {}
-                    P(attrs = { classes("md:m-1", "text-sm", "md:text-lg") }) {
-                        Text("Showcasing a few projects I have worked on (from creation to finish), challenges on the way and lessons learned.")
-                    }
-                    P(attrs = {
-                        classes(
-                            "w-fit",
-                            "p-2",
-                            "bg-gray-50",
-                            "bg-opacity-60",
-                            "rounded-xl",
-                            "text-sm",
-                            "md:text-lg"
-                        )
-                    }) {
-                        Text("You can filter articles by using tags right below!")
-                    }
+                P(attrs = {
+                    classes(
+                        "w-fit",
+                        "mx-auto",
+                        "p-3",
+                        "bg-gray-50",
+                        "bg-opacity-80",
+                        "rounded-xl",
+                        "text-sm",
+                        "md:text-lg",
+                        "text-gray-800",
+                        "font-medium"
+                    )
+                }) {
+                    Text("You can filter articles by using tags right below!")
                 }
             }
+
             // Filters (Tags) bar
             Section(attrs = { classes("mt-5", "w-full") }) {
                 FiltersBar(

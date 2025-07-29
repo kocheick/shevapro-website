@@ -3,6 +3,7 @@ package com.shevapro.website.pages
 import androidx.compose.runtime.*
 import com.shevapro.website.components.layouts.Layout
 import com.shevapro.website.models.Article
+import com.shevapro.website.utils.getBlogArticles
 import com.varabyte.kobweb.compose.ui.Modifier
 import com.varabyte.kobweb.compose.ui.modifiers.classNames
 import com.varabyte.kobweb.core.Page
@@ -13,49 +14,7 @@ import org.jetbrains.compose.web.dom.*
 @Page("/blog")
 @Composable
 fun BlogPage() {
-    val blogArticles = remember {
-        listOf(
-            Article(
-                id = "welcome-to-my-blog",
-                slug = "welcome-to-my-blog",
-                title = "Welcome to My Blog",
-                content = "This is my first blog post where I introduce myself and share my thoughts on technology.",
-                description = "An introduction to my blog and what you can expect to find here. I'll be sharing insights about software development, technology trends, and my personal journey.",
-                author = "Shevapro",
-                dateAdded = "January 15, 2024",
-                tags = listOf("personal", "introduction", "blog"),
-                imageUrl = "/favicon.ico",
-                isPortfolioArticle = false,
-                posted = true
-            ),
-            Article(
-                id = "kotlin-multiplatform-guide",
-                slug = "kotlin-multiplatform-guide",
-                title = "Getting Started with Kotlin Multiplatform",
-                content = "A comprehensive guide to building cross-platform applications with Kotlin Multiplatform.",
-                description = "Learn how to set up and build your first Kotlin Multiplatform project. This guide covers the basics and best practices for sharing code between Android, iOS, and web platforms.",
-                author = "Shevapro",
-                dateAdded = "February 2, 2024",
-                tags = listOf("kotlin", "multiplatform", "mobile", "tutorial"),
-                imageUrl = "/favicon.ico",
-                isPortfolioArticle = false,
-                posted = true
-            ),
-            Article(
-                id = "compose-html-tips",
-                slug = "compose-html-tips",
-                title = "Building Web UIs with Compose HTML",
-                content = "Tips and tricks for building modern web applications using Jetpack Compose for Web.",
-                description = "Explore the power of Compose HTML for web development. Learn about best practices, performance optimization, and how to create responsive web applications.",
-                author = "Shevapro",
-                dateAdded = "March 10, 2024",
-                tags = listOf("compose", "web", "ui", "kotlin"),
-                imageUrl = "/favicon.ico",
-                isPortfolioArticle = false,
-                posted = true
-            )
-        )
-    }
+    val blogArticles = remember { getBlogArticles() }
     var searchQuery by remember { mutableStateOf("") }
     val allTags = remember(blogArticles) {
         blogArticles.flatMap { it.tags }.distinct().sorted()
@@ -75,7 +34,7 @@ fun BlogPage() {
         } else {
             articlesWithTags.filter {
                 it.title.contains(searchQuery, ignoreCase = true) ||
-                        it.description.contains(searchQuery, ignoreCase = true)
+                        it.description.contains(searchQuery, ignoreCase = true) ||
                         it.tags.contains(searchQuery)
             }
         }
@@ -102,7 +61,8 @@ fun BlogPage() {
 
             Section(attrs = { attr("class", "w-full max-w-4xl mx-auto p-2 md:p-4") }) {
 
-            BlogListSection(filteredArticles) }
+                BlogListSection(filteredArticles)
+            }
         }
     }
 }

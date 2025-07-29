@@ -1,24 +1,10 @@
 package com.shevapro.website.components.ui
 
 import androidx.compose.runtime.*
-import com.shevapro.website.styles.SiteTheme
-import com.varabyte.kobweb.compose.css.*
-import com.varabyte.kobweb.compose.foundation.layout.Arrangement
-import com.varabyte.kobweb.compose.foundation.layout.Box
-import com.varabyte.kobweb.compose.foundation.layout.Column
-import com.varabyte.kobweb.compose.foundation.layout.Row
-import com.varabyte.kobweb.compose.ui.Alignment
-import com.varabyte.kobweb.compose.ui.Modifier
-import com.varabyte.kobweb.compose.ui.modifiers.*
-import com.varabyte.kobweb.compose.ui.toAttrs
-import com.varabyte.kobweb.silk.style.breakpoint.Breakpoint
-import com.varabyte.kobweb.silk.style.breakpoint.displayIfAtLeast
-import com.varabyte.kobweb.silk.style.breakpoint.displayUntil
-import org.jetbrains.compose.web.css.*
 import org.jetbrains.compose.web.dom.*
 
 @Composable
-fun HeroSection() {
+fun HomeHero() {
             Div({
                 classes("flex", "flex-col", "items-center", "md:flex-row")
             }) {
