@@ -4,28 +4,73 @@
     <url>
         <loc>https://www.shevapro.com/</loc>
         <changefreq>monthly</changefreq>
-        <lastmod>2025-07-23T00:59:28Z</lastmod>
+        <lastmod>2025-07-29T02:12:38Z</lastmod>
     </url>
     <url>
         <loc>https://www.shevapro.com/portfolio</loc>
         <changefreq>monthly</changefreq>
-        <lastmod>2025-07-23T00:59:28Z</lastmod>
+        <lastmod>2025-07-29T02:12:38Z</lastmod>
     </url>
     <url>
         <loc>https://www.shevapro.com/blog</loc>
         <changefreq>weekly</changefreq>
-        <lastmod>2025-07-23T00:59:28Z</lastmod>
+        <lastmod>2025-07-29T02:12:38Z</lastmod>
     </url>
     <url>
         <loc>https://www.shevapro.com/services</loc>
         <changefreq>monthly</changefreq>
-        <lastmod>2025-07-23T00:59:28Z</lastmod>
+        <lastmod>2025-07-29T02:12:38Z</lastmod>
     </url>
     <url>
         <loc>https://www.shevapro.com/music</loc>
         <changefreq>weekly</changefreq>
-        <lastmod>2025-07-23T00:59:28Z</lastmod>
+        <lastmod>2025-07-29T02:12:38Z</lastmod>
     </url>
     <url>
         <loc>https://www.shevapro.com/contact</loc>
         <changefreq>monthly</changefreq>
+        <lastmod>2025-07-29T02:12:38Z</lastmod>
+    </url>
+    <url>
+        <loc>https://www.shevapro.com/about</loc>
+        <changefreq>monthly</changefreq>
+        <lastmod>2025-07-29T02:12:38Z</lastmod>
+    </url>
+    <!-- Blog Posts -->
+    <url>
+        <loc>https://www.shevapro.com/blog/new-test-article</loc>
+        <changefreq>yearly</changefreq>
+        <lastmod>2025-07-29T02:12:38Z</lastmod>
+    </url>
+    <url>
+        <loc>https://www.shevapro.com/blog/welcome-to-my-blog</loc>
+        <changefreq>yearly</changefreq>
+        <lastmod>2025-07-29T02:12:38Z</lastmod>
+    </url>
+    <url>
+        <loc>https://www.shevapro.com/blog/kotlin-multiplatform-guide</loc>
+        <changefreq>yearly</changefreq>
+        <lastmod>2025-07-29T02:12:38Z</lastmod>
+    </url>
+    <!-- Portfolio Items -->
+    <url>
+        <loc>https://www.shevapro.com/portfolio/example</loc>
+        <changefreq>yearly</changefreq>
+        <lastmod>2025-07-29T02:12:38Z</lastmod>
+    </url>
+    <url>
+        <loc>https://www.shevapro.com/portfolio/markdown-example</loc>
+        <changefreq>yearly</changefreq>
+        <lastmod>2025-07-29T02:12:38Z</lastmod>
+    </url>
+    <url>
+        <loc>https://www.shevapro.com/portfolio/unified-test</loc>
+        <changefreq>yearly</changefreq>
+        <lastmod>2025-07-29T02:12:38Z</lastmod>
+    </url>
+    <url>
+        <loc>https://www.shevapro.com/portfolio/file-sorter-app</loc>
+        <changefreq>yearly</changefreq>
+        <lastmod>2025-07-29T02:12:38Z</lastmod>
+    </url>
+</urlset>

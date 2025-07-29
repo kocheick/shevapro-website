@@ -1,29 +1,22 @@
 #!/bin/bash
 
-# Script to update sitemap.xml timestamps
-# Run this before building/deploying your Kobweb site
+# Script to update sitemap.xml with posted markdown articles
+# Now uses the Kobweb markdown processing which automatically updates the sitemap
 
-SITEMAP_FILE="site/src/jsMain/resources/public/sitemap.xml"
-CURRENT_TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+echo "🚀 Processing markdown files and updating sitemap..."
 
-echo "Updating sitemap timestamps to: $CURRENT_TIMESTAMP"
+cd site
+../gradlew kobwebMarkdownProcess
 
-if [ ! -f "$SITEMAP_FILE" ]; then
-    echo "Sitemap not found at $SITEMAP_FILE"
+if [ $? -eq 0 ]; then
+    echo "✅ Sitemap update completed successfully!"
+    echo "📍 Location: site/src/jsMain/resources/public/sitemap.xml"
+    
+    # Show a preview of the updated file
+    echo ""
+    echo "Preview of updated sitemap:"
+    head -20 "src/jsMain/resources/public/sitemap.xml"
+else
+    echo "❌ Sitemap update failed!"
     exit 1
 fi
-
-# Create a backup
-cp "$SITEMAP_FILE" "$SITEMAP_FILE.backup"
-
-# Update timestamps in sitemap
-sed -i '' "s/<lastmod>.*<\/lastmod>/<lastmod>$CURRENT_TIMESTAMP<\/lastmod>/g" "$SITEMAP_FILE"
-
-echo "✅ Sitemap timestamps updated successfully!"
-echo "📍 Location: $SITEMAP_FILE"
-echo "🕐 New timestamp: $CURRENT_TIMESTAMP"
-
-# Show a preview of the updated file
-echo ""
-echo "Preview of updated sitemap:"
-head -20 "$SITEMAP_FILE"
