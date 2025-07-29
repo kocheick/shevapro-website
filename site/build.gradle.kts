@@ -315,11 +315,12 @@ kobweb {
 
 //// Make kobweb tasks depend on sitemap generation
 //tasks.named("kobwebStart").configure {
-//    dependsOn("kobwebMarkdownProcess")
+//    // dependsOn("kobwebxMarkdownProcess") // TODO: Determine correct task name
 //}
 
 tasks.named("kobwebExport").configure {
-    dependsOn("kobwebMarkdownProcess")
+    // Remove dependency for now until we determine the correct task name
+    // dependsOn("kobwebxMarkdownProcess") // TODO: Determine correct task name
     finalizedBy("copy404")
 }
 
@@ -356,5 +357,5 @@ kotlin {
         }
     }
     // Add generated markdown source directory to jsMain
-    sourceSets["jsMain"].kotlin.srcDir(buildDir.resolve("generated/kobweb/markdown"))
+    sourceSets["jsMain"].kotlin.srcDir(layout.buildDirectory.asFile.get().resolve("generated/kobweb/markdown"))
 }
