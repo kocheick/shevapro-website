@@ -90,15 +90,6 @@ private val markdownIndex = listOf(
     thumbnail = "blank-image.jpeg"
 ),
     ArticleDescriptor(
-    route = "/portfolio/file-sorter-app",
-    filePath = "/markdown/portfolio/file_sorter_app.md",
-    title = "File Sorter",
-    description = "Your ultimate solution for keeping your digital life neat and tidy! With File Sorter, you can easily organize your files on your Android device by moving them from one folder to another based on their extensions. No more cluttered folders and lost files!",
-    date = "September 8, 2023",
-    tags = listOf("android", "app", "hobby", "productivity"),
-    thumbnail = "file-sorter-logo.png"
-),
-    ArticleDescriptor(
     route = "/portfolio/enhanced-test",
     filePath = "/markdown/portfolio/enhanced_test.md",
     title = "Enhanced Markdown Test",

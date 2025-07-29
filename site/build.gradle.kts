@@ -24,7 +24,11 @@ version = "1.0-SNAPSHOT"
 kobweb {
     app {
         index {
-//            description.set("Made with ❤ by Shevapro")
+            // Set site-wide description for SEO
+            description.set("Shevapro's personal website showcasing portfolio, blog, and services")
+            
+            // Note: Other site-wide SEO metadata is handled in the Layout component
+            // through the setPageMetadata function
         }
     }
     markdown {

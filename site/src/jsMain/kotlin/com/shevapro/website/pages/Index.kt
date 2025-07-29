@@ -3,6 +3,7 @@ package com.shevapro.website.pages
 import androidx.compose.runtime.Composable
 import com.shevapro.website.components.layouts.Layout
 import com.shevapro.website.components.ui.HomeHero
+import com.shevapro.website.utils.Constants
 import com.varabyte.kobweb.compose.css.margin
 import com.varabyte.kobweb.core.Page
 import org.jetbrains.compose.web.css.percent
@@ -11,7 +12,7 @@ import org.jetbrains.compose.web.dom.*
 @Page
 @Composable
 fun HomePage() {
-    Layout(title = "Cheick's brand | Software Engineer | Artist") {
+    Layout(title = "Cheick's brand | Software Engineer | Artist", Constants.Site.DESCRIPTION) {
         Div(attrs = {
             classes(
                 "min-h-full", "pt-16",

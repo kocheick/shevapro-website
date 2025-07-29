@@ -5,6 +5,7 @@ import com.varabyte.kobweb.core.Page
 import com.shevapro.website.components.layouts.Layout
 import com.shevapro.website.components.sections.HeroSection
 import com.shevapro.website.styles.SiteTheme
+import com.shevapro.website.utils.Constants
 import com.varabyte.kobweb.compose.css.*
 import com.varabyte.kobweb.compose.foundation.layout.Box
 import com.varabyte.kobweb.compose.foundation.layout.Column
@@ -18,7 +19,7 @@ import org.jetbrains.compose.web.dom.*
 @Page
 @Composable
 fun DesignPage() {
-    Layout {
+    Layout(title = Constants.Pages.Design.TITLE, description = Constants.Pages.Design.DESCRIPTION) {
         // Main container with gradient background
         Div(
             attrs = {
