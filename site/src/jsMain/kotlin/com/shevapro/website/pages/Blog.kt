@@ -3,7 +3,7 @@ package com.shevapro.website.pages
 import androidx.compose.runtime.*
 import com.shevapro.website.components.layouts.Layout
 import com.shevapro.website.models.Article
-import com.shevapro.website.utils.getBlogArticles
+import com.shevapro.website.utils.getArticles
 import com.varabyte.kobweb.compose.ui.Modifier
 import com.varabyte.kobweb.compose.ui.modifiers.classNames
 import com.varabyte.kobweb.core.Page
@@ -14,7 +14,7 @@ import org.jetbrains.compose.web.dom.*
 @Page("/blog")
 @Composable
 fun BlogPage() {
-    val blogArticles = remember { getBlogArticles() }
+    val blogArticles = remember { getArticles("blog") }
     var searchQuery by remember { mutableStateOf("") }
     val allTags = remember(blogArticles) {
         blogArticles.flatMap { it.tags }.distinct().sorted()

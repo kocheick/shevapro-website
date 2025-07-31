@@ -1,4 +1,4 @@
-package com.shevapro.website.components.sections
+package com.shevapro.website.components.ui
 
 import androidx.compose.runtime.*
 import com.varabyte.kobweb.compose.foundation.layout.Box
@@ -6,7 +6,6 @@ import com.varabyte.kobweb.compose.ui.Alignment
 import com.varabyte.kobweb.compose.ui.Modifier
 import com.varabyte.kobweb.compose.ui.modifiers.*
 import com.shevapro.website.styles.SiteTheme
-import org.jetbrains.compose.web.css.*
 import org.jetbrains.compose.web.dom.*
 
 @Composable
@@ -60,7 +59,7 @@ fun HeroSection(
             description?.let { descriptionText ->
                 P(
                     attrs = {
-                        classes("text-base", "md:text-lg", "text-gray-800", "leading-relaxed", "max-w-3xl", "mx-auto")
+                        classes("text-base", "md:text-lg", "text-gray-800", "leading-relaxed", "max-w-3xl")
                     }
                 ) {
                     Text(descriptionText)

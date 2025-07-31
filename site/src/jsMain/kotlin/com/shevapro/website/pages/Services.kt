@@ -3,16 +3,14 @@ package com.shevapro.website.pages
 import androidx.compose.runtime.*
 import com.varabyte.kobweb.compose.foundation.layout.Box
 import com.varabyte.kobweb.compose.foundation.layout.Column
-import com.varabyte.kobweb.compose.foundation.layout.Row
 import com.varabyte.kobweb.compose.ui.Alignment
 import com.varabyte.kobweb.compose.ui.Modifier
 import com.varabyte.kobweb.compose.ui.modifiers.*
 import com.varabyte.kobweb.core.Page
 import com.shevapro.website.components.layouts.Layout
-import com.shevapro.website.components.sections.HeroSection
+import com.shevapro.website.components.ui.HeroSection
 import com.shevapro.website.styles.SiteTheme
 import com.varabyte.kobweb.silk.components.navigation.Link
-import com.varabyte.kobweb.compose.ui.toAttrs
 import org.jetbrains.compose.web.css.*
 import org.jetbrains.compose.web.dom.*
 

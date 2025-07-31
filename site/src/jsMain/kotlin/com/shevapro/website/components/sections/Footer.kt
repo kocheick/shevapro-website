@@ -10,7 +10,7 @@ fun Footer() {
     Footer(
         attrs = {
             classes(
-                "bg-gradient-to-tr", "from-green-200", "to-yellow-300", "shrink-0",
+                "rounded-t","bg-gradient-to-tr", "from-green-200", "to-yellow-300", "shrink-0",
                 "border-orange-700", "w-full", "h-100", "bg-yellow-300", "py-2",
                 "flex", "items-center", "justify-center"
             )

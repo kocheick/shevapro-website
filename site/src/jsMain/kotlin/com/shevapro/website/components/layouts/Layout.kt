@@ -2,27 +2,16 @@ package com.shevapro.website.components.layouts
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
 import com.shevapro.website.components.sections.Footer
 import com.shevapro.website.components.sections.Header
 import com.shevapro.website.styles.ThemeMode
 import com.shevapro.website.styles.ThemeProvider
 import com.shevapro.website.utils.Constants
-import com.varabyte.kobweb.compose.css.Overflow
-import com.varabyte.kobweb.compose.css.overflowY
-import com.varabyte.kobweb.compose.foundation.layout.Box
-import com.varabyte.kobweb.compose.foundation.layout.Column
-import com.varabyte.kobweb.compose.ui.Alignment
 import com.varabyte.kobweb.compose.ui.Modifier
-import com.varabyte.kobweb.compose.ui.modifiers.*
 import kotlinx.browser.document
 import kotlinx.browser.window
-import org.jetbrains.compose.web.css.*
 import org.jetbrains.compose.web.dom.Main
 import org.w3c.dom.Document
-import org.w3c.dom.HTMLElement
-import org.w3c.dom.get
-import org.w3c.dom.set
 
 /**
  * Constants for scroll position persistence
@@ -77,40 +66,43 @@ fun Layout(
         )
     }
 
-    val scrollPosition = remember { window.sessionStorage.getItem(Constants.Client.SCROLL_POSITION_KEY) }
-
-    // Restore scroll position on page load
-    LaunchedEffect(Unit) {
-        val mainContent = document.getElementById("main-content") as? HTMLElement
-        if (mainContent != null && scrollPosition != null) {
-            try {
-                val savedPosition = scrollPosition.toDouble()
-                mainContent.scrollTop = savedPosition
-            } catch (e: NumberFormatException) {
-                // Invalid scroll position, ignore
-            }
-        }
-    }
-
-    // Save scroll position on scroll
-    LaunchedEffect(Unit) {
-        val mainContent = document.getElementById("main-content") as? HTMLElement
-        if (mainContent != null) {
-            val scrollHandler: (dynamic) -> Unit = {
-                window.sessionStorage.setItem(Constants.Client.SCROLL_POSITION_KEY, mainContent.scrollTop.toString())
-            }
-            mainContent.addEventListener("scroll", scrollHandler)
-
-            // Cleanup function - remove event listener when component unmounts
-            kotlinx.coroutines.coroutineScope {
-                try {
-                    kotlinx.coroutines.awaitCancellation()
-                } finally {
-                    mainContent.removeEventListener("scroll", scrollHandler)
-                }
-            }
-        }
-    }
+//    // Create a per-page scroll position key
+//    val currentPath = window.location.pathname
+//    val pageScrollKey = "${Constants.Client.SCROLL_POSITION_KEY}_$currentPath"
+//    val scrollPosition = remember { window.sessionStorage.getItem(pageScrollKey) }
+//
+//    // Restore scroll position on page load
+//    LaunchedEffect(currentPath) {
+//        val mainContent = document.getElementById("main-content") as? HTMLElement
+//        if (mainContent != null && scrollPosition != null) {
+//            try {
+//                val savedPosition = scrollPosition.toDouble()
+//                mainContent.scrollTop = savedPosition
+//            } catch (e: NumberFormatException) {
+//                // Invalid scroll position, ignore
+//            }
+//        }
+//    }
+//
+//    // Save scroll position on scroll
+//    LaunchedEffect(currentPath) {
+//        val mainContent = document.getElementById("main-content") as? HTMLElement
+//        if (mainContent != null) {
+//            val scrollHandler: (dynamic) -> Unit = {
+//                window.sessionStorage.setItem(pageScrollKey, mainContent.scrollTop.toString())
+//            }
+//            mainContent.addEventListener("scroll", scrollHandler)
+//
+//            // Cleanup function - remove event listener when component unmounts
+//            kotlinx.coroutines.coroutineScope {
+//                try {
+//                    kotlinx.coroutines.awaitCancellation()
+//                } finally {
+//                    mainContent.removeEventListener("scroll", scrollHandler)
+//                }
+//            }
+//        }
+//    }
 
     ThemeProvider(mode = themeMode) {
         // Header - will be sticky due to CSS in Header component

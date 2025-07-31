@@ -1,29 +1,23 @@
 package com.shevapro.website.pages
 
 import androidx.compose.runtime.*
-import com.varabyte.kobweb.compose.foundation.layout.Box
-import com.varabyte.kobweb.compose.foundation.layout.Column
-import com.varabyte.kobweb.compose.foundation.layout.Row
-import com.varabyte.kobweb.compose.ui.Alignment
-import com.varabyte.kobweb.compose.ui.Modifier
-import com.varabyte.kobweb.compose.ui.modifiers.*
-import com.varabyte.kobweb.core.Page
 import com.shevapro.website.components.layouts.Layout
-import com.shevapro.website.components.sections.HeroSection
+import com.shevapro.website.components.ui.HeroSection
 import com.shevapro.website.components.widgets.FiltersBar
 import com.shevapro.website.components.widgets.ProjectCard
-import com.shevapro.website.models.Article
 import com.shevapro.website.utils.Constants
-import com.shevapro.website.utils.getPortfolioArticles
-import com.shevapro.website.styles.SiteTheme
-import org.jetbrains.compose.web.css.*
-import org.jetbrains.compose.web.dom.*
+import com.shevapro.website.utils.getArticles
+import com.varabyte.kobweb.core.Page
+import org.jetbrains.compose.web.dom.Div
+import org.jetbrains.compose.web.dom.P
+import org.jetbrains.compose.web.dom.Section
+import org.jetbrains.compose.web.dom.Text
 
 @Page("/portfolio")
 @Composable
 fun PortfolioPage() {
     // Articles from markdown files
-    val projectArticles = remember { getPortfolioArticles() }
+    val projectArticles = remember { getArticles("portfolio") }
 
     // Filter state
     val allTags = remember(projectArticles) {

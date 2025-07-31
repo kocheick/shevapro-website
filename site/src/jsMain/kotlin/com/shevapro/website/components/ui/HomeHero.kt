@@ -97,7 +97,7 @@ fun HomeHero() {
                     classes("hidden", "md:block", "flex-1", "m-1")
                 }) {
                     A(href = "#", {
-                        classes("rounded-xl", "mx-auto")
+                        classes( "mx-auto")
                     }) {
                         Img(src = "/assets/images/blank-image.jpeg", alt = "main profile image")
                     }

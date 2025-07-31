@@ -13,143 +13,33 @@ import kotlin.js.Promise
 import com.shevapro.website.external.unified
 import com.shevapro.website.external.remarkParse
 import com.shevapro.website.external.remarkGfm
+import com.shevapro.website.external.remarkMath
 import com.shevapro.website.external.remarkRehype
 import com.shevapro.website.external.rehypeRaw
+import com.shevapro.website.external.rehypeKatex
 import com.shevapro.website.external.rehypeStringify
 import com.varabyte.kobwebx.markdown.markdown
 
 // Function to get test content as fallback
 private fun getTestContent(): String {
-    return """
-        # GFM Test Content
-
-        ## Strikethrough
-        ~~This text should be struck through~~
-
-        ## Tables
-        | Feature | Status | Notes |
-        |---------|--------|-------|
-        | Strikethrough | ✅ | Should work with remark-gfm |  
-        | Tables | ✅ | Like this one |
-        | Task Lists | ✅ | See below |
-        | HTML in Markdown | ✅ | With rehype-raw |
-
-        ## Task Lists
-        - [x] Completed task
-        - [ ] Pending task  
-        - [x] Another completed task
-        - [ ] Another pending task
-
-        ## HTML Elements
-        This should work with <u>underlined text</u> and <mark>highlighted text</mark>.
-
-        <div style="background-color: #f0f0f0; padding: 10px; border-left: 4px solid #007acc;">
-        <strong>Note:</strong> This is HTML content inside markdown that should be preserved with rehype-raw.
-        </div>
-    """.trimIndent()
-}
-
-// Function to extract markdown content from HTML
-private fun extractMarkdownFromHtml(htmlContent: String): String? {
-    // Check if the content is actually HTML
-    val isHtml = htmlContent.trim().startsWith("<!DOCTYPE html>") || htmlContent.contains("<html")
-    if (!isHtml) {
-        return null // Not HTML, no extraction needed
-    }
-    
-    // Try different extraction methods
-    
-    // Method 1: Look for content between ```markdown and the last ```
-    val markdownStart = htmlContent.indexOf("```markdown")
-    val markdownEnd = htmlContent.lastIndexOf("```")
-    
-    if (markdownStart > 0 && markdownEnd > markdownStart) {
-        // Extract content between ```markdown and the last ```
-        return htmlContent.substring(markdownStart + 11, markdownEnd).trim()
-    }
-    
-    // Method 2: Look for content in a pre tag
-    val preStart = htmlContent.indexOf("<pre>")
-    val preEnd = htmlContent.indexOf("</pre>")
-    
-    if (preStart > 0 && preEnd > preStart) {
-        // Extract content between <pre> and </pre>
-        return htmlContent.substring(preStart + 5, preEnd).trim()
-    }
-    
-    // Method 3: Try to find content in a div with class containing "markdown"
-    val divClassStart = htmlContent.indexOf("class=\"")
-    if (divClassStart > 0) {
-        val classNameStart = divClassStart + 7
-        val classNameEnd = htmlContent.indexOf("\"", classNameStart)
-        if (classNameEnd > classNameStart) {
-            val className = htmlContent.substring(classNameStart, classNameEnd)
-            if (className.contains("markdown") || className.contains("md-content")) {
-                // This is a potential markdown container div
-                val divStart = htmlContent.lastIndexOf("<div", divClassStart)
-                if (divStart > 0) {
-                    // Find the closing div
-                    var depth = 1
-                    var pos = divStart + 4
-                    while (depth > 0 && pos < htmlContent.length) {
-                        val openTag = htmlContent.indexOf("<div", pos)
-                        val closeTag = htmlContent.indexOf("</div>", pos)
-                        
-                        if (closeTag < 0) break // No more closing tags
-                        
-                        if (openTag > 0 && openTag < closeTag) {
-                            depth++
-                            pos = openTag + 4
-                        } else {
-                            depth--
-                            pos = closeTag + 6
-                            if (depth == 0) {
-                                // Found the matching closing div
-                                val divContent = htmlContent.substring(divStart, closeTag + 6)
-                                // Strip HTML tags
-                                val strippedContent = js("divContent.replace(/<[^>]*>/g, '')")
-                                return strippedContent as String
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-    
-    // Method 4: As a last resort, strip all HTML tags
-    console.warn("Could not find specific markdown content. Stripping all HTML tags as fallback.")
-    val strippedHtml = js("htmlContent.replace(/<[^>]*>/g, '')")
-    return strippedHtml as String
+    return ""
 }
 
 // Function to construct markdown file path from route
 private fun getMarkdownFilePath(route: String): String {
-    val normalizedRoute = route.removePrefix("/")
-    return when {
-        normalizedRoute.startsWith("blog/") -> {
-            val filename = normalizedRoute.substringAfter("blog/").replace("-", "_")
-            "/markdown/blog/$filename.md"
-        }
-
-        normalizedRoute.startsWith("portfolio/") -> {
-            val filename = normalizedRoute.substringAfter("portfolio/").replace("-", "_")
-            "/markdown/portfolio/$filename.md"
-        }
-
-        else -> "/markdown/$normalizedRoute.md"
-    }
+    val normalizedRoute = route.removePrefix("/").replace("-", "_")
+    return "/content/$normalizedRoute.md"
 }
 
 // Function to fetch markdown content
 private suspend fun fetchMarkdownContent(filePath: String): String {
     try {
         val response = kotlinx.browser.window.fetch(filePath).await()
-        
+
         if (!response.ok) {
             throw Exception("Failed to fetch: ${response.status} ${response.statusText}")
         }
-        
+
         val text = response.text().await()
 
         // Check if we got HTML instead of markdown
@@ -161,8 +51,10 @@ private suspend fun fetchMarkdownContent(filePath: String): String {
         // Extract content after frontmatter
         val frontMatterEnd = text.indexOf("---", 3)
         return if (frontMatterEnd > 0) {
+            console.log("Found frontmatter, extracting content...")
             text.substring(frontMatterEnd + 3).trim()
         } else {
+            console.log("No frontmatter found, using full content...")
             text
         }
     } catch (e: Exception) {
@@ -180,9 +72,6 @@ fun EnhancedMarkdownLayout(content: @Composable () -> Unit) {
     val thumbnailUrl = ctx.markdown?.frontMatter?.get("thumbnailUrl")?.single()
     val coverUrl = if (thumbnailUrl != null && thumbnailUrl.length > 42) thumbnailUrl
     else "/assets/images/${thumbnailUrl ?: "blank-image.jpeg"}"
-    
-    // Check if the post is published
-    val isPosted = ctx.markdown!!.frontMatter["posted"]?.single()?.toBoolean() ?: true
 
     val currentRoute = ctx.route.path
     val markdownFilePath = remember(currentRoute) { getMarkdownFilePath(currentRoute) }
@@ -202,25 +91,29 @@ fun EnhancedMarkdownLayout(content: @Composable () -> Unit) {
             markdownContent = fetchMarkdownContent(markdownFilePath)
         } catch (e: Exception) {
             console.error("❌ Error fetching markdown:", e)
-            fetchError = "Error fetching content: ${e.message}"
-            markdownContent = getTestContent()
+            fetchError = "Could not load article content. Please check the file path and ensure the file exists."
+            markdownContent = "# Error\n$fetchError"
         } finally {
             isFetching = false
         }
     }
-
+    val processor = remember{
+        unified()
+            .use(remarkParse)
+            .use(rehypeKatex)
+            .use(remarkGfm, js("{ singleTilde: false }"))
+            .use(remarkMath)
+            .use(remarkRehype, js("{ allowDangerousHtml: true }"))
+            .use(rehypeRaw)
+            .use(rehypeStringify)
+    }
     LaunchedEffect(markdownContent) {
         if (markdownContent != null) {
             try {
                 isProcessing = true
                 processingError = null
 
-                val processor = unified()
-                    .use(remarkParse)
-                    .use(remarkGfm, js("{ singleTilde: false }"))
-                    .use(remarkRehype, js("{ allowDangerousHtml: true }"))
-                    .use(rehypeRaw)
-                    .use(rehypeStringify)
+
 
                 val result = processor.process(markdownContent!!).await()
                 processedHtml = result.value
@@ -234,27 +127,40 @@ fun EnhancedMarkdownLayout(content: @Composable () -> Unit) {
         }
     }
 
-    // If the post is not published, redirect to the home page
-    LaunchedEffect(isPosted) {
-        if (!isPosted) {
-            // Redirect to the home page or show an error message
-            ctx.router.navigateTo("/")
-        }
-    }
-
     Layout(title = "SHEVAPRO | $title", description = description) {
         Style {
             """
+            @import url("https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css");
+            
             .loading-indicator {
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 padding: 2rem;
-                color: #9eacd5;
+                color: #4a6fa5;
                 font-style: italic;
                 background-color: rgba(0, 0, 0, 0.03);
                 border-radius: 4px;
                 margin: 1rem 0;
+                position: relative;
+            }
+            
+            .loading-indicator::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 3px;
+                background: linear-gradient(to right, #4a6fa5, #9eacd5);
+                animation: loading-bar 2s infinite ease-in-out;
+                border-radius: 4px 4px 0 0;
+            }
+            
+            @keyframes loading-bar {
+                0% { width: 0; left: 0; }
+                50% { width: 100%; left: 0; }
+                100% { width: 0; left: 100%; }
             }
             
             .error-message {
@@ -275,30 +181,55 @@ fun EnhancedMarkdownLayout(content: @Composable () -> Unit) {
                 border-radius: 4px;
             }
             
-            .unpublished-message {
-                background-color: rgba(220, 53, 69, 0.1);
-                border-left: 4px solid #dc3545;
-                padding: 2rem;
-                margin: 2rem 0;
-                color: #dc3545;
-                border-radius: 4px;
+            .katex-display {
+                margin: 1.5rem 0;
                 text-align: center;
-                font-size: 1.2rem;
+            }
+            
+            .katex {
+                font-size: 1.1em;
+            }
+            
+            .katex-display .katex {
+                font-size: 1.3em;
             }
             """.trimIndent()
         }
-        
+
         Div(attrs = { classes("rounded", "min-h-full", "pt-8") }) {
             Section(attrs = {
                 classes("bg-slate-100", "flex", "flex-col", "justify-around", "items-center", "p-2")
             }) {
-                Img(
-                    src = coverUrl,
-                    attrs = {
-                        classes("rounded")
-                        style { width(500.px) }
-                    }
-                )
+                Picture(attrs = {
+                    classes("w-full", "max-w-md", "md:max-w-lg", "mx-auto")
+                }) {
+                    // Mobile Image
+                    Source(
+                        attrs = {
+//                            attr("media", "(max-width: 600px)")
+                            attr("srcset", coverUrl)
+                        }
+                    )
+
+                    // Desktop Image (commented out for later)
+                    // Source(
+                    //     attrs = {
+                    //         attr("media", "(min-width: 601px)")
+                    //         attr("srcset", coverUrl)
+                    //     }
+                    // )
+
+                    // Fallback Image
+                    Img(
+                        src = coverUrl,
+                        attrs = {
+                            attr("aria-hidden", "true")
+                            attr("loading", "lazy")
+                            attr("decoding", "async")
+                            attr("alt", "Article cover image")
+                        }
+                    )
+                }
 
                 H1(attrs = {
                     classes(
@@ -310,41 +241,31 @@ fun EnhancedMarkdownLayout(content: @Composable () -> Unit) {
                 }
             }
 
-            Section(attrs = { style { height(100.percent) } }) {
+            Section(   attrs = {
+                classes("flex", "flex-col")
+                style {
+                    minHeight(60.vh)
+                }
+            }) {
                 Article(attrs = {
-                    classes("processed-content", "px-2", "min-h-full", "md:px-5", "font-sans")
+                    classes("processed-content", "px-2", "min-h-full", "md:px-5", "font-sans","flex-grow")
                 }) {
                     when {
                         isFetching -> {
                             Div(attrs = { classes("loading-indicator") }) {
-                                Text("🔍 Fetching markdown content from public directory...")
+                                Text("Loading content from server...")
                             }
                         }
-                        
+
                         fetchError != null -> {
                             Div(attrs = { classes("fetch-error") }) {
                                 Text("⚠️ $fetchError")
-                                P {
-                                    Text("Using fallback content instead.")
-                                }
-                            }
-                            
-                            if (isProcessing) {
-                                Div(attrs = { classes("loading-indicator") }) {
-                                    Text("🔄 Processing fallback content...")
-                                }
-                            } else if (processedHtml != null) {
-                                DisposableEffect(processedHtml) {
-                                    val currentElement = kotlinx.browser.document.querySelector("article.processed-content")
-                                    currentElement?.innerHTML = processedHtml!!
-                                    onDispose { }
-                                }
                             }
                         }
-                        
+
                         isProcessing -> {
                             Div(attrs = { classes("loading-indicator") }) {
-                                Text("🔄 Processing markdown with unified pipeline...")
+                                Text("Processing content for display...")
                             }
                         }
 
@@ -352,7 +273,7 @@ fun EnhancedMarkdownLayout(content: @Composable () -> Unit) {
                             Div(attrs = { classes("error-message") }) {
                                 Text("❌ $processingError")
                             }
-                            content()
+//                            content()
                         }
 
                         processedHtml != null -> {
@@ -364,7 +285,7 @@ fun EnhancedMarkdownLayout(content: @Composable () -> Unit) {
                         }
 
                         else -> {
-                            content()
+//                            content()
                         }
                     }
                 }

@@ -2,14 +2,12 @@ package com.shevapro.website.pages
 
 import androidx.compose.runtime.*
 import com.varabyte.kobweb.compose.foundation.layout.Box
-import com.varabyte.kobweb.compose.foundation.layout.Column
-import com.varabyte.kobweb.compose.foundation.layout.Row
 import com.varabyte.kobweb.compose.ui.Alignment
 import com.varabyte.kobweb.compose.ui.Modifier
 import com.varabyte.kobweb.compose.ui.modifiers.*
 import com.varabyte.kobweb.core.Page
 import com.shevapro.website.components.layouts.Layout
-import com.shevapro.website.components.sections.HeroSection
+import com.shevapro.website.components.ui.HeroSection
 import com.shevapro.website.styles.SiteTheme
 import com.varabyte.kobweb.compose.ui.toAttrs
 import org.jetbrains.compose.web.attributes.InputType
@@ -305,13 +303,13 @@ fun ContactPage() {
 
                             ContactInfoCard(
                                 title = "Location",
-                                content = "San Francisco, CA",
+                                content = "New York, NYC",
                                 icon = "📍"
                             )
 
                             ContactInfoCard(
                                 title = "Social Media",
-                                content = "GitHub: @shevapro",
+                                content = "GitHub: @kocheick",
                                 icon = "🌐"
                             )
                         }
@@ -336,7 +334,7 @@ fun ContactPage() {
                                     classes("text-base", "text-gray-800", "leading-relaxed", "m-0")
                                 }
                             ) {
-                                Text("I typically respond to inquiries within 24-48 hours. Thank you for your patience!")
+                                Text("I typically respond to inquiries within 24-72 hours. Thank you for your patience!")
                             }
                         }
                     }

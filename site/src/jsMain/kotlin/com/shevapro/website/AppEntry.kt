@@ -17,24 +17,26 @@ import com.shevapro.website.styles.MarkdownStyles
 import com.varabyte.kobweb.compose.ui.styleModifier
 import com.varabyte.kobweb.core.init.InitKobweb
 import com.varabyte.kobweb.core.init.InitKobwebContext
+import com.varabyte.kobweb.core.rememberPageContext
 import com.varabyte.kobwebx.markdown.MarkdownContext
+import com.varabyte.kobwebx.markdown.markdown
 import org.jetbrains.compose.web.css.*
 
 @InitSilk
 fun initStyles(ctx: InitSilkContext) {
     // Register global app styles
-    ctx.stylesheet.registerStyleBase("*") {
-        Modifier.styleModifier {
-            property("box-sizing", "border-box")
-        }
-    }
-
-    // Inject global CSS styles
-    ctx.stylesheet.registerStyleBase("app") {
-        Modifier.styleModifier {
-//            property("font-size", "16px")
-        }
-    }
+//    ctx.stylesheet.registerStyleBase("*") {
+//        Modifier.styleModifier {
+//            property("box-sizing", "border-box")
+//        }
+//    }
+//
+//    // Inject global CSS styles
+//    ctx.stylesheet.registerStyleBase("app") {
+//        Modifier.styleModifier {
+////            property("font-size", "16px")
+//        }
+//    }
 
 //    // Add our custom CSS to the document head
 //    val style = kotlinx.browser.document.createElement("style")
@@ -47,6 +49,8 @@ fun initKobweb(ctx: InitKobwebContext) {
     ctx.router.setErrorPage {
         NotFound()
     }
+
+
 
 
 }

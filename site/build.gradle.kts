@@ -33,7 +33,7 @@ fun generateArticleDescriptors(publishedEntries: List<Any>): List<String> {
         val route = getRoute.invoke(entry) as String
         val frontMatter = getFrontMatter.invoke(entry)
 
-        val relPath = filePath.substringAfter("resources/public/markdown/")
+        val relPath = filePath.substringAfter("resources/public/content/")
 
         // Access frontMatter properties using array access syntax
         val frontMatterClass = frontMatter.javaClass
@@ -52,7 +52,7 @@ fun generateArticleDescriptors(publishedEntries: List<Any>): List<String> {
 
         """ArticleDescriptor(
     route = "$route",
-    filePath = "/markdown/${relPath.replace("\\", "/")}",
+    filePath = "/content/${relPath.replace("\\", "/")}",
     title = $titleStr,
     description = $descStr,
     date = $dateStr,
@@ -72,8 +72,8 @@ import com.shevapro.website.models.Article
  * IMPORTANT: Automated Markdown Article System
  * 
  * The build system automatically processes markdown files from:
- * - src/jsMain/resources/public/markdown/blog/
- * - src/jsMain/resources/public/markdown/portfolio/
+ * - src/jsMain/resources/public/content/blog/
+ * - src/jsMain/resources/public/content/portfolio/
  * 
  * It generates this file (MarkdownArticles.kt) with article metadata during the build process.
  * 
@@ -106,7 +106,6 @@ private val markdownIndex = listOf(
 
 fun ArticleDescriptor.toArticle(): Article {
     val slug = route.substringAfterLast("/")
-    val isPortfolioArticle = route.startsWith("/portfolio")
 
     return Article(
         id = slug,
@@ -118,38 +117,18 @@ fun ArticleDescriptor.toArticle(): Article {
         dateAdded = date ?: "",
         tags = tags,
         imageUrl = if (thumbnail != null) "/assets/images/${'$'}thumbnail" else "/favicon.ico",
-        isPortfolioArticle = isPortfolioArticle,
-        posted = true // All entries in the index are published
     )
 }
 
 /**
- * Returns a list of blog articles.
- * 
- * This function filters the auto-generated markdownIndex list for articles with routes
- * that start with "/blog" and are posted, then converts them to Article objects.
- * 
- * The list is automatically updated when new markdown files are added to the blog directory.
+ * Returns a list of articles from a specific category.
+ *
+ * @param category The category to filter articles by (e.g., "blog", "portfolio", "design")
+ * @return List of Article objects from the specified category
  */
-fun getBlogArticles(): List<Article> {
-    // Use the auto-generated markdownIndex list to get posted blog articles
+fun getArticles(category: String): List<Article> {
     return markdownIndex
-        .filter { it.route.startsWith("/blog") }
-        .map { it.toArticle() }
-}
-
-/**
- * Returns a list of portfolio articles.
- * 
- * This function filters the auto-generated markdownIndex list for articles with routes
- * that start with "/portfolio" and are posted, then converts them to Article objects.
- * 
- * The list is automatically updated when new markdown files are added to the portfolio directory.
- */
-fun getPortfolioArticles(): List<Article> {
-    // Use the auto-generated markdownIndex list to get posted portfolio articles
-    return markdownIndex
-        .filter { it.route.startsWith("/portfolio") }
+        .filter { it.route.startsWith("/${'$'}category") }
         .map { it.toArticle() }
 }
 """.trimIndent()
@@ -316,12 +295,13 @@ kobweb {
         }
     }
     markdown {
-        // Tell Kobweb to look for markdown files in the public directory
-        addSource(project.layout.projectDirectory.dir("src/jsMain/resources/public/markdown"))
+        // Tell Kobweb to look for markdown files in the content directory (for metadata only)
+        addSource(project.layout.projectDirectory.dir("src/jsMain/resources/public/content"))
 
         /**
-         * 1. Files are already in `src/jsMain/resources/public/markdown/...` for runtime HTTP access
+         * 1. Files are in `src/jsMain/resources/public/content/...` for runtime HTTP access
          * 2. Generate a Kotlin source file (`MarkdownIndex.kt`) that lists metadata for all posts.
+         * 3. We'll handle rendering ourselves in EnhancedMarkdownLayout using unified processor
          */
         process.set { entries ->
             // Filter out unpublished entries at the very beginning
@@ -389,7 +369,9 @@ kotlin {
             implementation(npm("unified", "11.0.4"))
             implementation(npm("remark-parse", "11.0.0"))
             implementation(npm("remark-gfm", "4.0.0"))
+            implementation(npm("remark-math", "6.0.0"))
             implementation(npm("remark-rehype", "11.1.0"))
+            implementation(npm("rehype-katex", "7.0.0"))
             implementation(npm("rehype-raw", "7.0.0"))
             implementation(npm("rehype-stringify", "9.0.4"))
 

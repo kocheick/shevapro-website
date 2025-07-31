@@ -15,8 +15,6 @@ data class Article(
     val imageUrl: String = "/assets/images/blank-image.jpeg",
     val coverImage: String? = null,
     val readTime: Int = 0, // in minutes
-    val isPortfolioArticle: Boolean = false,
-    val posted: Boolean = true
 ) {
     companion object {
         val BLANK_ARTICLE = Article(
