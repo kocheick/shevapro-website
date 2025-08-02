@@ -195,7 +195,18 @@ fun updateSitemap(project: org.gradle.api.Project, publishedEntries: List<Any>) 
 
     val baseSitemap = existingSitemap.substring(0, closingTagIndex).trim()
 
-    // Remove existing blog/portfolio sections
+    // Extract current blog/portfolio URLs for comparison
+    val existingBlogUrls = Regex("<loc>https://www\\.shevapro\\.com/blog/[^<]+</loc>")
+        .findAll(existingSitemap)
+        .map { it.groupValues[0] }
+        .toSet()
+
+    val existingPortfolioUrls = Regex("<loc>https://www\\.shevapro\\.com/portfolio/[^<]+</loc>")
+        .findAll(existingSitemap)
+        .map { it.groupValues[0] }
+        .toSet()
+
+    // Remove existing blog/portfolio sections completely to rebuild them
     val cleanedSitemap = baseSitemap
         .replace(
             Regex(
@@ -215,7 +226,7 @@ fun updateSitemap(project: org.gradle.api.Project, publishedEntries: List<Any>) 
             ), ""
         )
 
-    // Update timestamps in existing URLs
+    // Update timestamps in remaining URLs (static pages)
     val updatedBaseSitemap = cleanedSitemap.replace(
         Regex("<lastmod>.*?</lastmod>"),
         "<lastmod>$currentTimestamp</lastmod>"
@@ -223,7 +234,7 @@ fun updateSitemap(project: org.gradle.api.Project, publishedEntries: List<Any>) 
 
     val sitemapBuilder = StringBuilder(updatedBaseSitemap)
 
-    // Add blog posts
+    // Process blog entries
     val blogEntries = publishedEntries.filter { entry ->
         val entryClass = entry.javaClass
         val getRoute = entryClass.getMethod("getRoute")
@@ -231,16 +242,19 @@ fun updateSitemap(project: org.gradle.api.Project, publishedEntries: List<Any>) 
         route.startsWith("/blog")
     }
 
+    val newBlogUrls = mutableSetOf<String>()
     if (blogEntries.isNotEmpty()) {
         sitemapBuilder.append("\n    <!-- Blog Posts -->")
         blogEntries.forEach { entry ->
             val entryClass = entry.javaClass
             val getRoute = entryClass.getMethod("getRoute")
             val route = getRoute.invoke(entry) as String
+            val url = "https://www.shevapro.com$route"
+            newBlogUrls.add("<loc>$url</loc>")
             sitemapBuilder.append(
                 """
     <url>
-        <loc>https://www.shevapro.com$route</loc>
+        <loc>$url</loc>
         <changefreq>yearly</changefreq>
         <lastmod>$currentTimestamp</lastmod>
     </url>"""
@@ -248,7 +262,7 @@ fun updateSitemap(project: org.gradle.api.Project, publishedEntries: List<Any>) 
         }
     }
 
-    // Add portfolio items
+    // Process portfolio entries
     val portfolioEntries = publishedEntries.filter { entry ->
         val entryClass = entry.javaClass
         val getRoute = entryClass.getMethod("getRoute")
@@ -256,16 +270,19 @@ fun updateSitemap(project: org.gradle.api.Project, publishedEntries: List<Any>) 
         route.startsWith("/portfolio")
     }
 
+    val newPortfolioUrls = mutableSetOf<String>()
     if (portfolioEntries.isNotEmpty()) {
         sitemapBuilder.append("\n    <!-- Portfolio Items -->")
         portfolioEntries.forEach { entry ->
             val entryClass = entry.javaClass
             val getRoute = entryClass.getMethod("getRoute")
             val route = getRoute.invoke(entry) as String
+            val url = "https://www.shevapro.com$route"
+            newPortfolioUrls.add("<loc>$url</loc>")
             sitemapBuilder.append(
                 """
     <url>
-        <loc>https://www.shevapro.com$route</loc>
+        <loc>$url</loc>
         <changefreq>yearly</changefreq>
         <lastmod>$currentTimestamp</lastmod>
     </url>"""
@@ -276,12 +293,25 @@ fun updateSitemap(project: org.gradle.api.Project, publishedEntries: List<Any>) 
     sitemapBuilder.append("\n</urlset>")
     sitemapFile.writeText(sitemapBuilder.toString())
 
+    // Log changes for transparency
+    val removedBlogUrls = existingBlogUrls - newBlogUrls
+    val addedBlogUrls = newBlogUrls - existingBlogUrls
+    val removedPortfolioUrls = existingPortfolioUrls - newPortfolioUrls
+    val addedPortfolioUrls = newPortfolioUrls - existingPortfolioUrls
+
     val totalUrls = sitemapBuilder.toString().split("<url>").size - 1
     println("✅ Sitemap updated successfully:")
-    println("   📝 Blog posts: ${blogEntries.size}")
-    println("   💼 Portfolio items: ${portfolioEntries.size}")
+    println("   📝 Blog posts: ${blogEntries.size} (${addedBlogUrls.size} added, ${removedBlogUrls.size} removed)")
+    println("   💼 Portfolio items: ${portfolioEntries.size} (${addedPortfolioUrls.size} added, ${removedPortfolioUrls.size} removed)")
     println("   🔗 Total URLs: $totalUrls")
     println("   🕐 Timestamp: $currentTimestamp")
+
+    if (removedBlogUrls.isNotEmpty()) {
+        println("   🗑️ Removed blog URLs: ${removedBlogUrls.joinToString(", ")}")
+    }
+    if (removedPortfolioUrls.isNotEmpty()) {
+        println("   🗑️ Removed portfolio URLs: ${removedPortfolioUrls.joinToString(", ")}")
+    }
 }
 
 kobweb {
