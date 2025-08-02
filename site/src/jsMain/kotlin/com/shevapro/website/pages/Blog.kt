@@ -50,6 +50,7 @@ fun BlogPage() {
 
             Section(attrs = { attr("class", "w-full p-2 md:p-4") }) {
                 SearchBar(onQueryChange = { query -> searchQuery = query })
+
                 BlogFiltersSection(allTags, activeTags) { clickedTag ->
                     activeTags = if (activeTags.contains(clickedTag)) {
                         activeTags - clickedTag
