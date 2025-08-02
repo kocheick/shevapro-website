@@ -134,7 +134,7 @@ fun getArticles(category: String): List<Article> {
 """.trimIndent()
 }
 
-fun generateMarkdownFiles(
+fun generateMarkdownKotlinFiles(
     project: org.gradle.api.Project,
     descriptorBlocks: List<String>
 ) {
@@ -325,7 +325,7 @@ kobweb {
             val descriptorBlocks = generateArticleDescriptors(publishedEntries)
 
             // Generate markdown files
-            generateMarkdownFiles(project, descriptorBlocks)
+            generateMarkdownKotlinFiles(project, descriptorBlocks)
 
             // Update sitemap
             updateSitemap(project, publishedEntries)

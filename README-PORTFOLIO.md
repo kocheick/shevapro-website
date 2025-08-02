@@ -2,41 +2,43 @@
 
 This document explains the portfolio system migration from the React webapp to the Kobweb website.
 
-## ✅ Migration Status
+## Migration Status
 
 ### Completed Features
 
 1. **Article System**
-    - ✅ Markdown file parsing with YAML frontmatter
-    - ✅ Article model with all original fields
-    - ✅ Article fetching from public directory
+    - Markdown file parsing with YAML frontmatter
+    - Article model with all original fields
+    - Article fetching from public directory
 
 2. **Portfolio Page**
-    - ✅ Real article loading from markdown files
-    - ✅ Tag filtering system
-    - ✅ Responsive grid layout
-    - ✅ Loading states
+    - Real article loading from markdown files
+    - Tag filtering system
+    - Responsive grid layout
+    - Loading states
 
 3. **Individual Article Pages**
-    - ✅ Dynamic routing with `/portfolio/{slug}`
-    - ✅ Markdown content rendering
-    - ✅ Cover image display
-    - ✅ Error handling for missing articles
+    - Dynamic routing with `/portfolio/{slug}`
+    - Markdown content rendering
+    - Cover image display
+    - Error handling for missing articles
 
 4. **Content Migration**
-    - ✅ File Sorter article migrated
-    - ✅ Portfolio images copied
-    - ✅ All markdown examples available
+    - File Sorter article migrated
+    - Portfolio images copied
+    - All markdown examples available
 
-## 📁 File Structure
+## File Structure
 
 ```
 site/src/jsMain/resources/public/
-├── articles/
-│   └── projects/
-│       ├── file-sorter-app.md      # Main File Sorter article
-│       ├── example.md              # Sample article
-│       └── markdown-example.md     # Markdown formatting example
+├── markdown/
+│   ├── portfolio/
+│   │   ├── file_sorter_app.md      # Main File Sorter article
+│   │   ├── example.md              # Sample article
+│   │   └── markdown_example.md     # Markdown formatting example
+│   ├── blog/                       # Blog articles
+│   └── design/                     # Design projects
 └── assets/
     └── images/
         ├── portfolio/              # Portfolio screenshots
@@ -47,7 +49,7 @@ site/src/jsMain/resources/public/
         └── file-sorter-logo.png    # App logo
 ```
 
-## 🔧 How It Works
+## How It Works
 
 ### 1. Markdown File Format
 
@@ -61,7 +63,7 @@ description: Your ultimate solution for keeping your digital life neat and tidy!
 thumbnailUrl: file-sorter-logo.png
 tags: ['android','app', 'hobby','productivity']
 posted: true
-isproject: true
+layout: .components.layouts.EnhancedMarkdownLayout
 ---
 
 ## Markdown Content Here
@@ -69,10 +71,9 @@ isproject: true
 
 ### 2. Article Loading Process
 
-1. **MarkdownParser.getAvailableArticles()** returns hardcoded list of article slugs
-2. **MarkdownParser.fetchArticle(slug)** fetches and parses each markdown file
-3. **Portfolio page** filters for `isproject: true` and `posted: true`
-4. **Articles** are sorted by date and displayed in cards
+1. **Build system** automatically scans markdown directories and generates article index
+2. **getPortfolioArticles()** returns articles from the portfolio directory
+3. **Articles** are filtered by `posted: true` and displayed in cards
 
 ### 3. Navigation Flow
 
@@ -82,7 +83,7 @@ isproject: true
 /portfolio/{slug} → Individual article page with full content
 ```
 
-## 🎨 Components
+## Components
 
 ### Portfolio Page (`/portfolio`)
 
@@ -95,7 +96,7 @@ isproject: true
 
 - Extracts slug from URL
 - Fetches individual article
-- Renders markdown content with custom processor
+- Renders markdown content with unified processor
 - Shows cover image and metadata
 
 ### ProjectCard Component
@@ -105,14 +106,14 @@ isproject: true
 - Clickable tags for filtering
 - Links to full article
 
-### MarkdownRenderer Component
+### EnhancedMarkdownLayout Component
 
-- Converts markdown to HTML
-- Handles headers, links, images, lists
-- Includes CSS styling
+- Converts markdown to HTML using unified pipeline
+- Handles GitHub Flavored Markdown (GFM)
+- Includes syntax highlighting and enhanced formatting
 - Supports custom screenshot containers
 
-## 🔍 Available Articles
+## Available Articles
 
 Currently migrated:
 
@@ -129,7 +130,7 @@ Currently migrated:
     - Demonstrates markdown formatting
     - Reference for content creation
 
-## 🚀 Usage
+## Usage
 
 ### Viewing Portfolio
 
@@ -141,9 +142,9 @@ Click any project card to read the full article at `/portfolio/{slug}`.
 
 ### Adding New Articles
 
-1. Create new `.md` file in `site/src/jsMain/resources/public/articles/projects/`
+1. Create new `.md` file in `site/src/jsMain/resources/public/markdown/portfolio/`
 2. Add YAML frontmatter with required fields
-3. Add slug to `MarkdownParser.getAvailableArticles()`
+3. Build the project - the build system will automatically detect and include the new article
 4. Add any images to `site/src/jsMain/resources/public/assets/images/`
 
 Example:
@@ -156,7 +157,7 @@ description: A cool new project I built
 thumbnailUrl: my-project-logo.png
 tags: ['kotlin','web','kobweb']
 posted: true
-isproject: true
+layout: .components.layouts.EnhancedMarkdownLayout
 ---
 
 # My Project
@@ -164,16 +165,15 @@ isproject: true
 This is my awesome project...
 ```
 
-## 🎯 Next Steps
+## Next Steps
 
-1. **Dynamic Article Loading**: Replace hardcoded slug list with API or directory scanning
-2. **Search Functionality**: Add text search across articles
-3. **Categories**: Implement article categories beyond tags
-4. **Related Articles**: Show related projects based on tags
-5. **Comments System**: Add comments to individual articles
-6. **SEO Optimization**: Improve metadata and structured data
+1. **Search Functionality**: Add text search across articles
+2. **Categories**: Implement article categories beyond tags
+3. **Related Articles**: Show related projects based on tags
+4. **Comments System**: Add comments to individual articles
+5. **SEO Optimization**: Improve metadata and structured data
 
-## 📱 Responsive Design
+## Responsive Design
 
 The portfolio is fully responsive:
 
@@ -181,21 +181,22 @@ The portfolio is fully responsive:
 - **Tablet**: 2-column grid
 - **Desktop**: 3+ column grid with sidebar
 
-## ⚡ Performance
+## Performance
 
 - Articles load asynchronously
 - Images are lazy-loaded
-- Markdown processing is client-side for better caching
+- Markdown processing uses unified pipeline for better performance
 - Lightweight components with minimal dependencies
 
-## 🔧 Technical Details
+## Technical Details
 
 - **Framework**: Kobweb with Compose HTML
 - **Routing**: Kobweb's `@Page` annotation system
 - **State Management**: Compose's `remember` and `mutableStateOf`
-- **Styling**: CSS-in-Kotlin with responsive breakpoints
+- **Styling**: Tailwind CSS classes with responsive design
 - **Content**: Markdown files with YAML frontmatter
 - **Images**: Static assets in public directory
+- **Build System**: Automated markdown processing with sitemap generation
 
 The system successfully replicates the original React portfolio functionality while leveraging Kobweb's modern
-architecture!
+architecture and automated build system!
