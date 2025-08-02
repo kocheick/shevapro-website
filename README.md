@@ -1,10 +1,12 @@
-This is a [Kobweb](https://github.com/varabyte/kobweb) project bootstrapped with the `app/empty` template.
+# Shevapro Website
 
-This template is useful if you already know what you're doing and just want a clean slate. By default, it
-just creates a blank home page (which prints to the console so you can confirm it's working)
+A personal website and portfolio for Cheick (Shevapro), a Software Engineer, Mobile app developer, and artist. This website showcases Cheick's work, blog posts, and creative projects.
 
-If you are still learning, consider instantiating the `app` template (or one of the examples) to see actual,
-working projects.
+## Overview
+
+This website is built using [Kobweb](https://github.com/varabyte/kobweb), a Kotlin framework for web development. It features a responsive design with Tailwind CSS and includes sections for portfolio projects, blog posts, and more.
+
+The site is currently being migrated from a React implementation to Kobweb, with a focus on maintaining all original functionality while leveraging Kotlin's type safety and Kobweb's modern architecture.
 
 ## Getting Started
 

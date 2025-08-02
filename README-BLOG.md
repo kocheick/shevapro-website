@@ -1,6 +1,8 @@
 # Blog System - Shevapro Website
 
-This document explains the blog system implementation using Kobweb's markdown support.
+A comprehensive blog system for the Shevapro website that uses Kobweb's markdown support to create, manage, and display blog articles. The system automatically generates pages from markdown files, supports rich formatting, and includes features like tag filtering.
+
+This document explains the blog system implementation in detail.
 
 ## ✅ Blog System Status
 

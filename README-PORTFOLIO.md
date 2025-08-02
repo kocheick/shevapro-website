@@ -1,6 +1,8 @@
 # Portfolio Migration - Shevapro Website
 
-This document explains the portfolio system migration from the React webapp to the Kobweb website.
+A portfolio system for the Shevapro website that showcases projects and work samples. This system has been migrated from React to Kobweb, maintaining all original functionality while leveraging Kobweb's architecture. It uses markdown files with YAML frontmatter to generate portfolio pages with responsive design and tag filtering.
+
+This document explains the portfolio system migration from the React webapp to the Kobweb website in detail.
 
 ## Migration Status
 

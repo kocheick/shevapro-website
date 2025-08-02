@@ -1,6 +1,8 @@
 # Sitemap Management for Shevapro Website
 
-This document explains how to manage the sitemap.xml file for the Kobweb-based shevapro website.
+A sitemap management system for the Shevapro website that improves SEO by providing search engines with structured information about the site's pages. The system includes automated scripts for updating timestamps and integrates with the build process to ensure the sitemap is always current.
+
+This document explains how to manage the sitemap.xml file for the Kobweb-based shevapro website in detail.
 
 ## 📍 Sitemap Location
 
