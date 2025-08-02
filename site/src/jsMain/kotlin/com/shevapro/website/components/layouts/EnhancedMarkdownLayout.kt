@@ -1,24 +1,15 @@
 package com.shevapro.website.components.layouts
 
-import androidx.compose.runtime.*
-import com.varabyte.kobweb.core.rememberPageContext
-import com.varabyte.kobweb.core.layout.Layout
-import kotlinx.coroutines.await
-import org.jetbrains.compose.web.css.*
-import org.jetbrains.compose.web.dom.*
-import org.w3c.fetch.RequestInit
-import kotlin.js.Promise
-
 // Import our external declarations from the proper package
-import com.shevapro.website.external.unified
-import com.shevapro.website.external.remarkParse
-import com.shevapro.website.external.remarkGfm
-import com.shevapro.website.external.remarkMath
-import com.shevapro.website.external.remarkRehype
-import com.shevapro.website.external.rehypeRaw
-import com.shevapro.website.external.rehypeKatex
-import com.shevapro.website.external.rehypeStringify
+import androidx.compose.runtime.*
+import com.shevapro.website.external.*
+import com.varabyte.kobweb.core.layout.Layout
+import com.varabyte.kobweb.core.rememberPageContext
 import com.varabyte.kobwebx.markdown.markdown
+import kotlinx.coroutines.await
+import org.jetbrains.compose.web.css.minHeight
+import org.jetbrains.compose.web.css.vh
+import org.jetbrains.compose.web.dom.*
 
 // Function to get test content as fallback
 private fun getTestContent(): String {
@@ -107,7 +98,12 @@ fun EnhancedMarkdownLayout(content: @Composable () -> Unit) {
             .use(rehypeRaw)
             .use(rehypeStringify)
     }
+    
     LaunchedEffect(markdownContent) {
+        // print processor info as js object code
+        console.log("Processor plugins:", processor.asDynamic().plugins)
+
+
         if (markdownContent != null) {
             try {
                 isProcessing = true
@@ -117,6 +113,7 @@ fun EnhancedMarkdownLayout(content: @Composable () -> Unit) {
 
                 val result = processor.process(markdownContent!!).await()
                 processedHtml = result.value
+                console.log("Processor data:", processor.asDynamic().data)
             } catch (e: Exception) {
                 console.error("❌ Error processing markdown:", e)
                 processingError = "Error processing markdown: ${e.message}"
