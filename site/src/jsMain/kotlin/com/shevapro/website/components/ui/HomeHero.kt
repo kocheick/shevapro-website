@@ -33,7 +33,7 @@ fun HomeHero() {
                             Text("Software Engineer / Mobile app developer experienced in Android.")
                         }
                         Div({
-                            classes("text-lg", "lg:text-xl", "text-center", "md:text-start", "m-2", "mb-2", "md:m-0")
+                            classes("text-lg", "lg:text-xl", "text-center", "md:text-start", "m-2", "md:m-0")
                         }) {
                             P {
                                 Text("I am a creative soul who loves making art but I really get a thrill from building custom solutions that help users achieve their goals.")
