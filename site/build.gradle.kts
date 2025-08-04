@@ -370,6 +370,11 @@ kobweb {
 //    // dependsOn("kobwebxMarkdownProcess") // TODO: Determine correct task name
 //}
 
+// Make jsProcessResources depend on processImages
+tasks.named("kobwebxMarkdownProcess").configure {
+    dependsOn("processImages")
+}
+
 tasks.named("kobwebExport").configure {
     // Remove dependency for now until we determine the correct task name  
     // dependsOn("kobwebxMarkdownProcess") // TODO: Determine correct task name
@@ -393,7 +398,7 @@ tasks.register("processImages") {
         val config = ImageProcessor.CropConfig(
             maxWidth = 600,     // Max width for mobile (anything above is desktop)
             maxHeight = 800,    // Max height for mobile (allow portrait images)
-            quality = 0.95f,    // Quality setting
+            quality = 1.0f,    // Quality setting
             suffix = "-m"       // Mobile suffix
         )
         
@@ -423,7 +428,7 @@ tasks.register("processImagesForce") {
         val config = ImageProcessor.CropConfig(
             maxWidth = 600,     // Max width for mobile (anything above is desktop)
             maxHeight = 800,    // Max height for mobile (allow portrait images)
-            quality = 0.95f,    // Quality setting
+            quality = 1.05f,    // Quality setting
             suffix = "-m"       // Mobile suffix
         )
         

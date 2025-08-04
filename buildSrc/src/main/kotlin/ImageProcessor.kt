@@ -11,10 +11,10 @@ import kotlin.math.min
 object ImageProcessor {
     
     data class CropConfig(
-        val maxWidth: Int = 800,
-        val maxHeight: Int = 600,
-        val quality: Float = 0.85f,
-        val suffix: String = "-m"
+        val maxWidth: Int = 600,     // Max width for mobile (anything above is desktop)
+        val maxHeight: Int = 800,    // Max height for mobile (allow portrait images)
+        val quality: Float = 0.95f,  // High quality compression
+        val suffix: String = "-m"    // Mobile version suffix
     )
     
     data class ProcessResult(
