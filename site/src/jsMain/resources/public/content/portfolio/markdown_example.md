@@ -4,7 +4,7 @@ date: December 1, 2023
 description: A comprehensive example showcasing various markdown formatting features and capabilities.
 thumbnailUrl: blank-image.jpeg
 tags: [markdown, example, formatting, demo]
-posted: true
+posted: false
 layout: .components.layouts.EnhancedMarkdownLayout
 #routeOverride: markdown-example-part-I
 ---

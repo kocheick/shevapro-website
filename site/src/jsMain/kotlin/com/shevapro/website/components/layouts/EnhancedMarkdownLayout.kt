@@ -61,6 +61,7 @@ fun EnhancedMarkdownLayout(content: @Composable () -> Unit) {
     val title = ctx.markdown!!.frontMatter["title"]?.single() ?: "Article"
     val description = ctx.markdown!!.frontMatter["description"]?.single() ?: "Article"
     val thumbnailUrl = ctx.markdown?.frontMatter?.get("thumbnailUrl")?.single()
+//    val isPosted = ctx.markdown?.frontMatter?.get("posted")?.single().toBoolean()
     val coverUrl = if (thumbnailUrl != null && thumbnailUrl.length > 42) thumbnailUrl
     else "/assets/images/${thumbnailUrl ?: "blank-image.jpeg"}"
 
@@ -88,6 +89,12 @@ fun EnhancedMarkdownLayout(content: @Composable () -> Unit) {
             isFetching = false
         }
     }
+
+//    LaunchedEffect(isPosted){
+//        if (!isPosted) {
+//                ctx.router.navigateTo("/")
+//        }
+//    }
     val processor = remember{
         unified()
             .use(remarkParse)

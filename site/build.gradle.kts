@@ -2,6 +2,7 @@ import com.varabyte.kobweb.gradle.application.util.configAsKobwebApplication
 import kizzy.tailwind.utils.setupTailwindProject
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
+import ImageProcessor
 
 buildscript {
     dependencies {
@@ -322,6 +323,7 @@ kobweb {
             
             // Note: Other site-wide SEO metadata is handled in the Layout component
             // through the setPageMetadata function
+
         }
     }
     markdown {
@@ -369,9 +371,66 @@ kobweb {
 //}
 
 tasks.named("kobwebExport").configure {
-    // Remove dependency for now until we determine the correct task name
+    // Remove dependency for now until we determine the correct task name  
     // dependsOn("kobwebxMarkdownProcess") // TODO: Determine correct task name
+    dependsOn("processImages") // Generate mobile images before export
     finalizedBy("copy404")
+}
+
+// Image processing task
+tasks.register("processImages") {
+    group = "build setup"
+    description = "Generate mobile versions of images with -m suffix"
+    
+    // Make task incremental - only run if images have changed
+    inputs.dir(project.layout.projectDirectory.dir("src/jsMain/resources/public/assets/images"))
+    outputs.dir(project.layout.projectDirectory.dir("src/jsMain/resources/public/assets/images"))
+    
+    doLast {
+        val imagesDir = project.layout.projectDirectory.dir("src/jsMain/resources/public/assets/images").asFile
+        
+        // Configure crop settings
+        val config = ImageProcessor.CropConfig(
+            maxWidth = 600,     // Max width for mobile (anything above is desktop)
+            maxHeight = 800,    // Max height for mobile (allow portrait images)
+            quality = 0.95f,    // Quality setting
+            suffix = "-m"       // Mobile suffix
+        )
+        
+        ImageProcessor. processImages(imagesDir, config)
+        
+        println("✅ Image processing completed!")
+    }
+}
+
+// Force image processing for development
+tasks.register("processImagesForce") {
+    group = "build setup"
+    description = "Force regenerate mobile versions of all images"
+    
+    doLast {
+        val imagesDir = project.layout.projectDirectory.dir("src/jsMain/resources/public/assets/images").asFile
+        
+        // Delete all existing mobile versions first
+        imagesDir.walkTopDown()
+            .filter { it.isFile && it.name.contains("-m.") }
+            .forEach { 
+                println("🗑️ Deleting existing mobile version: ${it.name}")
+                it.delete() 
+            }
+        
+        // Configure crop settings
+        val config = ImageProcessor.CropConfig(
+            maxWidth = 600,     // Max width for mobile (anything above is desktop)
+            maxHeight = 800,    // Max height for mobile (allow portrait images)
+            quality = 0.95f,    // Quality setting
+            suffix = "-m"       // Mobile suffix
+        )
+        
+        ImageProcessor.processImages(imagesDir, config)
+        
+        println("✅ Force image processing completed!")
+    }
 }
 
 tasks.register<Copy>("copy404") {

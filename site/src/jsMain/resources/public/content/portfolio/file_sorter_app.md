@@ -53,10 +53,26 @@ Set up rules for automatic sorting, saving you time and effort in the future.
 ## Screenshots
 
 <div class="screenshots-container">
-<img alt="home screen" src="/assets/images/portfolio/fs_home.png" title="file sorter home screen"/>
-<img alt="dialog" src="/assets/images/portfolio/fs_add.png" title="file sorter add dialog"/>
-<img alt="loading screen" src="/assets/images/portfolio/fs_loading.png" title="file sorter loading screen"/>
-<img alt="processing screen" src="/assets/images/portfolio/fs_demo-file-move.png" title="file sorter processing file screen"/>
+<picture>
+    <source media="(max-width: 600px)" srcset="/assets/images/portfolio/fs_home-m.png">
+    <source media="(min-width: 601px)" srcset="/assets/images/portfolio/fs_home.png">
+    <img aria-hidden="true" loading="lazy" decoding="async" src="/assets/images/portfolio/fs_home.png" alt="home screen" title="file sorter home screen"/>
+</picture>
+<picture>
+    <source media="(max-width: 600px)" srcset="/assets/images/portfolio/fs_add-m.png">
+    <source media="(min-width: 601px)" srcset="/assets/images/portfolio/fs_add.png">
+    <img aria-hidden="true" loading="lazy" decoding="async" src="/assets/images/portfolio/fs_add.png" alt="dialog" title="file sorter add dialog"/>
+</picture>
+<picture>
+    <source media="(max-width: 600px)" srcset="/assets/images/portfolio/fs_loading-m.png">
+    <source media="(min-width: 601px)" srcset="/assets/images/portfolio/fs_loading.png">
+    <img aria-hidden="true" loading="lazy" decoding="async" src="/assets/images/portfolio/fs_loading.png" alt="loading screen" title="file sorter loading screen"/>
+</picture>
+<picture>
+    <source media="(max-width: 600px)" srcset="/assets/images/portfolio/fs_demo-file-move-m.png">
+    <source media="(min-width: 601px)" srcset="/assets/images/portfolio/fs_demo-file-move.png">
+    <img aria-hidden="true" loading="lazy" decoding="async" src="/assets/images/portfolio/fs_demo-file-move.png" alt="processing screen" title="file sorter processing file screen"/>
+</picture>
 </div>
 
 <u>Stay Connected:</u>
