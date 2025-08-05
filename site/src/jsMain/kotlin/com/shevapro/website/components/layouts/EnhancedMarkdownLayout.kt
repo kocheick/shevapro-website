@@ -35,21 +35,21 @@ private suspend fun fetchMarkdownContent(filePath: String): String {
 
         // Check if we got HTML instead of markdown
         if (text.trim().startsWith("<!DOCTYPE html>") || text.contains("<html")) {
-            console.warn("⚠️ Received HTML instead of markdown - file might not exist")
+            println("⚠️ Received HTML instead of markdown - file might not exist")
             throw Exception("File not found or server returned HTML page")
         }
 
         // Extract content after frontmatter
         val frontMatterEnd = text.indexOf("---", 3)
         return if (frontMatterEnd > 0) {
-            console.log("Found frontmatter, extracting content...")
+            println("Found frontmatter, extracting content...")
             text.substring(frontMatterEnd + 3).trim()
         } else {
-            console.log("No frontmatter found, using full content...")
+            println("No frontmatter found, using full content...")
             text
         }
     } catch (e: Exception) {
-        console.error("❌ Error fetching markdown:", e.message)
+        println("❌ Error fetching markdown: ${e.message}")
         throw e
     }
 }
@@ -82,7 +82,7 @@ fun EnhancedMarkdownLayout(content: @Composable () -> Unit) {
 
             markdownContent = fetchMarkdownContent(markdownFilePath)
         } catch (e: Exception) {
-            console.error("❌ Error fetching markdown:", e)
+            println("❌ Error fetching markdown: $e")
             fetchError = "Could not load article content. Please check the file path and ensure the file exists."
             markdownContent = "# Error\n$fetchError"
         } finally {

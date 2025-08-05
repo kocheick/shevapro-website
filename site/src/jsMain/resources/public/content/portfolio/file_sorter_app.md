@@ -71,7 +71,7 @@ Set up rules for automatic sorting, saving you time and effort in the future.
 <picture>
     <source media="(max-width: 600px)" srcset="/assets/images/portfolio/fs_demo_file_move-m.webp">
     <source media="(min-width: 601px)" srcset="/assets/images/portfolio/fs_demo_file_move.webp">
-    <img aria-hidden="true" loading="lazy" decoding="async" src="/assets/images/portfolio/fs_demo-file-move.png" alt="processing screen" title="file sorter processing file screen"/>
+    <img aria-hidden="true" loading="lazy" decoding="async" src="/assets/images/portfolio/fs_demo_file_move.png" alt="processing screen" title="file sorter processing file screen"/>
 </picture>
 </div>
 
