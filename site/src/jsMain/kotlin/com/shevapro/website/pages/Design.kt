@@ -1,6 +1,7 @@
 package com.shevapro.website.pages
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import com.shevapro.website.components.layouts.Layout
 import com.shevapro.website.components.ui.HeroSection
 import com.shevapro.website.styles.SiteTheme
@@ -55,6 +56,8 @@ fun DesignPage() {
 
 @Composable
 private fun DesignGallerySection() {
+    val designArticles = remember{ getArticles("design") }
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -78,8 +81,7 @@ private fun DesignGallerySection() {
                     .toAttrs()
             ) {
                 // Get design articles
-                val designArticles = getArticles("design")
-                
+
                 // Display design articles
                 designArticles.forEach { article ->
                     Div(

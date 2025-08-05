@@ -63,7 +63,7 @@ fun EnhancedMarkdownLayout(content: @Composable () -> Unit) {
     val thumbnailUrl = ctx.markdown?.frontMatter?.get("thumbnailUrl")?.single()
 //    val isPosted = ctx.markdown?.frontMatter?.get("posted")?.single().toBoolean()
     val coverUrl = if (thumbnailUrl != null && thumbnailUrl.length > 42) thumbnailUrl
-    else "/assets/images/${thumbnailUrl ?: "blank-image.jpeg"}"
+    else "/assets/images/${thumbnailUrl ?: "blank-image.webp"}"
 
     val currentRoute = ctx.route.path
     val markdownFilePath = remember(currentRoute) { getMarkdownFilePath(currentRoute) }
