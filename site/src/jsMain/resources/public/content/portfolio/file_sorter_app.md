@@ -2,7 +2,7 @@
 title: File Sorter
 date: September 8, 2023
 description: Your ultimate solution for keeping your digital life neat and tidy! With File Sorter, you can easily organize your files on your Android device by moving them from one folder to another based on their extensions. No more cluttered folders and lost files!
-thumbnailUrl: file-sorter-logo.png
+thumbnailUrl: file-sorter-logo.webp
 tags: [ 'android', 'app', 'hobby', 'productivity' ]
 posted: true
 layout: .components.layouts.EnhancedMarkdownLayout
@@ -54,23 +54,23 @@ Set up rules for automatic sorting, saving you time and effort in the future.
 
 <div class="screenshots-container">
 <picture>
-    <source media="(max-width: 600px)" srcset="/assets/images/portfolio/fs_home-m.png">
-    <source media="(min-width: 601px)" srcset="/assets/images/portfolio/fs_home.png">
+    <source media="(max-width: 600px)" srcset="/assets/images/portfolio/fs_home-m.webp">
+    <source media="(min-width: 601px)" srcset="/assets/images/portfolio/fs_home.webp">
     <img aria-hidden="true" loading="lazy" decoding="async" src="/assets/images/portfolio/fs_home.png" alt="home screen" title="file sorter home screen"/>
 </picture>
 <picture>
-    <source media="(max-width: 600px)" srcset="/assets/images/portfolio/fs_add-m.png">
-    <source media="(min-width: 601px)" srcset="/assets/images/portfolio/fs_add.png">
+    <source media="(max-width: 600px)" srcset="/assets/images/portfolio/fs_add-m.webp">
+    <source media="(min-width: 601px)" srcset="/assets/images/portfolio/fs_add.webp">
     <img aria-hidden="true" loading="lazy" decoding="async" src="/assets/images/portfolio/fs_add.png" alt="dialog" title="file sorter add dialog"/>
 </picture>
 <picture>
-    <source media="(max-width: 600px)" srcset="/assets/images/portfolio/fs_loading-m.png">
-    <source media="(min-width: 601px)" srcset="/assets/images/portfolio/fs_loading.png">
+    <source media="(max-width: 600px)" srcset="/assets/images/portfolio/fs_loading-m.webp">
+    <source media="(min-width: 601px)" srcset="/assets/images/portfolio/fs_loading.webp">
     <img aria-hidden="true" loading="lazy" decoding="async" src="/assets/images/portfolio/fs_loading.png" alt="loading screen" title="file sorter loading screen"/>
 </picture>
 <picture>
-    <source media="(max-width: 600px)" srcset="/assets/images/portfolio/fs_demo_file_move-m.png">
-    <source media="(min-width: 601px)" srcset="/assets/images/portfolio/fs_demo_file_move.png">
+    <source media="(max-width: 600px)" srcset="/assets/images/portfolio/fs_demo_file_move-m.webp">
+    <source media="(min-width: 601px)" srcset="/assets/images/portfolio/fs_demo_file_move.webp">
     <img aria-hidden="true" loading="lazy" decoding="async" src="/assets/images/portfolio/fs_demo-file-move.png" alt="processing screen" title="file sorter processing file screen"/>
 </picture>
 </div>
