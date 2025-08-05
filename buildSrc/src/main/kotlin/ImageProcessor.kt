@@ -3,18 +3,33 @@ import java.awt.RenderingHints
 import java.awt.image.BufferedImage
 import java.io.File
 import javax.imageio.ImageIO
-import javax.imageio.ImageWriteParam
-import javax.imageio.ImageWriter
 import javax.imageio.stream.FileImageOutputStream
 import kotlin.math.min
 
 object ImageProcessor {
     
+    init {
+        // Initialize WebP ImageIO plugin
+        try {
+            // Force ImageIO to scan for plugins (helps discover WebP writer classes added via dependencies)
+            javax.imageio.ImageIO.scanForPlugins()
+            // Check if WebP writers are available (plugin should auto-register)
+            val webpWriters = ImageIO.getImageWritersByFormatName("webp")
+            if (webpWriters.hasNext()) {
+                println("✅ WebP ImageIO plugin initialized successfully")
+            } else {
+                println("⚠️ WebP ImageIO plugin not available - WebP generation disabled")
+            }
+        } catch (e: Exception) {
+            println("⚠️ WebP ImageIO plugin initialization failed: ${e.message}")
+        }
+    }
+    
     data class CropConfig(
         val maxWidth: Int = 600,     // Max width for mobile (anything above is desktop)
         val maxHeight: Int = 800,    // Max height for mobile (allow portrait images)
-        val quality: Float = 0.95f,  // High quality compression
-        val suffix: String = "-m"    // Mobile version suffix
+        val suffix: String = "-m",   // Mobile version suffix
+        val generateWebP: Boolean = true  // Generate WebP versions too
     )
     
     data class ProcessResult(
@@ -137,8 +152,19 @@ object ImageProcessor {
         val extension = file.extension
         val mobileFile = File(file.parent, "$nameWithoutExt${config.suffix}.$extension")
         
-        // Save mobile version with quality control
-        saveImageWithQuality(mobileImage, mobileFile, extension, config.quality)
+        // Save mobile version
+        saveImage(mobileImage, mobileFile, extension)
+        
+        // Generate WebP version if enabled and WebP support is available
+        if (config.generateWebP && extension.lowercase() != "webp") {
+            val webpFile = File(file.parent, "$nameWithoutExt${config.suffix}.webp")
+            try {
+                saveImage(mobileImage, webpFile, "webp")
+                println("🔄 Also generated WebP: ${webpFile.name}")
+            } catch (e: Exception) {
+                println("⚠️ WebP generation failed for ${file.name}: ${e.message}")
+            }
+        }
         
         val originalSize = file.length() / 1024
         val mobileSize = mobileFile.length() / 1024
@@ -149,53 +175,32 @@ object ImageProcessor {
         return ProcessResult(processed = true, message = "Successfully processed")
     }
     
-    private fun saveImageWithQuality(image: BufferedImage, outputFile: File, format: String, quality: Float) {
+    private fun saveImage(image: BufferedImage, outputFile: File, format: String) {
         when (format.lowercase()) {
-            "jpg", "jpeg" -> {
-                // Use ImageWriter for JPEG with quality control
-                val writers = ImageIO.getImageWritersByFormatName("jpeg")
+            "webp" -> {
+                // WebP support
+                val writers = ImageIO.getImageWritersByFormatName("webp")
                 if (writers.hasNext()) {
                     val writer = writers.next()
-                    val writeParam = writer.defaultWriteParam
-                    writeParam.compressionMode = ImageWriteParam.MODE_EXPLICIT
-                    writeParam.compressionQuality = quality
-                    
-                    FileImageOutputStream(outputFile).use { output ->
-                        writer.output = output
-                        writer.write(null, javax.imageio.IIOImage(image, null, null), writeParam)
+                    try {
+                        FileImageOutputStream(outputFile).use { output ->
+                            writer.output = output
+                            writer.write(null, javax.imageio.IIOImage(image, null, null), null)
+                        }
+                    } catch (t: Throwable) {
+                        // Catch *everything* (including NoClassDefFoundError coming from native libs)
+                        println("⚠️ Failed to write WebP for ${outputFile.name}: ${t.message}. Falling back to PNG")
+                        ImageIO.write(image, "png", File(outputFile.parent, outputFile.nameWithoutExtension + ".png"))
+                    } finally {
+                        writer.dispose()
                     }
-                    writer.dispose()
                 } else {
-                    // Fallback to basic ImageIO
-                    ImageIO.write(image, "jpeg", outputFile)
-                }
-            }
-            "png" -> {
-                // PNG is lossless, but we can optimize compression
-                val writers = ImageIO.getImageWritersByFormatName("png")
-                if (writers.hasNext()) {
-                    val writer = writers.next()
-                    val writeParam = writer.defaultWriteParam
-                    
-                    // PNG compression is lossless, so we focus on compression level
-                    if (writeParam.canWriteCompressed()) {
-                        writeParam.compressionMode = ImageWriteParam.MODE_EXPLICIT
-                        // Lower values = better compression, slower
-                        writeParam.compressionQuality = 1.0f - quality // Invert for PNG
-                    }
-                    
-                    FileImageOutputStream(outputFile).use { output ->
-                        writer.output = output
-                        writer.write(null, javax.imageio.IIOImage(image, null, null), writeParam)
-                    }
-                    writer.dispose()
-                } else {
-                    // Fallback to basic ImageIO
-                    ImageIO.write(image, "png", outputFile)
+                    println("⚠️ WebP writer not available, falling back to PNG")
+                    ImageIO.write(image, "png", File(outputFile.parent, outputFile.nameWithoutExtension + ".png"))
                 }
             }
             else -> {
-                // For other formats, use basic ImageIO
+                // For all other formats, use basic ImageIO (highest quality)
                 ImageIO.write(image, format, outputFile)
             }
         }

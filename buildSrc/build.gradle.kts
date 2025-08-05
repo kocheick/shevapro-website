@@ -8,5 +8,6 @@ repositories {
 }
 
 dependencies {
-    // Add any dependencies needed for image processing
+    // WebP support for image processing (read + write)
+    implementation("io.github.darkxanter:webp-imageio:0.3.3")
 }
