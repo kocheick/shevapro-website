@@ -71,6 +71,22 @@ object ImageProcessor {
             try {
                 val result = processImage(file, config)
                 if (result.processed) processed++ else skipped++
+
+                // Generate WebP version of original image (if not already WebP)
+                if (config.generateWebP && file.extension.lowercase() != "webp") {
+                    try {
+                        val originalImage = ImageIO.read(file)
+                        if (originalImage != null) {
+                            val originalWebpFile = File(file.parent, "${file.nameWithoutExtension}.webp")
+                            if (!originalWebpFile.exists()) {
+                                saveImage(originalImage, originalWebpFile, "webp")
+                                println("🔄 Generated original WebP: ${originalWebpFile.name}")
+                            }
+                        }
+                    } catch (e: Exception) {
+                        println("⚠️ Original WebP generation failed for ${file.name}: ${e.message}")
+                    }
+                }
             } catch (e: Exception) {
                 println("❌ Error processing ${file.name}: ${e.message}")
                 failed++
@@ -112,19 +128,17 @@ object ImageProcessor {
         val originalHeight = originalImage.height
         
         // Calculate new dimensions while maintaining aspect ratio
-        val scale = min(
-            config.maxWidth.toDouble() / originalWidth,
-            config.maxHeight.toDouble() / originalHeight
-        )
-        
-        // Only process if image needs to be scaled down
-        if (scale >= 1.0) {
-            println("⏭️ Skipping ${file.name} (already smaller than mobile size)")
-            return ProcessResult(processed = false, skipped = true, message = "Already optimized size")
-        }
-        
+        // Prioritize width scaling - scale based on maxWidth first
+        val scale = config.maxWidth.toDouble() / originalWidth
+
         val newWidth = (originalWidth * scale).toInt()
         val newHeight = (originalHeight * scale).toInt()
+
+        // Only process if image needs to be scaled down
+        if (scale >= 1.0) {
+            println("⏭️ Skipping ${file.name} (already smaller than mobile width)")
+            return ProcessResult(processed = false, skipped = true, message = "Already optimized size")
+        }
         
         // Preserve alpha channel for PNG images
         val imageType = when (file.extension.lowercase()) {

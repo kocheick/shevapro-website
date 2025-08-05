@@ -35,13 +35,35 @@ fun ProjectCard(
             path = "/portfolio/${project.slug}",
             modifier = Modifier.fillMaxWidth()
         ) {
-            Img(
-                src = project.imageUrl ?: "/favicon.ico",
-                attrs = {
-                        classes("md:hover:scale-105", "transition-all", "rounded", "w-full")
-                   
-                }
-            )
+            Picture(attrs = {
+                classes("md:hover:scale-105", "transition-all", "rounded", "w-full")
+            }) {
+                // Mobile Image
+                Source(
+                    attrs = {
+                        attr("srcset", project.imageUrl.ifEmpty { "/assets/images/blank-image.webp" })
+                    }
+                )
+
+                // Desktop Image (commented out for later)
+                // Source(
+                //     attrs = {
+                //         attr("media", "(min-width: 601px)")
+                //         attr("srcset", project.imageUrl.ifEmpty { "/assets/images/blank-image.webp" })
+                //     }
+                // )
+
+                // Fallback Image
+                Img(
+                    src = project.imageUrl.ifEmpty { "/assets/images/blank-image.webp" },
+                    attrs = {
+                        attr("aria-hidden", "true")
+                        attr("loading", "lazy")
+                        attr("decoding", "async")
+                        attr("alt", "Project image")
+                    }
+                )
+            }
 
             // Project Title
             H2(
