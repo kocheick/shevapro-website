@@ -96,10 +96,36 @@ fun HomeHero() {
                 Div({
                     classes("hidden", "md:block", "flex-1", "m-1")
                 }) {
-                    A(href = "#", {
-                        classes( "mx-auto")
+                    Picture(attrs = {
+                        classes("mx-auto")
                     }) {
-                        Img(src = "/assets/images/blank-image.jpeg", alt = "main profile image")
+                        // Mobile Image
+                        Source(
+                            attrs = {
+                                attr("media", "(max-width: 600px)")
+
+                                attr("srcset", "/assets/images/blank-image-m.webp")
+                            }
+                        )
+
+//                         Desktop Image (commented out for later)
+                         Source(
+                             attrs = {
+                                 attr("media", "(min-width: 601px)")
+                                 attr("srcset", "/assets/images/blank-image.webp")
+                             }
+                         )
+
+                        // Fallback Image
+                        Img(
+                            src = "/assets/images/blank-image.webp",
+                            attrs = {
+                                attr("aria-hidden", "true")
+                                attr("loading", "lazy")
+                                attr("decoding", "async")
+                                attr("alt", "main profile image")
+                            }
+                        )
                     }
                 }
             }
