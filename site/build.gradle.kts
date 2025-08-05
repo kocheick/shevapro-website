@@ -377,7 +377,7 @@ tasks.named("kobwebxMarkdownProcess").configure {
 tasks.named("kobwebExport").configure {
     // Remove dependency for now until we determine the correct task name
     // dependsOn("kobwebxMarkdownProcess") // TODO: Determine correct task name
-//    dependsOn("processImages") // Generate mobile images before export
+    dependsOn("processImages") // Generate mobile images before export
     finalizedBy("copy404")
 }
 
@@ -451,7 +451,6 @@ tasks.register("processImagesForce") {
             suffix = "-m",       // Mobile suffix
             generateWebP = true  // Generate WebP for both original and mobile versions
         )
-
         ImageProcessor.processImages(imagesDir, config)
         
         println("✅ Force image processing completed!")
