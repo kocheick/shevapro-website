@@ -377,7 +377,7 @@ tasks.named("kobwebxMarkdownProcess").configure {
 tasks.named("kobwebExport").configure {
     // Remove dependency for now until we determine the correct task name
     // dependsOn("kobwebxMarkdownProcess") // TODO: Determine correct task name
-    dependsOn("processImages") // Generate mobile images before export
+//    dependsOn("processImages") // Generate mobile images before export
     finalizedBy("copy404")
 }
 
@@ -385,25 +385,52 @@ tasks.named("kobwebExport").configure {
 tasks.register("processImages") {
     group = "build setup"
     description = "Generate mobile versions of images with -m suffix"
-    
+
+
+//    dependsOn("cleanProcessedImages")
+
     // Make task incremental - only run if images have changed
     inputs.dir(project.layout.projectDirectory.dir("src/jsMain/resources/public/assets/images"))
     outputs.dir(project.layout.projectDirectory.dir("src/jsMain/resources/public/assets/images"))
-    
+
     doLast {
         val imagesDir = project.layout.projectDirectory.dir("src/jsMain/resources/public/assets/images").asFile
-        
+
         // Configure crop settings
         val config = ImageProcessor.CropConfig(
-            maxWidth = 800,     // Max width for mobile (anything above is desktop)
-            maxHeight = 800,    // Max height for mobile (allow portrait images)
-            suffix = "-m",      // Mobile suffix
-            generateWebP = false // Disable WebP for now until library loads properly
+            maxWidth = 600,      // Mobile breakpoint - everything under 600px loads mobile version
+            maxHeight = 800,    // Allow tall images like screenshots
+            suffix = "-m",       // Mobile suffix
+            generateWebP = true  // Generate WebP for both original and mobile versions
         )
 
-        ImageProcessor. processImages(imagesDir, config)
+        ImageProcessor.processImages(imagesDir, config)
 
         println("✅ Image processing completed!")
+    }
+}
+
+// Task to clean processed images
+tasks.register("cleanProcessedImages") {
+    group = "build setup"
+    description = "Delete all processed images (mobile versions and WebP files)"
+
+    doLast {
+        val imagesDir = project.layout.projectDirectory.dir("src/jsMain/resources/public/assets/images").asFile
+
+        // Delete all existing mobile versions and WebP files
+        imagesDir.walkTopDown()
+            .filter { it.isFile }
+            .filter { file ->
+                file.name.contains("-m.") || // Mobile versions
+                        (file.extension.lowercase() == "webp") // Original WebP files
+            }
+            .forEach {
+                println("🗑️ Deleting existing processed version: ${it.name}")
+                it.delete()
+            }
+
+        println("✅ Cleaned all processed images!")
     }
 }
 
@@ -412,24 +439,19 @@ tasks.register("processImagesForce") {
     group = "build setup"
     description = "Force regenerate mobile versions of all images"
 
+    dependsOn("cleanProcessedImages")
+
     doLast {
         val imagesDir = project.layout.projectDirectory.dir("src/jsMain/resources/public/assets/images").asFile
 
-        // Delete all existing mobile versions first
-        imagesDir.walkTopDown()
-            .filter { it.isFile && it.name.contains("-m.") }
-            .forEach {
-                println("🗑️ Deleting existing mobile version: ${it.name}")
-                it.delete()
-            }
-
         // Configure crop settings
         val config = ImageProcessor.CropConfig(
-            maxWidth = 800,     // Max width for mobile (anything above is desktop)
-            maxHeight = 800,    // Max height for mobile (allow portrait images)
-            suffix = "-m"       // Mobile suffix
+            maxWidth = 600,      // Mobile breakpoint - everything under 600px loads mobile version
+            maxHeight = 800,    // Allow tall images like screenshots
+            suffix = "-m",       // Mobile suffix
+            generateWebP = true  // Generate WebP for both original and mobile versions
         )
-        
+
         ImageProcessor.processImages(imagesDir, config)
         
         println("✅ Force image processing completed!")
