@@ -374,9 +374,8 @@ kobweb {
 tasks.named("kobwebxMarkdownProcess").configure {
     dependsOn("processImages")
 }
-
 tasks.named("kobwebExport").configure {
-    // Remove dependency for now until we determine the correct task name  
+    // Remove dependency for now until we determine the correct task name
     // dependsOn("kobwebxMarkdownProcess") // TODO: Determine correct task name
     dependsOn("processImages") // Generate mobile images before export
     finalizedBy("copy404")
@@ -396,14 +395,14 @@ tasks.register("processImages") {
         
         // Configure crop settings
         val config = ImageProcessor.CropConfig(
-            maxWidth = 600,     // Max width for mobile (anything above is desktop)
+            maxWidth = 800,     // Max width for mobile (anything above is desktop)
             maxHeight = 800,    // Max height for mobile (allow portrait images)
-            quality = 1.0f,    // Quality setting
-            suffix = "-m"       // Mobile suffix
+            suffix = "-m",      // Mobile suffix
+            generateWebP = false // Disable WebP for now until library loads properly
         )
-        
+
         ImageProcessor. processImages(imagesDir, config)
-        
+
         println("✅ Image processing completed!")
     }
 }
@@ -412,23 +411,22 @@ tasks.register("processImages") {
 tasks.register("processImagesForce") {
     group = "build setup"
     description = "Force regenerate mobile versions of all images"
-    
+
     doLast {
         val imagesDir = project.layout.projectDirectory.dir("src/jsMain/resources/public/assets/images").asFile
-        
+
         // Delete all existing mobile versions first
         imagesDir.walkTopDown()
             .filter { it.isFile && it.name.contains("-m.") }
-            .forEach { 
+            .forEach {
                 println("🗑️ Deleting existing mobile version: ${it.name}")
-                it.delete() 
+                it.delete()
             }
-        
+
         // Configure crop settings
         val config = ImageProcessor.CropConfig(
-            maxWidth = 600,     // Max width for mobile (anything above is desktop)
+            maxWidth = 800,     // Max width for mobile (anything above is desktop)
             maxHeight = 800,    // Max height for mobile (allow portrait images)
-            quality = 1.05f,    // Quality setting
             suffix = "-m"       // Mobile suffix
         )
         

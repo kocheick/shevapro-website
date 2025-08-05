@@ -69,8 +69,8 @@ Set up rules for automatic sorting, saving you time and effort in the future.
     <img aria-hidden="true" loading="lazy" decoding="async" src="/assets/images/portfolio/fs_loading.png" alt="loading screen" title="file sorter loading screen"/>
 </picture>
 <picture>
-    <source media="(max-width: 600px)" srcset="/assets/images/portfolio/fs_demo-file-move-m.png">
-    <source media="(min-width: 601px)" srcset="/assets/images/portfolio/fs_demo-file-move.png">
+    <source media="(max-width: 600px)" srcset="/assets/images/portfolio/fs_demo_file_move-m.png">
+    <source media="(min-width: 601px)" srcset="/assets/images/portfolio/fs_demo_file_move.png">
     <img aria-hidden="true" loading="lazy" decoding="async" src="/assets/images/portfolio/fs_demo-file-move.png" alt="processing screen" title="file sorter processing file screen"/>
 </picture>
 </div>
