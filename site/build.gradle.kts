@@ -4,6 +4,8 @@ import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import ImageProcessor
 import kotlinx.html.link
+import kotlinx.html.onLoad
+import kotlinx.html.script
 import org.jetbrains.kotlin.konan.target.linker
 
 buildscript {
@@ -322,12 +324,18 @@ kobweb {
         index {
             // Set site-wide description for SEO
             description.set("Shevapro's personal website showcasing portfolio, blog, and services")
-
-
+            scriptAttributes.put("defer", "")
             // Correct way to add elements to the <head> tag
             head.add {
-                link(rel = "stylesheet", href = "https://cdn.jsdelivr.net/npm/viewerjs@1.11.7/dist/viewer.min.css")
-                link(rel = "stylesheet", href = "https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css")
+//                script { defer = true; src = "/website.js" }
+                link(rel = "stylesheet", href = "https://cdn.jsdelivr.net/npm/viewerjs@1.11.7/dist/viewer.min.css"){
+                  media = "print"
+                    onLoad = "this.media='all'; this.onload=null;"
+                }
+                link(rel = "stylesheet", href = "https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css"){
+                    media = "print"
+                    onLoad = "this.media='all'; this.onload=null;"
+                }
             }
 
             // Note: Other site-wide SEO metadata is handled in the Layout component
