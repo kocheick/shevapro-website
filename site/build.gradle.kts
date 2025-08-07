@@ -324,6 +324,7 @@ kobweb {
         index {
             // Set site-wide description for SEO
             description.set("Shevapro's personal website showcasing portfolio, blog, and services")
+            // use scriptAttributes to update main script tag attributes
             scriptAttributes.put("defer", "true")
             // Correct way to add elements to the <head> tag
             head.add {
