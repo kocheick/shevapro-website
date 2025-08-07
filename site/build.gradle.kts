@@ -358,13 +358,9 @@ kobweb {
         process.set { entries ->
             // Filter out unpublished entries at the very beginning
             val publishedEntries = entries.filter { entry ->
-                val getFrontMatter = entry.javaClass.getMethod("getFrontMatter")
-                val frontMatter = getFrontMatter.invoke(entry)
-                val frontMatterClass = frontMatter.javaClass
-                val getMethod = frontMatterClass.getMethod("get", String::class.java)
-                val postedValue =
-                    (getMethod.invoke(frontMatter, "posted") as? List<*>)?.firstOrNull()?.toString()?.toBoolean()
-                        ?: true
+                entry
+                val frontMatter  = entry.frontMatter
+                val postedValue = frontMatter["posted"]?.singleOrNull()?.toBoolean() ?: true
                 postedValue
             }
 
