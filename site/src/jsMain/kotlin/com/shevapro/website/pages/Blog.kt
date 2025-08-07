@@ -7,6 +7,7 @@ import com.shevapro.website.utils.getArticles
 import com.varabyte.kobweb.compose.ui.Modifier
 import com.varabyte.kobweb.compose.ui.modifiers.classNames
 import com.varabyte.kobweb.core.Page
+import com.varabyte.kobweb.core.rememberPageContext
 import com.varabyte.kobweb.silk.components.navigation.Link
 import org.jetbrains.compose.web.attributes.InputType
 import org.jetbrains.compose.web.dom.*
@@ -39,6 +40,7 @@ fun BlogPage() {
             }
         }
     }
+    val router = rememberPageContext().router
 
     Layout(title = "Blog - Shevapro | Thoughts, stories, and ideas") {
         Div(attrs = {
@@ -62,7 +64,8 @@ fun BlogPage() {
 
             Section(attrs = { attr("class", "w-full max-w-4xl mx-auto p-2 md:p-4") }) {
 
-                BlogListSection(filteredArticles)
+                BlogListSection(filteredArticles,
+                    onClick = { slug -> router.navigateTo("/blog/$slug") })
             }
         }
     }
@@ -126,7 +129,8 @@ private fun BlogFiltersSection(
 
 @Composable
 private fun BlogListSection(
-    articles: List<Article>
+    articles: List<Article>,
+    onClick: (String) -> Unit = {}
 ) {
         if (articles.isEmpty()) {
             P(attrs = { attr("class", "text-center text-white text-lg my-8") }) {
@@ -141,6 +145,9 @@ private fun BlogListSection(
                         date = article.dateAdded,
                         tags = article.tags,
                         slug = article.slug
+                        , onClick = {
+                            onClick(article.slug)
+                        }
                     )
                 }
             }
@@ -154,7 +161,8 @@ private fun BlogPostCard(
     summary: String,
     date: String,
     tags: List<String>,
-    slug: String
+    slug: String,
+    onClick: (() -> Unit)? = null
 ) {
     Div(attrs = {
         attr("class", "w-full p-6 bg-white rounded-lg shadow-md transition-all hover:shadow-xl")
@@ -172,17 +180,17 @@ private fun BlogPostCard(
         P(attrs = { attr("class", "text-gray-700 text-base mb-4 leading-relaxed") }) {
             Text(summary)
         }
-        Link(
-            path = "/blog/$slug",
-            modifier = Modifier.classNames(
-                "text-blue-500",
-                "text-base",
-                "font-semibold",
-                "mb-4",
-                "no-underline",
-                "inline-block",
-                "hover:text-blue-700"
-            )
+        A(
+          attrs = {
+              onClick { onClick?.invoke() }
+              classes(  "text-blue-500",
+                  "text-base",
+                  "font-semibold",
+                  "mb-4",
+                  "no-underline",
+                  "inline-block",
+                  "hover:text-blue-700")
+          }
         ) {
             Text("Read more →")
         }

@@ -46,7 +46,7 @@ private suspend fun fetchMarkdownContent(filePath: String): String {
         // Extract content after frontmatter
         val frontMatterEnd = text.indexOf("---", 3)
         return if (frontMatterEnd > 0) {
-            println("Found frontmatter, extracting content...")
+//            println("Found frontmatter, extracting content...")
             text.substring(frontMatterEnd + 3).trim()
         } else {
             println("No frontmatter found, using full content...")
@@ -111,9 +111,6 @@ fun EnhancedMarkdownLayout(content: @Composable () -> Unit) {
     }
     
     LaunchedEffect(markdownContent) {
-        // print processor info as js object code
-        console.log("Processor plugins:", processor.asDynamic().plugins)
-
 
         if (markdownContent != null) {
             try {
@@ -124,7 +121,6 @@ fun EnhancedMarkdownLayout(content: @Composable () -> Unit) {
 
                 val result = processor.process(markdownContent!!).await()
                 processedHtml = result.value
-                console.log("Processor data:", processor.asDynamic().data)
             } catch (e: Exception) {
                 console.error("❌ Error processing markdown:", e)
                 processingError = "Error processing markdown: ${e.message}"
@@ -149,6 +145,9 @@ fun EnhancedMarkdownLayout(content: @Composable () -> Unit) {
                         attrs = {
 //                            attr("media", "(max-width: 600px)")
                             attr("srcset", coverUrl)
+                            attr("loading", "lazy")
+                            attr("decoding", "async")
+                            attr("alt", "Article cover image for $title")
                         }
                     )
 
@@ -167,7 +166,7 @@ fun EnhancedMarkdownLayout(content: @Composable () -> Unit) {
                             attr("aria-hidden", "true")
                             attr("loading", "lazy")
                             attr("decoding", "async")
-                            attr("alt", "Article cover image")
+                            attr("alt", "Article cover image for $title")
                         }
                     )
                 }
@@ -257,12 +256,12 @@ fun EnhancedMarkdownLayout(content: @Composable () -> Unit) {
                                     val screenshotsContainer =
                                         kotlinx.browser.document.getElementById("screenshots-container")
                                     if (screenshotsContainer != null) {
-                                        println("Found screenshots container with ID: ${screenshotsContainer.id}")
-                                        println("Container children count: ${screenshotsContainer.children.length}")
+//                                        println("Found screenshots container with ID: ${screenshotsContainer.id}")
+//                                        println("Container children count: ${screenshotsContainer.children.length}")
 
 
                                         try {
-                                            console.log("About to initialize ViewerJS...")
+//                                            console.log("About to initialize ViewerJS...")
 //                                            console.log("Container innerHTML:", screenshotsContainer.innerHTML)
 //
 //                                            // Check if we have images
@@ -281,22 +280,23 @@ fun EnhancedMarkdownLayout(content: @Composable () -> Unit) {
 //                                            }
 
                                             val viewer = Viewer(screenshotsContainer as HTMLElement, options)
-                                            console.log("ViewerJS initialized successfully!")
-                                            console.log("ViewerJS instance:", viewer)
+//                                            console.log("ViewerJS initialized successfully!")
+//                                            console.log("ViewerJS instance:", viewer)
                                         } catch (e: Exception) {
                                             console.error("Failed to initialize ViewerJS:", e)
                                             console.error("Error details:", e.message)
                                         }
-                                    } else {
-                                        println("No screenshots container found with ID 'screenshots-container'")
-                                        // Debug: let's see what IDs are available
-                                        val allElementsWithIds = kotlinx.browser.document.querySelectorAll("[id]")
-                                        println("Available elements with IDs:")
-                                        for (i in 0 until allElementsWithIds.length) {
-                                            val element = allElementsWithIds[i] as HTMLElement
-                                            println("- ID: ${element.id}")
-                                        }
                                     }
+//                                    else {
+//                                        println("No screenshots container found with ID 'screenshots-container'")
+//                                        // Debug: let's see what IDs are available
+////                                        val allElementsWithIds = kotlinx.browser.document.querySelectorAll("[id]")
+////                                        println("Available elements with IDs:")
+////                                        for (i in 0 until allElementsWithIds.length) {
+////                                            val element = allElementsWithIds[i] as HTMLElement
+////                                            println("- ID: ${element.id}")
+////                                        }
+//                                    }
                                 }, 200) // Increased timeout to ensure DOM is ready
 
                                 onDispose {

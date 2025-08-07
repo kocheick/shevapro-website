@@ -16,6 +16,7 @@ import org.jetbrains.compose.web.dom.*
 @Composable
 fun ProjectCard(
     project: Article,
+    onClick: () -> Unit,
     onTagClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -31,9 +32,11 @@ fun ProjectCard(
         }
     ) {
         // Project Image
-        Link(
-            path = "/portfolio/${project.slug}",
-            modifier = Modifier.fillMaxWidth()
+        A(
+            attrs = {
+                classes("cursor-pointer")
+                onClick { onClick() }
+            }
         ) {
             Picture(attrs = {
                 classes("md:hover:scale-105", "transition-all", "rounded", "w-full")

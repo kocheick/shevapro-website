@@ -10,6 +10,7 @@ import com.shevapro.website.utils.Constants
 import com.shevapro.website.utils.getArticles
 import com.varabyte.kobweb.compose.css.backgroundImage
 import com.varabyte.kobweb.core.Page
+import com.varabyte.kobweb.core.rememberPageContext
 import org.jetbrains.compose.web.css.backgroundImage
 import org.jetbrains.compose.web.dom.Div
 import org.jetbrains.compose.web.dom.P
@@ -38,6 +39,7 @@ fun PortfolioPage() {
             }
         }
     }
+    val router = rememberPageContext().router
 
     Layout(title = Constants.Pages.Portfolio.TITLE, description = Constants.Pages.Portfolio.DESCRIPTION) {
         // Page flex container (main background)
@@ -105,6 +107,9 @@ fun PortfolioPage() {
                     filteredProjects.forEach { project ->
                         ProjectCard(
                             project = project,
+                            onClick = {
+                                router.navigateTo("/portfolio/${project.slug}")
+                            },
                             onTagClick = { clickedTag ->
                                 activeTags = if (activeTags.contains(clickedTag)) {
                                     activeTags - clickedTag
