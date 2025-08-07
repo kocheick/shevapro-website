@@ -6,10 +6,14 @@ import com.shevapro.website.external.*
 import com.varabyte.kobweb.core.layout.Layout
 import com.varabyte.kobweb.core.rememberPageContext
 import com.varabyte.kobwebx.markdown.markdown
+import kotlinext.js.asJsObject
 import kotlinx.coroutines.await
 import org.jetbrains.compose.web.css.minHeight
 import org.jetbrains.compose.web.css.vh
 import org.jetbrains.compose.web.dom.*
+import org.w3c.dom.HTMLDivElement
+import org.w3c.dom.HTMLElement
+import org.w3c.dom.get
 
 // Function to get test content as fallback
 private fun getTestContent(): String {
@@ -132,73 +136,6 @@ fun EnhancedMarkdownLayout(content: @Composable () -> Unit) {
     }
 
     Layout(title = "SHEVAPRO | $title", description = description) {
-        Style {
-            """
-            @import url("https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css");
-            
-            .loading-indicator {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                padding: 2rem;
-                color: #4a6fa5;
-                font-style: italic;
-                background-color: rgba(0, 0, 0, 0.03);
-                border-radius: 4px;
-                margin: 1rem 0;
-                position: relative;
-            }
-            
-            .loading-indicator::before {
-                content: "";
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 3px;
-                background: linear-gradient(to right, #4a6fa5, #9eacd5);
-                animation: loading-bar 2s infinite ease-in-out;
-                border-radius: 4px 4px 0 0;
-            }
-            
-            @keyframes loading-bar {
-                0% { width: 0; left: 0; }
-                50% { width: 100%; left: 0; }
-                100% { width: 0; left: 100%; }
-            }
-            
-            .error-message {
-                background-color: rgba(220, 53, 69, 0.1);
-                border-left: 4px solid #dc3545;
-                padding: 1rem;
-                margin: 1rem 0;
-                color: #dc3545;
-                border-radius: 4px;
-            }
-            
-            .fetch-error {
-                background-color: rgba(255, 193, 7, 0.1);
-                border-left: 4px solid #ffc107;
-                padding: 1rem;
-                margin: 1rem 0;
-                color: #856404;
-                border-radius: 4px;
-            }
-            
-            .katex-display {
-                margin: 1.5rem 0;
-                text-align: center;
-            }
-            
-            .katex {
-                font-size: 1.1em;
-            }
-            
-            .katex-display .katex {
-                font-size: 1.3em;
-            }
-            """.trimIndent()
-        }
 
         Div(attrs = { classes("rounded", "min-h-full", "pt-8") }) {
             Section(attrs = {
@@ -281,10 +218,90 @@ fun EnhancedMarkdownLayout(content: @Composable () -> Unit) {
                         }
 
                         processedHtml != null -> {
+                            val  toolbar = remember{
+                                ToolbarOptions(
+                                    zoomIn = true,
+                                    zoomOut = true,
+                                    oneToOne = true,
+                                    reset = true,
+                                    prev = true,
+                                    next = true
+                                    // play, rotate, flip are off by default!
+                                ).asJsObject()
+                            }
+
+                            val options = remember{
+                                ViewerOptions(
+                                    navbar = false,
+                                    title = true,
+                                    toolbar = toolbar,
+                                    tooltip = true,
+                                    movable = true,
+                                    zoomable = true,
+                                    rotatable = false,
+                                    scalable = false,
+                                    transition = true,
+                                    fullscreen = true,
+                                    keyboard = true
+                                ).asJsObject()
+                            }
+
+
                             DisposableEffect(processedHtml) {
                                 val currentElement = kotlinx.browser.document.querySelector("article.processed-content")
                                 currentElement?.innerHTML = processedHtml!!
-                                onDispose { }
+
+                                // Initialize Viewer.js for screenshots container after DOM is updated
+                                // We use setTimeout to ensure the DOM has been fully updated after innerHTML change
+                                val timeoutId = kotlinx.browser.window.setTimeout({
+                                    val screenshotsContainer =
+                                        kotlinx.browser.document.getElementById("screenshots-container")
+                                    if (screenshotsContainer != null) {
+                                        println("Found screenshots container with ID: ${screenshotsContainer.id}")
+                                        println("Container children count: ${screenshotsContainer.children.length}")
+
+
+                                        try {
+                                            console.log("About to initialize ViewerJS...")
+//                                            console.log("Container innerHTML:", screenshotsContainer.innerHTML)
+//
+//                                            // Check if we have images
+//                                            val images = screenshotsContainer.querySelectorAll("img")
+//                                            console.log("Found ${images.length} images in container")
+//
+//                                            for (i in 0 until images.length) {
+//                                                val img = images[i] as HTMLElement
+//                                                console.log(
+//                                                    "Image ${i}: src=${img.getAttribute("src")}, alt=${
+//                                                        img.getAttribute(
+//                                                            "alt"
+//                                                        )
+//                                                    }"
+//                                                )
+//                                            }
+
+                                            val viewer = Viewer(screenshotsContainer as HTMLElement, options)
+                                            console.log("ViewerJS initialized successfully!")
+                                            console.log("ViewerJS instance:", viewer)
+                                        } catch (e: Exception) {
+                                            console.error("Failed to initialize ViewerJS:", e)
+                                            console.error("Error details:", e.message)
+                                        }
+                                    } else {
+                                        println("No screenshots container found with ID 'screenshots-container'")
+                                        // Debug: let's see what IDs are available
+                                        val allElementsWithIds = kotlinx.browser.document.querySelectorAll("[id]")
+                                        println("Available elements with IDs:")
+                                        for (i in 0 until allElementsWithIds.length) {
+                                            val element = allElementsWithIds[i] as HTMLElement
+                                            println("- ID: ${element.id}")
+                                        }
+                                    }
+                                }, 200) // Increased timeout to ensure DOM is ready
+
+                                onDispose {
+                                    kotlinx.browser.window.clearTimeout(timeoutId)
+                                }
                             }
                         }
 

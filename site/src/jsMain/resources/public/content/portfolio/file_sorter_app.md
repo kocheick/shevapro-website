@@ -52,7 +52,7 @@ Set up rules for automatic sorting, saving you time and effort in the future.
 
 ## Screenshots
 
-<div class="screenshots-container">
+<div id="screenshots-container" class="screenshots-container">
 <picture>
     <source media="(max-width: 600px)" srcset="/assets/images/portfolio/fs_home-m.webp">
     <source media="(min-width: 601px)" srcset="/assets/images/portfolio/fs_home.webp">

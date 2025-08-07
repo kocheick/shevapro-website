@@ -89,25 +89,25 @@ article  a {
     align-content: center;
 }
 
-.screenshots-container > img {
+.screenshots-container > img ,.screenshots-container > picture {
     width: 30%;
     padding: 0.5rem;
 
 }
 @media (max-width: 768px) {
-    article> .screenshots-container > img {
+    article> .screenshots-container > img,.screenshots-container > picture {
         width: 50%;
     }
 }
 @media (max-width: 640px) {
-    article> .screenshots-container > img {
+    article> .screenshots-container > img,.screenshots-container >  picture {
         width: 80%;
 
     }
 }
 
 @media (max-width: 475px) {
-    article> .screenshots-container > img {
+    article> .screenshots-container > img ,.screenshots-container > picture {
         width: 100%;
 
     }

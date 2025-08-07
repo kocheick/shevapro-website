@@ -3,6 +3,8 @@ import kizzy.tailwind.utils.setupTailwindProject
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import ImageProcessor
+import kotlinx.html.link
+import org.jetbrains.kotlin.konan.target.linker
 
 buildscript {
     dependencies {
@@ -320,7 +322,14 @@ kobweb {
         index {
             // Set site-wide description for SEO
             description.set("Shevapro's personal website showcasing portfolio, blog, and services")
-            
+
+
+            // Correct way to add elements to the <head> tag
+            head.add {
+                link(rel = "stylesheet", href = "https://cdn.jsdelivr.net/npm/viewerjs@1.11.7/dist/viewer.min.css")
+                link(rel = "stylesheet", href = "https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css")
+            }
+
             // Note: Other site-wide SEO metadata is handled in the Layout component
             // through the setPageMetadata function
 
@@ -468,7 +477,9 @@ tasks.register<Copy>("copy404") {
 kotlin {
     configAsKobwebApplication("website")
     setupTailwindProject()
-
+//    js {
+//        compilerOptions.target = "es2015"
+//    }
     sourceSets {
         jsMain.dependencies {
             implementation(libs.compose.runtime)
@@ -487,6 +498,8 @@ kotlin {
             implementation(npm("rehype-katex", "7.0.0"))
             implementation(npm("rehype-raw", "7.0.0"))
             implementation(npm("rehype-stringify", "9.0.4"))
+            
+            implementation(npm("viewerjs", "1.11.7"))
 
             implementation(project(":worker"))
         }

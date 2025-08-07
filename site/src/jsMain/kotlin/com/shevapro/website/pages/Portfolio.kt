@@ -5,9 +5,12 @@ import com.shevapro.website.components.layouts.Layout
 import com.shevapro.website.components.ui.HeroSection
 import com.shevapro.website.components.widgets.FiltersBar
 import com.shevapro.website.components.widgets.ProjectCard
+import com.shevapro.website.styles.SiteTheme
 import com.shevapro.website.utils.Constants
 import com.shevapro.website.utils.getArticles
+import com.varabyte.kobweb.compose.css.backgroundImage
 import com.varabyte.kobweb.core.Page
+import org.jetbrains.compose.web.css.backgroundImage
 import org.jetbrains.compose.web.dom.Div
 import org.jetbrains.compose.web.dom.P
 import org.jetbrains.compose.web.dom.Section
@@ -44,6 +47,7 @@ fun PortfolioPage() {
                     "rounded-2xl", "min-h-screen", "flex", "flex-col", "items-center",
                     "bg-opacity-40", "bg-gradient-to-bl", "from-red-200", "via-purple-300", "to-blue-500", "pt-8"
                 )
+
             }
         ) {
             // Hero section using the reusable component
