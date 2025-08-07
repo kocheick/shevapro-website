@@ -180,9 +180,11 @@ private fun BlogPostCard(
         P(attrs = { attr("class", "text-gray-700 text-base mb-4 leading-relaxed") }) {
             Text(summary)
         }
-        A(
+        A(href = "/blog/$slug",
           attrs = {
-              onClick { onClick?.invoke() }
+
+              onClick {it.preventDefault()
+                  onClick?.invoke() }
               classes(  "text-blue-500",
                   "text-base",
                   "font-semibold",

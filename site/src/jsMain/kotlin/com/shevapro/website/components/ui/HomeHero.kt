@@ -1,10 +1,12 @@
 package com.shevapro.website.components.ui
 
 import androidx.compose.runtime.*
+import com.varabyte.kobweb.core.rememberPageContext
 import org.jetbrains.compose.web.dom.*
 
 @Composable
 fun HomeHero() {
+    val router = rememberPageContext().router
             Div({
                 classes("flex", "flex-col", "items-center", "md:flex-row")
             }) {
@@ -45,6 +47,9 @@ fun HomeHero() {
                     }) {
                         // Portfolio 
                         A(href = "/portfolio", {
+
+                            onClick { it.preventDefault()
+                                router.navigateTo("/portfolio") }
                             classes(
                                 "text-center",
                                 "border",
@@ -68,6 +73,9 @@ fun HomeHero() {
                             Text("See my work")
                         }
                         A(href = "/contact", {
+                            onClick { it.preventDefault()
+                                router.navigateTo("/contact") }
+
                             classes(
                                 "text-center",
                                 "border",

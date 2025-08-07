@@ -35,7 +35,9 @@ fun ProjectCard(
         A(
             attrs = {
                 classes("cursor-pointer")
-                onClick { onClick() }
+                attr("href", "/portfolio/${project.slug}")
+                onClick { it.preventDefault()
+                    onClick() }
             }
         ) {
             Picture(attrs = {

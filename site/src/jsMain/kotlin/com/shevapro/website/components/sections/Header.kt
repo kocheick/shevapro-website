@@ -86,12 +86,11 @@ fun Header(
             }
         ) {
             // WEBSITE LOGO
-            Link(
-                path = "/",
-                modifier = Modifier
-                    .attrsModifier {
-                        classes("flex", "items-center", "shrink-0")
-                    }
+            A(
+              attrs = {
+                  classes("cursor-pointer","flex", "items-center", "shrink-0")
+                    onClick { ctx.router.navigateTo("/") }
+              }
             ) {
                 Img(
                     src = "/assets/images/logo.png",
@@ -191,22 +190,21 @@ fun Header(
                                 classes("w-full")
                             }
                         ) {
-                            Link(
-                                path = "/$item",
-                                text = item.replaceFirstChar { it.uppercase() },
-                                modifier = Modifier
-                                    .attrsModifier {
-                                        classes(
-                                            if (isActive) "text-red-700" else ",",
-                                            "block", "transition-all", "flex", "justify-end", "text-2xl",
-                                            "py-2", "pr-2", "pl-3", "text-gray-700", "rounded", "md:rounded-none",
-                                            "hover:bg-gray-100", "md:hover:bg-transparent", "md:hover:border-b",
-                                            "border-red-700", "md:p-0"
-                                        )
-                                        onClick { isNavBarOpen = false }
-
+                            A(
+                               attrs = {
+                                   onClick { isNavBarOpen = false ; ctx.router.navigateTo("/$item")}
+                                   classes(
+                                       if (isActive) "text-red-700" else ",","cursor-pointer",
+                                       "block", "transition-all", "flex", "justify-end", "text-2xl",
+                                       "py-2", "pr-2", "pl-3", "text-gray-700", "rounded", "md:rounded-none",
+                                       "hover:bg-gray-100", "md:hover:bg-transparent", "md:hover:border-b",
+                                       "border-red-700", "md:p-0"
+                                   )
                                     }
-                            )
+                            ) {
+                                Text( item.replaceFirstChar { it.uppercase() }
+                                )
+                            }
                         }
                     }
                 }
