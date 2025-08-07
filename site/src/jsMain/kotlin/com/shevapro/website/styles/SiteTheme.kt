@@ -119,6 +119,7 @@ object SiteTheme {
 
     object Gradients {
         val primary = "linear-gradient(to top right, #7C3AED, #93C5FD)" // Original gradient
+        val background = "linear-gradient(to top right, ##0b03c859, #e3e1efb0)" // Original gradient
         val primaryDark = "linear-gradient(to top right, #6D28D9, #7DD3FC)"
     }
 }
@@ -131,13 +132,14 @@ val RootStyle = CssStyle.base {
         .right(0.px)
         .bottom(0.px)
         .left(0.px)
-        .backgroundImage(
-            linearGradient(
-                rgb(0x7C, 0x3A, 0xED),
-                rgb(0x93, 0xC5, 0xFD),
-                LinearGradient.Direction.ToTopRight
-            )
-        )
+        .backgroundColor(Color("#e3e1ef"))
+//        .backgroundImage(
+//            linearGradient(
+//                rgb(0x7C, 0x3A, 0xED),
+//                rgb(0x93, 0xC5, 0xFD),
+//                LinearGradient.Direction.ToTopRight
+//            )
+//        )
         .flexDirection(FlexDirection.Column)
         .margin(leftRight = autoLength)
 }
