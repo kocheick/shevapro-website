@@ -324,15 +324,17 @@ kobweb {
         index {
             // Set site-wide description for SEO
             description.set("Shevapro's personal website showcasing portfolio, blog, and services")
-            scriptAttributes.put("defer", "")
+            scriptAttributes.put("defer", "true")
             // Correct way to add elements to the <head> tag
             head.add {
 //                script { defer = true; src = "/website.js" }
                 link(rel = "stylesheet", href = "https://cdn.jsdelivr.net/npm/viewerjs@1.11.7/dist/viewer.min.css"){
-                  media = "print"
+                    attributes["defer"] = ""
+                    media = "print"
                     onLoad = "this.media='all'; this.onload=null;"
                 }
                 link(rel = "stylesheet", href = "https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css"){
+                    attributes["defer"] = ""
                     media = "print"
                     onLoad = "this.media='all'; this.onload=null;"
                 }
