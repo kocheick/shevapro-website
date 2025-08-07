@@ -3,9 +3,16 @@ package com.shevapro.website.pages
 import androidx.compose.runtime.Composable
 import com.shevapro.website.components.layouts.Layout
 import com.shevapro.website.components.ui.HomeHero
+import com.shevapro.website.styles.SiteTheme
 import com.shevapro.website.utils.Constants
+import com.varabyte.kobweb.compose.css.backgroundImage
+import com.varabyte.kobweb.compose.css.functions.LinearGradient
+import com.varabyte.kobweb.compose.css.functions.linearGradient
 import com.varabyte.kobweb.compose.css.margin
 import com.varabyte.kobweb.core.Page
+import org.jetbrains.compose.web.css.CSSColorValue
+import org.jetbrains.compose.web.css.Color
+import org.jetbrains.compose.web.css.backgroundImage
 import org.jetbrains.compose.web.css.percent
 import org.jetbrains.compose.web.dom.*
 
@@ -16,16 +23,23 @@ fun HomePage() {
         Div(attrs = {
             classes(
                 "min-h-full", "pt-16",
-                "bg-opacity-40",
-                "bg-gradient-to-tr",
-                "from-purple-600",
-                "to-blue-300",
+//                "bg-opacity-40",
+//                "bg-gradient-to-tr",
+//                "from-purple-600",
+//                "to-blue-300",
                 "rounded-2xl"
             )
+            style {
+//                backgroundImage(SiteTheme.Gradients.background)
+                backgroundImage(linearGradient( to = Color("e3e1efb0"), from = Color("#0b03c859"),
+                     dir = LinearGradient.Direction.ToTopRight
+                ))
+
+            }
         }) {
             // Hero Section
             Section(attrs = { classes("my-2") }) {
-                HomeHero()
+                HomeHero( )
             }
             Br {}
 

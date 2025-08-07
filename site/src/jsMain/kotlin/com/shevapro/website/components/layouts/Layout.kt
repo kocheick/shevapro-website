@@ -114,24 +114,12 @@ fun Layout(
                 id("main-content")
                 classes(
                     "p-2",
-                    "border-red-700",
+//                    "border-red-700",
                     "items-center",
                     "justify-center",
                     "flex-grow",
                     "overflow-y-scroll"
                 )
-                style {
-//                        property("flex", "1")
-//                        property("overflow-y", "auto")
-//                        property("overflow-x", "hidden")
-//                        overflowY(Overflow.Scroll)
-//                        width(100.percent)
-//                        display(DisplayStyle.Flex)
-//                        flexGrow(1)
-//                        justifyContent(JustifyContent.Center)
-//                        alignItems(AlignItems.FlexStart)
-//                        padding(16.px)
-                }
             }
         ) {
             content()

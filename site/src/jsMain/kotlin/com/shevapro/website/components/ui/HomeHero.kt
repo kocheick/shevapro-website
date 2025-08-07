@@ -55,7 +55,7 @@ fun HomeHero() {
                                 "md:w-1/3",
                                 "hover:from-red-200",
                                 "ease-out",
-                                "hover:shadow",
+                                "shadow",
                                 "hover:scale-105",
                                 "duration-300",
                                 "hover:to-yellow-200",
@@ -78,7 +78,7 @@ fun HomeHero() {
                                 "md:w-1/3",
                                 "hover:from-red-200",
                                 "ease-out",
-                                "hover:shadow",
+                                "shadow",
                                 "hover:scale-105",
                                 "duration-300",
                                 "hover:to-yellow-200",
@@ -104,7 +104,7 @@ fun HomeHero() {
                             attrs = {
                                 attr("media", "(max-width: 600px)")
 
-                                attr("srcset", "/assets/images/blank-image-m.webp")
+                                attr("srcset", "/assets/images/photos/cover-m.webp")
                             }
                         )
 
@@ -112,7 +112,7 @@ fun HomeHero() {
                          Source(
                              attrs = {
                                  attr("media", "(min-width: 601px)")
-                                 attr("srcset", "/assets/images/blank-image.webp")
+                                 attr("srcset", "/assets/images/photos/cover.webp")
                              }
                          )
 
