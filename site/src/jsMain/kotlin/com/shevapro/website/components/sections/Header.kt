@@ -86,19 +86,21 @@ fun Header(
             }
         ) {
             // WEBSITE LOGO
-            A(
+            A( href = "/",
               attrs = {
                   classes("cursor-pointer","flex", "items-center", "shrink-0")
-                    onClick { ctx.router.navigateTo("/") }
+                    onClick { it.preventDefault()
+                        ctx.router.navigateTo("/") }
               }
             ) {
-                Img(
-                    src = "/assets/images/logo.png",
-                    alt = "Post image",
-                    attrs = {
-                        classes("ml-3", "h-12")
-                    }
-                )
+                    Img(
+                        src = "/assets/images/logo.webp",
+                        alt = "Shevapro website logo",
+                        attrs = {
+                            classes("ml-3", "h-12")
+                        }
+                    )
+
             }
 
             // MOBILE MENU BUTTON
@@ -190,9 +192,10 @@ fun Header(
                                 classes("w-full")
                             }
                         ) {
-                            A(
+                            A( href = "/$item",
                                attrs = {
-                                   onClick { isNavBarOpen = false ; ctx.router.navigateTo("/$item")}
+                                   onClick {
+                                       it.preventDefault(); isNavBarOpen = false ; ctx.router.navigateTo("/$item")}
                                    classes(
                                        if (isActive) "text-red-700" else ",","cursor-pointer",
                                        "block", "transition-all", "flex", "justify-end", "text-2xl",
