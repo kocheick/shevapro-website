@@ -326,20 +326,20 @@ kobweb {
             description.set("Shevapro's personal website showcasing portfolio, blog, and services")
             // use scriptAttributes to update main script tag attributes
             scriptAttributes.put("async", "")
-            // Correct way to add elements to the <head> tag
-            head.add {
-//                script { defer = true; src = "/website.js" }
-                link(rel = "stylesheet", href = "https://cdn.jsdelivr.net/npm/viewerjs@1.11.7/dist/viewer.min.css"){
-                    attributes["defer"] = ""
-                    media = "print"
-                    onLoad = "this.media='all'; this.onload=null;"
-                }
-                link(rel = "stylesheet", href = "https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css"){
-                    attributes["defer"] = ""
-                    media = "print"
-                    onLoad = "this.media='all'; this.onload=null;"
-                }
-            }
+//            // Correct way to add elements to the <head> tag
+//            head.add {
+////                script { defer = true; src = "/website.js" }
+//                link(rel = "stylesheet", href = "https://cdn.jsdelivr.net/npm/viewerjs@1.11.7/dist/viewer.min.css"){
+//                    attributes["defer"] = ""
+//                    media = "print"
+//                    onLoad = "this.media='all'; this.onload=null;"
+//                }
+//                link(rel = "stylesheet", href = "https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css"){
+//                    attributes["defer"] = ""
+//                    media = "print"
+//                    onLoad = "this.media='all'; this.onload=null;"
+//                }
+//            }
 
             // Note: Other site-wide SEO metadata is handled in the Layout component
             // through the setPageMetadata function

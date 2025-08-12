@@ -11,9 +11,7 @@ import kotlinx.coroutines.await
 import org.jetbrains.compose.web.css.minHeight
 import org.jetbrains.compose.web.css.vh
 import org.jetbrains.compose.web.dom.*
-import org.w3c.dom.HTMLDivElement
 import org.w3c.dom.HTMLElement
-import org.w3c.dom.get
 
 // Function to get test content as fallback
 private fun getTestContent(): String {
@@ -58,6 +56,62 @@ private suspend fun fetchMarkdownContent(filePath: String): String {
     }
 }
 
+// Helper function to set link tags
+private fun setLinkTag(rel: String, href: String, media: String = "all") {
+    val head = kotlinx.browser.document.head!!
+    val existingLink = head.querySelector("link[rel='$rel'][href='$href']")
+
+    if (existingLink == null) {
+        val linkElement = kotlinx.browser.document.createElement("link")
+        linkElement.setAttribute("rel", rel)
+        linkElement.setAttribute("href", href)
+        linkElement.setAttribute("media", media)
+        head.appendChild(linkElement)
+    }
+}
+
+// Helper function to set script tags
+private fun setScriptTag(src: String, defer: Boolean = false) {
+    val head = kotlinx.browser.document.head!!
+    val existingScript = head.querySelector("script[src='$src']")
+
+    if (existingScript == null) {
+        val scriptElement = kotlinx.browser.document.createElement("script")
+        scriptElement.setAttribute("src", src)
+        if (defer) {
+            scriptElement.setAttribute("defer", "")
+        }
+        head.appendChild(scriptElement)
+    }
+}
+
+// Helper function to set deferred CSS links that load after page render
+private fun setDeferredCssLink(href: String) {
+    val head = kotlinx.browser.document.head!!
+    val existingLink = head.querySelector("link[href='$href']")
+
+    if (existingLink == null) {
+        val linkElement = kotlinx.browser.document.createElement("link")
+        linkElement.setAttribute("rel", "stylesheet")
+        linkElement.setAttribute("href", href)
+        linkElement.setAttribute("media", "print")
+        linkElement.setAttribute("onload", "this.media='all'; this.onload=null;")
+        head.appendChild(linkElement)
+    }
+}
+
+// Helper function to load page-specific resources
+private fun loadPageResources() {
+    // Add deferred script
+//    setScriptTag("/website.js", defer = true)
+
+    // Add deferred CSS for ViewerJS
+    setDeferredCssLink("https://cdn.jsdelivr.net/npm/viewerjs@1.11.7/dist/viewer.min.css")
+
+    // Add deferred CSS for KaTeX
+    setDeferredCssLink("https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css")
+}
+
 @Layout
 @Composable
 fun EnhancedMarkdownLayout(content: @Composable () -> Unit) {
@@ -93,6 +147,7 @@ fun EnhancedMarkdownLayout(content: @Composable () -> Unit) {
             isFetching = false
         }
     }
+    
 
 //    LaunchedEffect(isPosted){
 //        if (!isPosted) {
@@ -116,8 +171,7 @@ fun EnhancedMarkdownLayout(content: @Composable () -> Unit) {
             try {
                 isProcessing = true
                 processingError = null
-
-
+                loadPageResources()
 
                 val result = processor.process(markdownContent!!).await()
                 processedHtml = result.value
@@ -130,6 +184,10 @@ fun EnhancedMarkdownLayout(content: @Composable () -> Unit) {
             }
         }
     }
+
+//    LaunchedEffect(Unit) {
+//        loadPageResources()
+//    }
 
     Layout(title = "SHEVAPRO | $title", description = description) {
 
