@@ -93,13 +93,33 @@ fun Header(
                         ctx.router.navigateTo("/") }
               }
             ) {
-                    Img(
-                        src = "/assets/images/logo.webp",
-                        alt = "Shevapro website logo",
+                    Picture(
                         attrs = {
+                            // Picture element is just a container, no classes needed
                             classes("ml-3", "h-12")
+
                         }
-                    )
+                    ) {
+                        Source(
+                            attrs = {
+                                attr("media", "(max-width: 767px)")
+                                attr("srcset", "/assets/images/logo-m.webp")
+                            }
+                        )
+                        Source(
+                            attrs = {
+                                attr("media", "(min-width: 768px)")
+                                attr("srcset", "/assets/images/logo.webp")
+                            }
+                        )
+                        Img(
+                            src = "/assets/images/logo.webp",
+                            alt = "Shevapro website logo",
+                            attrs = {
+                                classes("ml-3", "h-12")
+                            }
+                        )
+                    }
 
             }
 

@@ -110,7 +110,7 @@ fun HomeHero() {
                         // Mobile Image
                         Source(
                             attrs = {
-                                attr("media", "(max-width: 600px)")
+                                attr("media", "(max-width: 770px)")
 
                                 attr("srcset", "/assets/images/photos/cover-m.webp")
                             }
@@ -119,7 +119,7 @@ fun HomeHero() {
 //                         Desktop Image (commented out for later)
                          Source(
                              attrs = {
-                                 attr("media", "(min-width: 601px)")
+                                 attr("media", "(min-width: 771px)")
                                  attr("srcset", "/assets/images/photos/cover.webp")
                              }
                          )

@@ -411,6 +411,8 @@ tasks.register("processImages") {
 
     doLast {
         val imagesDir = project.layout.projectDirectory.dir("src/jsMain/resources/public/assets/images").asFile
+        val logoFile = project.layout.projectDirectory.dir("src/jsMain/resources/public/assets/images/logo.png").asFile
+
 
         // Configure crop settings
         val config = ImageProcessor.CropConfig(
@@ -419,7 +421,14 @@ tasks.register("processImages") {
             suffix = "-m",       // Mobile suffix
             generateWebP = true  // Generate WebP for both original and mobile versions
         )
+        val logoConfig = ImageProcessor.CropConfig(
+            maxWidth = 200,      // Mobile breakpoint - everything under 600px loads mobile version
+            maxHeight = 200,    // Allow tall images like screenshots
+            suffix = "-m",       // Mobile suffix
+            generateWebP = true  // Generate WebP for both original and mobile versions
+        )
 
+//        ImageProcessor.processImage(logoFile, logoConfig)
         ImageProcessor.processImages(imagesDir, config)
 
         println("✅ Image processing completed!")

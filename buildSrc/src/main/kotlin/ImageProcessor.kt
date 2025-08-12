@@ -117,7 +117,7 @@ object ImageProcessor {
             }
     }
     
-    private fun processImage(file: File, config: CropConfig): ProcessResult {
+     fun processImage(file: File, config: CropConfig): ProcessResult {
         val originalImage = ImageIO.read(file)
         if (originalImage == null) {
             println("⚠️ Could not read image: ${file.name}")
