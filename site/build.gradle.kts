@@ -330,10 +330,14 @@ kobweb {
 
             // Set site-wide description for SEO
             description.set("Shevapro's personal website showcasing portfolio, blog, and services")
+            faviconPath = ""
             // use scriptAttributes to update main script tag attributes
             scriptAttributes.put("async", "")
 //            // Correct way to add elements to the <head> tag
-//            head.add {
+            head.add {
+                // add favicon.co link
+                link(rel = "icon", href = "/favicon.ico",type = "image/x-icon"){
+                }
 ////                script { defer = true; src = "/website.js" }
 //                link(rel = "stylesheet", href = "https://cdn.jsdelivr.net/npm/viewerjs@1.11.7/dist/viewer.min.css"){
 //                    attributes["defer"] = ""
@@ -345,7 +349,7 @@ kobweb {
 //                    media = "print"
 //                    onLoad = "this.media='all'; this.onload=null;"
 //                }
-//            }
+            }
 
             // Note: Other site-wide SEO metadata is handled in the Layout component
             // through the setPageMetadata function
