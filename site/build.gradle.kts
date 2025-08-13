@@ -322,6 +322,12 @@ fun updateSitemap(project: org.gradle.api.Project, publishedEntries: List<Any>) 
 kobweb {
     app {
         index {
+
+            interceptUrls {
+                enableSelfHosting()
+            }
+
+
             // Set site-wide description for SEO
             description.set("Shevapro's personal website showcasing portfolio, blog, and services")
             // use scriptAttributes to update main script tag attributes

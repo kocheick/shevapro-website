@@ -76,7 +76,7 @@ Set up rules for automatic sorting, saving you time and effort in the future.
 </div>
 
 <u>Stay Connected:</u>
-We are constantly working on improving File Sorter and adding exciting new features. Your feedback is valuable to us. If you have any questions, suggestions, or encounter any issues, please reach out to our support team at filesorter-support@shevapro.com.
+We are constantly working on improving File Sorter and adding exciting new features. Your feedback is valuable to us. If you have any questions, suggestions, or encounter any issues, please reach out to our support team at filesorter@shevapro.com.
 
 <u>Follow Us:</u>
 Stay updated with the latest news and announcements by following us on Twitter, Instagram, and Facebook @FileSorterApp.
