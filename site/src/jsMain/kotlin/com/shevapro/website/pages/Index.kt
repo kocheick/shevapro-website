@@ -5,6 +5,7 @@ import com.shevapro.website.components.layouts.Layout
 import com.shevapro.website.components.ui.HomeHero
 import com.shevapro.website.styles.SiteTheme
 import com.shevapro.website.utils.Constants
+import com.varabyte.kobweb.compose.css.ColorInterpolationMethod
 import com.varabyte.kobweb.compose.css.backgroundImage
 import com.varabyte.kobweb.compose.css.functions.LinearGradient
 import com.varabyte.kobweb.compose.css.functions.linearGradient
@@ -31,9 +32,15 @@ fun HomePage() {
             )
             style {
 //                backgroundImage(SiteTheme.Gradients.background)
-                backgroundImage(linearGradient( to = Color("e3e1efb0"), from = Color("#0b03c859"),
-                     dir = LinearGradient.Direction.ToTopRight
-                ))
+                backgroundImage(linearGradient(interpolation = ColorInterpolationMethod.Oklab,
+                    dir = LinearGradient.Direction.ToTopRight
+                ){
+                    add( Color("#e3e1efb0"))
+//                    add( Color("#0b03c859"))
+                    add( Color("#f0edff"))
+                    add(Color("#9333ea"))
+//                    add(Color(rgba(255,10,60,0.8).toString()),stop = 50.percent)
+                })
 
             }
         }) {

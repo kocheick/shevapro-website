@@ -46,10 +46,10 @@ fun AboutPage() {
             // Content container with semi-transparent background
             Column(
                 modifier = Modifier
-                    .fillMaxWidth(90.percent)
+//                    .fillMaxWidth(90.percent)
                     .maxWidth(800.px)
                     .margin(topBottom = SiteTheme.Spacing.xxl)
-                    .padding(SiteTheme.Spacing.xxl)
+                    .padding(SiteTheme.Spacing.md)
                     .backgroundColor(rgba(255, 255, 255, 0.9))
                     .borderRadius(SiteTheme.BorderRadius.lg)
                     .boxShadow(offsetX = 0.px, offsetY = 4.px, blurRadius = 12.px, color = rgba(0, 0, 0, 0.1)),
@@ -69,10 +69,10 @@ fun AboutPage() {
                     Text("About Me")
                 }
 
-                H3(
+                P(
                     attrs = {
                         style {
-                            fontSize(24.px)
+                            fontSize(22.px)
                             fontWeight("600")
                             color(SiteTheme.Colors.textHeading)
                             marginBottom(SiteTheme.Spacing.lg)
