@@ -9,6 +9,8 @@ import com.varabyte.kobweb.compose.ui.modifiers.*
 import com.varabyte.kobweb.core.Page
 import com.shevapro.website.components.layouts.Layout
 import com.shevapro.website.components.ui.HeroSection
+import com.shevapro.website.components.widgets.ServiceCard
+import com.shevapro.website.data.ServicesCatalog
 import com.shevapro.website.styles.SiteTheme
 import com.varabyte.kobweb.silk.components.navigation.Link
 import org.jetbrains.compose.web.css.*
@@ -52,57 +54,9 @@ fun ServicesPage() {
                         .gap(SiteTheme.Spacing.xl),
                     horizontalAlignment = Alignment.Start
                 ) {
-                    // Service 1: Mobile App Development
-                    ServiceCard(
-                        title = "Mobile App Development",
-                        description = "Native Android applications built with Kotlin, following modern architecture patterns and best practices. From concept to deployment, I deliver high-quality mobile experiences that users love.",
-                        features = listOf(
-                            "Native Android development with Kotlin",
-                            "Modern architecture (MVVM, Clean Architecture)",
-                            "Material Design implementation",
-                            "Integration with backend services",
-                            "Performance optimization"
-                        )
-                    )
-
-                    // Service 2: Web Development
-                    ServiceCard(
-                        title = "Web Development",
-                        description = "Modern web applications built with Kotlin Multiplatform and Compose for Web. Create consistent experiences across platforms with a single codebase.",
-                        features = listOf(
-                            "Kotlin Multiplatform Web applications",
-                            "Compose for Web UI development",
-                            "Responsive design implementation",
-                            "Progressive Web Apps (PWAs)",
-                            "API integration and data management"
-                        )
-                    )
-
-                    // Service 3: Software Consulting
-                    ServiceCard(
-                        title = "Software Consulting",
-                        description = "Expert advice on software architecture, development practices, and technology selection. I help teams improve their processes and deliver better software faster.",
-                        features = listOf(
-                            "Architecture review and design",
-                            "Code quality assessment",
-                            "Performance optimization",
-                            "Development process improvement",
-                            "Technology selection guidance"
-                        )
-                    )
-
-                    // Service 4: Custom Software Solutions
-                    ServiceCard(
-                        title = "Custom Software Solutions",
-                        description = "Tailored software solutions designed to address your specific business needs. I work closely with you to understand your requirements and deliver solutions that drive results.",
-                        features = listOf(
-                            "Requirements analysis and specification",
-                            "Custom software design and development",
-                            "Integration with existing systems",
-                            "Testing and quality assurance",
-                            "Deployment and maintenance"
-                        )
-                    )
+                    ServicesCatalog.forEach { service ->
+                        ServiceCard(service)
+                    }
                 }
             }
 
