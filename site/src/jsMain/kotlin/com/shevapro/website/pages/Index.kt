@@ -3,23 +3,24 @@ package com.shevapro.website.pages
 import androidx.compose.runtime.Composable
 import com.shevapro.website.components.layouts.Layout
 import com.shevapro.website.components.ui.HomeHero
-import com.shevapro.website.styles.SiteTheme
+import com.shevapro.website.components.widgets.ProjectCard
 import com.shevapro.website.utils.Constants
+import com.shevapro.website.utils.getArticles
 import com.varabyte.kobweb.compose.css.ColorInterpolationMethod
 import com.varabyte.kobweb.compose.css.backgroundImage
 import com.varabyte.kobweb.compose.css.functions.LinearGradient
 import com.varabyte.kobweb.compose.css.functions.linearGradient
-import com.varabyte.kobweb.compose.css.margin
 import com.varabyte.kobweb.core.Page
-import org.jetbrains.compose.web.css.CSSColorValue
+import com.varabyte.kobweb.core.rememberPageContext
+import org.jetbrains.compose.web.attributes.href
 import org.jetbrains.compose.web.css.Color
-import org.jetbrains.compose.web.css.backgroundImage
-import org.jetbrains.compose.web.css.percent
 import org.jetbrains.compose.web.dom.*
 
 @Page
 @Composable
 fun HomePage() {
+    val router = rememberPageContext().router
+
     Layout(title = "Cheick's brand | Software Engineer | Artist", Constants.Site.DESCRIPTION) {
         Div(attrs = {
             classes(
@@ -50,28 +51,100 @@ fun HomePage() {
             }
             Br {}
 
-            // Latest Articles Section (stub)
-            Section(attrs = {
-                classes(
-//
-                    "my-2"
+            // Removed Under Construction teaser for now (keeping the function below for future use)
 
-                )
-                style {
-                    margin(top = 50.percent)
+            // Latest Projects Section
+            Section(attrs = { classes("mb-8") }) {
+                H2(attrs = {
+                    classes(
+                        "text-3xl",
+                        "md:text-4xl",
+                        "text-gray-900",
+                        "p-2",
+                        "bg-white",
+                        "bg-opacity-70",
+                        "font-semibold",
+                        "rounded-lg",
+                        "shadow",
+                        "m-3",
+                        "mt-2"
+                    )
+                }) { Text("Latest Projects") }
+
+                val portfolioProjects = getArticles("portfolio").take(3) // Show latest 3 projects
+
+                if (portfolioProjects.isNotEmpty()) {
+                    Div(attrs = {
+                        classes(
+                            "flex",
+                            "flex-wrap",
+                            "justify-center",
+                            "gap-4",
+                            "mt-6",
+                            "bg-white",
+                            "bg-opacity-60",
+                            "backdrop-blur-sm",
+                            "rounded-xl",
+                            "p-4"
+                        )
+                    }) {
+                        portfolioProjects.forEach { project ->
+                            ProjectCard(
+                                project = project,
+                                onClick = {
+                                    router.navigateTo("/portfolio/${project.slug}")
+                                },
+                                onTagClick = { tag ->
+                                    router.navigateTo("/portfolio?tag=$tag")
+                                }
+                            )
+                        }
+                    }
+                } else {
+                    Div(attrs = {
+                        classes(
+                            "bg-white",
+                            "rounded-lg",
+                            "shadow",
+                            "p-6",
+                            "text-gray-700",
+                            "text-center",
+                            "mt-6"
+                        )
+                    }) {
+                        Text("Projects coming soon...")
+                    }
                 }
-            }) {
-                UnderConstructionSection()
-            }
 
-//            // Latest Designs Section (stub)
-//            Section(attrs = { classes("mb-8") }) {
-//                H2(attrs = { classes("text-3xl", "font-bold", "mb-4", "text-blue-800") }) { Text("Latest Designs") }
-//                // TODO: Replace with ImageList equivalent
-//                Div(attrs = { classes("bg-white", "rounded-lg", "shadow", "p-6", "text-gray-700") }) {
-//                    Text("Design preview content coming soon...")
-//                }
-//            }
+                // View All Projects Button
+                Div(attrs = {
+                    classes("text-center", "mt-8")
+                }) {
+                    A(
+                        attrs = {
+                            href("/portfolio")
+                            classes(
+                                "inline-block",
+                                "px-6",
+                                "py-3",
+                                "bg-purple-600",
+                                "hover:bg-purple-700",
+                                "text-white",
+                                "font-semibold",
+                                "rounded-lg",
+                                "shadow-md",
+                                "hover:shadow-lg",
+                                "transition-all",
+                                "duration-300",
+                                "transform",
+                                "hover:scale-105"
+                            )
+                        }
+                    ) {
+                        Text("View All Projects →")
+                    }
+                }
+            }
 
             // Music Section (stub)
 //            Section(attrs = { }) {
