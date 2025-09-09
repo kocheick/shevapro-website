@@ -123,67 +123,67 @@ fun EnhancedMarkdownLayout(content: @Composable () -> Unit) {
     val coverUrl = if (thumbnailUrl != null && thumbnailUrl.length > 42) thumbnailUrl
     else "/assets/images/${thumbnailUrl ?: "blank-image.webp"}"
 
-    val currentRoute = ctx.route.path
-    val markdownFilePath = remember(currentRoute) { getMarkdownFilePath(currentRoute) }
-
-    var markdownContent by remember { mutableStateOf<String?>(null) }
-    var isFetching by remember { mutableStateOf(true) }
-    var fetchError by remember { mutableStateOf<String?>(null) }
-    var processedHtml by remember { mutableStateOf<String?>(null) }
-    var isProcessing by remember { mutableStateOf(true) }
-    var processingError by remember { mutableStateOf<String?>(null) }
-
-    LaunchedEffect(markdownFilePath) {
-        try {
-            isFetching = true
-            fetchError = null
-
-            markdownContent = fetchMarkdownContent(markdownFilePath)
-        } catch (e: Exception) {
-            println("❌ Error fetching markdown: $e")
-            fetchError = "Could not load article content. Please check the file path and ensure the file exists."
-            markdownContent = "# Error\n$fetchError"
-        } finally {
-            isFetching = false
-        }
-    }
-    
-
-//    LaunchedEffect(isPosted){
-//        if (!isPosted) {
-//                ctx.router.navigateTo("/")
+//    val currentRoute = ctx.route.path
+//    val markdownFilePath = remember(currentRoute) { getMarkdownFilePath(currentRoute) }
+//
+//    var markdownContent by remember { mutableStateOf<String?>(null) }
+//    var isFetching by remember { mutableStateOf(true) }
+//    var fetchError by remember { mutableStateOf<String?>(null) }
+//    var processedHtml by remember { mutableStateOf<String?>(null) }
+//    var isProcessing by remember { mutableStateOf(true) }
+//    var processingError by remember { mutableStateOf<String?>(null) }
+//
+//    LaunchedEffect(markdownFilePath) {
+//        try {
+//            isFetching = true
+//            fetchError = null
+//
+//            markdownContent = fetchMarkdownContent(markdownFilePath)
+//        } catch (e: Exception) {
+//            println("❌ Error fetching markdown: $e")
+//            fetchError = "Could not load article content. Please check the file path and ensure the file exists."
+//            markdownContent = "# Error\n$fetchError"
+//        } finally {
+//            isFetching = false
 //        }
 //    }
-    val processor = remember{
-        unified()
-            .use(remarkParse)
-            .use(rehypeKatex)
-            .use(remarkGfm, js("{ singleTilde: false }"))
-            .use(remarkMath)
-            .use(remarkRehype, js("{ allowDangerousHtml: true }"))
-            .use(rehypeRaw)
-            .use(rehypeStringify)
-    }
-    
-    LaunchedEffect(markdownContent) {
-
-        if (markdownContent != null) {
-            try {
-                isProcessing = true
-                processingError = null
-                loadPageResources()
-
-                val result = processor.process(markdownContent!!).await()
-                processedHtml = result.value
-            } catch (e: Exception) {
-                console.error("❌ Error processing markdown:", e)
-                processingError = "Error processing markdown: ${e.message}"
-                processedHtml = "<p style='color: red;'>Error processing markdown: ${e.message}</p>"
-            } finally {
-                isProcessing = false
-            }
-        }
-    }
+//
+//
+////    LaunchedEffect(isPosted){
+////        if (!isPosted) {
+////                ctx.router.navigateTo("/")
+////        }
+////    }
+//    val processor = remember{
+//        unified()
+//            .use(remarkParse)
+//            .use(rehypeKatex)
+//            .use(remarkGfm, js("{ singleTilde: false }"))
+//            .use(remarkMath)
+//            .use(remarkRehype, js("{ allowDangerousHtml: true }"))
+//            .use(rehypeRaw)
+//            .use(rehypeStringify)
+//    }
+//
+//    LaunchedEffect(markdownContent) {
+//
+//        if (markdownContent != null) {
+//            try {
+//                isProcessing = true
+//                processingError = null
+//                loadPageResources()
+//
+//                val result = processor.process(markdownContent!!).await()
+//                processedHtml = result.value
+//            } catch (e: Exception) {
+//                console.error("❌ Error processing markdown:", e)
+//                processingError = "Error processing markdown: ${e.message}"
+//                processedHtml = "<p style='color: red;'>Error processing markdown: ${e.message}</p>"
+//            } finally {
+//                isProcessing = false
+//            }
+//        }
+//    }
 
 //    LaunchedEffect(Unit) {
 //        loadPageResources()
@@ -248,125 +248,126 @@ fun EnhancedMarkdownLayout(content: @Composable () -> Unit) {
                 Article(attrs = {
                     classes("processed-content", "px-2", "min-h-full", "md:px-5", "font-sans","flex-grow")
                 }) {
-                    when {
-                        isFetching -> {
-                            Div(attrs = { classes("loading-indicator") }) {
-                                Text("Loading content from server...")
-                            }
-                        }
-
-                        fetchError != null -> {
-                            Div(attrs = { classes("fetch-error") }) {
-                                Text("⚠️ $fetchError")
-                            }
-                        }
-
-                        isProcessing -> {
-                            Div(attrs = { classes("loading-indicator") }) {
-                                Text("Processing content for display...")
-                            }
-                        }
-
-                        processingError != null -> {
-                            Div(attrs = { classes("error-message") }) {
-                                Text("❌ $processingError")
-                            }
-//                            content()
-                        }
-
-                        processedHtml != null -> {
-                            val  toolbar = remember{
-                                ToolbarOptions(
-                                    zoomIn = true,
-                                    zoomOut = true,
-                                    oneToOne = true,
-                                    reset = true,
-                                    prev = true,
-                                    next = true
-                                    // play, rotate, flip are off by default!
-                                ).asJsObject()
-                            }
-
-                            val options = remember{
-                                ViewerOptions(
-                                    navbar = false,
-                                    title = true,
-                                    toolbar = toolbar,
-                                    tooltip = true,
-                                    movable = true,
-                                    zoomable = true,
-                                    rotatable = false,
-                                    scalable = false,
-                                    transition = true,
-                                    fullscreen = true,
-                                    keyboard = true
-                                ).asJsObject()
-                            }
-
-
-                            DisposableEffect(processedHtml) {
-                                val currentElement = kotlinx.browser.document.querySelector("article.processed-content")
-                                currentElement?.innerHTML = processedHtml!!
-
-                                // Initialize Viewer.js for screenshots container after DOM is updated
-                                // We use setTimeout to ensure the DOM has been fully updated after innerHTML change
-                                val timeoutId = kotlinx.browser.window.setTimeout({
-                                    val screenshotsContainer =
-                                        kotlinx.browser.document.getElementById("screenshots-container")
-                                    if (screenshotsContainer != null) {
-//                                        println("Found screenshots container with ID: ${screenshotsContainer.id}")
-//                                        println("Container children count: ${screenshotsContainer.children.length}")
-
-
-                                        try {
-//                                            console.log("About to initialize ViewerJS...")
-//                                            console.log("Container innerHTML:", screenshotsContainer.innerHTML)
+                    content()
+//                    when {
+//                        isFetching -> {
+//                            Div(attrs = { classes("loading-indicator") }) {
+//                                Text("Loading content from server...")
+//                            }
+//                        }
 //
-//                                            // Check if we have images
-//                                            val images = screenshotsContainer.querySelectorAll("img")
-//                                            console.log("Found ${images.length} images in container")
+//                        fetchError != null -> {
+//                            Div(attrs = { classes("fetch-error") }) {
+//                                Text("⚠️ $fetchError")
+//                            }
+//                        }
 //
-//                                            for (i in 0 until images.length) {
-//                                                val img = images[i] as HTMLElement
-//                                                console.log(
-//                                                    "Image ${i}: src=${img.getAttribute("src")}, alt=${
-//                                                        img.getAttribute(
-//                                                            "alt"
-//                                                        )
-//                                                    }"
-//                                                )
-//                                            }
-
-                                            val viewer = Viewer(screenshotsContainer as HTMLElement, options)
-//                                            console.log("ViewerJS initialized successfully!")
-//                                            console.log("ViewerJS instance:", viewer)
-                                        } catch (e: Exception) {
-                                            console.error("Failed to initialize ViewerJS:", e)
-                                            console.error("Error details:", e.message)
-                                        }
-                                    }
-//                                    else {
-//                                        println("No screenshots container found with ID 'screenshots-container'")
-//                                        // Debug: let's see what IDs are available
-////                                        val allElementsWithIds = kotlinx.browser.document.querySelectorAll("[id]")
-////                                        println("Available elements with IDs:")
-////                                        for (i in 0 until allElementsWithIds.length) {
-////                                            val element = allElementsWithIds[i] as HTMLElement
-////                                            println("- ID: ${element.id}")
-////                                        }
+//                        isProcessing -> {
+//                            Div(attrs = { classes("loading-indicator") }) {
+//                                Text("Processing content for display...")
+//                            }
+//                        }
+//
+//                        processingError != null -> {
+//                            Div(attrs = { classes("error-message") }) {
+//                                Text("❌ $processingError")
+//                            }
+////                            content()
+//                        }
+//
+//                        processedHtml != null -> {
+//                            val  toolbar = remember{
+//                                ToolbarOptions(
+//                                    zoomIn = true,
+//                                    zoomOut = true,
+//                                    oneToOne = true,
+//                                    reset = true,
+//                                    prev = true,
+//                                    next = true
+//                                    // play, rotate, flip are off by default!
+//                                ).asJsObject()
+//                            }
+//
+//                            val options = remember{
+//                                ViewerOptions(
+//                                    navbar = false,
+//                                    title = true,
+//                                    toolbar = toolbar,
+//                                    tooltip = true,
+//                                    movable = true,
+//                                    zoomable = true,
+//                                    rotatable = false,
+//                                    scalable = false,
+//                                    transition = true,
+//                                    fullscreen = true,
+//                                    keyboard = true
+//                                ).asJsObject()
+//                            }
+//
+//
+//                            DisposableEffect(processedHtml) {
+//                                val currentElement = kotlinx.browser.document.querySelector("article.processed-content")
+//                                currentElement?.innerHTML = processedHtml!!
+//
+//                                // Initialize Viewer.js for screenshots container after DOM is updated
+//                                // We use setTimeout to ensure the DOM has been fully updated after innerHTML change
+//                                val timeoutId = kotlinx.browser.window.setTimeout({
+//                                    val screenshotsContainer =
+//                                        kotlinx.browser.document.getElementById("screenshots-container")
+//                                    if (screenshotsContainer != null) {
+////                                        println("Found screenshots container with ID: ${screenshotsContainer.id}")
+////                                        println("Container children count: ${screenshotsContainer.children.length}")
+//
+//
+//                                        try {
+////                                            console.log("About to initialize ViewerJS...")
+////                                            console.log("Container innerHTML:", screenshotsContainer.innerHTML)
+////
+////                                            // Check if we have images
+////                                            val images = screenshotsContainer.querySelectorAll("img")
+////                                            console.log("Found ${images.length} images in container")
+////
+////                                            for (i in 0 until images.length) {
+////                                                val img = images[i] as HTMLElement
+////                                                console.log(
+////                                                    "Image ${i}: src=${img.getAttribute("src")}, alt=${
+////                                                        img.getAttribute(
+////                                                            "alt"
+////                                                        )
+////                                                    }"
+////                                                )
+////                                            }
+//
+//                                            val viewer = Viewer(screenshotsContainer as HTMLElement, options)
+////                                            console.log("ViewerJS initialized successfully!")
+////                                            console.log("ViewerJS instance:", viewer)
+//                                        } catch (e: Exception) {
+//                                            console.error("Failed to initialize ViewerJS:", e)
+//                                            console.error("Error details:", e.message)
+//                                        }
 //                                    }
-                                }, 200) // Increased timeout to ensure DOM is ready
-
-                                onDispose {
-                                    kotlinx.browser.window.clearTimeout(timeoutId)
-                                }
-                            }
-                        }
-
-                        else -> {
-//                            content()
-                        }
-                    }
+////                                    else {
+////                                        println("No screenshots container found with ID 'screenshots-container'")
+////                                        // Debug: let's see what IDs are available
+//////                                        val allElementsWithIds = kotlinx.browser.document.querySelectorAll("[id]")
+//////                                        println("Available elements with IDs:")
+//////                                        for (i in 0 until allElementsWithIds.length) {
+//////                                            val element = allElementsWithIds[i] as HTMLElement
+//////                                            println("- ID: ${element.id}")
+//////                                        }
+////                                    }
+//                                }, 200) // Increased timeout to ensure DOM is ready
+//
+//                                onDispose {
+//                                    kotlinx.browser.window.clearTimeout(timeoutId)
+//                                }
+//                            }
+//                        }
+//
+//                        else -> {
+////                            content()
+//                        }
+//                    }
                 }
             }
         }
