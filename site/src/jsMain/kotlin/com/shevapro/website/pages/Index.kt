@@ -39,7 +39,7 @@ fun HomePage() {
                     add( Color("#e3e1efb0"))
 //                    add( Color("#0b03c859"))
                     add( Color("#f0edff"))
-                    add(Color("#9333ea"))
+                    add(Color("rgba(171, 134, 209, 1)"))
 //                    add(Color(rgba(255,10,60,0.8).toString()),stop = 50.percent)
                 })
 
