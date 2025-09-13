@@ -45,6 +45,31 @@ fun HomeHero() {
                     Div({
                         classes("flex","flex-col","md:flex-row","justify-around","md","mt-auto")
                     }) {
+
+                        A(href = "/contact", {
+                            onClick { it.preventDefault()
+                                router.navigateTo("/contact") }
+
+                            classes(
+                                "text-center",
+                                "mx-auto",
+                                "px-6",
+                                "py-3",
+                                "bg-purple-600",
+                                "hover:bg-purple-700",
+                                "text-white",
+                                "font-semibold",
+                                "rounded-lg",
+                                "shadow-md",
+                                "hover:shadow-lg",
+                                "transition-all",
+                                "duration-300",
+                                "transform",
+                                "hover:scale-105"
+                            )
+                        }) {
+                            Text("Contact Me")
+                        }
                         // Portfolio 
                         A(href = "/portfolio", {
 
@@ -53,11 +78,12 @@ fun HomeHero() {
                             classes(
                                 "text-center",
                                 "border",
+                                "font-semibold",
                                 "mx-auto",
-                                "my-2",
+                                "text-purple-800",
+                                "m-3",
+                                "px-6",
                                 "rounded",
-                                "w-1/2",
-                                "md:w-1/3",
                                 "hover:from-red-200",
                                 "ease-out",
                                 "shadow",
@@ -72,32 +98,7 @@ fun HomeHero() {
                         }) {
                             Text("See my work")
                         }
-                        A(href = "/contact", {
-                            onClick { it.preventDefault()
-                                router.navigateTo("/contact") }
 
-                            classes(
-                                "text-center",
-                                "border",
-                                "mx-auto",
-                                "my-2",
-                                "rounded",
-                                "w-1/2",
-                                "md:w-1/3",
-                                "hover:from-red-200",
-                                "ease-out",
-                                "shadow",
-                                "hover:scale-105",
-                                "duration-300",
-                                "hover:to-yellow-200",
-                                "transition",
-                                "bg-gradient-to-tl",
-                                "from-orange-200",
-                                "via-cyan-100"
-                            )
-                        }) {
-                            Text("Contact Me")
-                        }
                     }
                 }
                 // Right image (hidden for mobile)
