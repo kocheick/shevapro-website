@@ -1,11 +1,12 @@
 package com.shevapro.website.external
 
+import kotlinext.js.Object
 import org.w3c.dom.Element
 import org.w3c.dom.HTMLElement
 
 @JsModule("viewerjs")
 @JsNonModule
-external class Viewer(element: HTMLElement, options: dynamic = definedExternally) {
+external class Viewer(element: HTMLElement, val options: dynamic = definedExternally) {
     fun show()
     fun hide()
     fun prev()
@@ -25,57 +26,94 @@ external class Viewer(element: HTMLElement, options: dynamic = definedExternally
     fun destroy()
 }
 
-data class ToolbarOptions(
-    val zoomIn: Boolean = true,
-    val zoomOut: Boolean = true,
-    val oneToOne: Boolean = true,
-    val reset: Boolean = true,
-    val prev: Boolean = true,
-    val play: Boolean = false,
-    val next: Boolean = true,
-    val rotateLeft: Boolean = false,
-    val rotateRight: Boolean = false,
-    val flipHorizontal: Boolean = false,
-    val flipVertical: Boolean = false
-)
 
-data class ViewerOptions(
-    val backdrop: dynamic = true,
-    val button: Boolean = true,
-    val navbar: dynamic = true,
-    val title: dynamic = true,
-    val toolbar: dynamic = ToolbarOptions(),
-    val tooltip: Boolean = true,
-    val movable: Boolean = true,
-    val zoomable: Boolean = true,
-    val rotatable: Boolean = false,
-    val scalable: Boolean = false,
-    val transition: Boolean = true,
-    val fullscreen: Boolean = true,
-    val keyboard: Boolean = true,
-    val url: String? = null,
-    val container: Element? = null,
-    val filter: ((Element, Int) -> Boolean)? = null,
-    val toggleOnDblclick: Boolean = true,
-    val zoomRatio: Double = 0.2,
-    val minZoomRatio: Double = 0.01,
-    val maxZoomRatio: Double = 100.0,
-    val zoomOnTouch: Boolean = true,
-    val zoomOnWheel: Boolean = true,
-    val slideOnTouch: Boolean = true,
-    val ready: ((dynamic) -> Unit)? = null,
-    val show: ((dynamic) -> Unit)? = null,
-    val shown: ((dynamic) -> Unit)? = null,
-    val hide: ((dynamic) -> Unit)? = null,
-    val hidden: ((dynamic) -> Unit)? = null,
-    val view: ((dynamic) -> Unit)? = null,
-    val viewed: ((dynamic) -> Unit)? = null,
-    val move: ((dynamic) -> Unit)? = null,
-    val moved: ((dynamic) -> Unit)? = null,
-    val rotate: ((dynamic) -> Unit)? = null,
-    val rotated: ((dynamic) -> Unit)? = null,
-    val scale: ((dynamic) -> Unit)? = null,
-    val scaled: ((dynamic) -> Unit)? = null,
-    val zoom: ((dynamic) -> Unit)? = null,
-    val zoomed: ((dynamic) -> Unit)? = null
-)
+external interface Toolbar {
+    var zoomIn: Boolean
+    var zoomOut: Boolean
+    var oneToOne: Boolean
+    var reset: Boolean
+    var prev: Boolean
+    var play: Boolean
+    var next: Boolean
+    var rotateLeft: Boolean
+    var rotateRight: Boolean
+    var flipHorizontal: Boolean
+    var flipVertical: Boolean
+}
+
+fun Toolbar(): Toolbar = js("{}").unsafeCast<Toolbar>().apply {
+    zoomIn = true
+    zoomOut = true
+    oneToOne = true
+    reset = true
+    prev = true
+    play = false
+    next = true
+    rotateLeft = false
+    rotateRight = false
+    flipHorizontal = false
+    flipVertical = false
+}
+external interface Options {
+    var backdrop: Boolean
+    var button: Boolean
+    var navbar: dynamic
+    var title: dynamic
+    var toolbar: Toolbar
+    var tooltip: Boolean
+    var movable: Boolean
+    var zoomable: Boolean
+    var rotatable: Boolean
+    var scalable: Boolean
+    var transition: Boolean
+    var fullscreen: Boolean
+    var keyboard: Boolean
+    var url: String?
+    var container: Element?
+    var filter: ((Element, Int) -> Boolean)?
+    var toggleOnDblclick: Boolean
+    var zoomRatio: Double
+    var minZoomRatio: Double
+    var maxZoomRatio: Double
+    var zoomOnTouch: Boolean
+    var zoomOnWheel: Boolean
+    var slideOnTouch: Boolean
+    var ready: ((dynamic) -> Unit)?
+    var show: ((dynamic) -> Unit)?
+    var shown: ((dynamic) -> Unit)?
+    var hide: ((dynamic) -> Unit)?
+    var hidden: ((dynamic) -> Unit)?
+    var view: ((dynamic) -> Unit)?
+    var viewed: ((dynamic) -> Unit)?
+    var move: ((dynamic) -> Unit)?
+    var moved: ((dynamic) -> Unit)?
+    var rotate: ((dynamic) -> Unit)?
+    var rotated: ((dynamic) -> Unit)?
+    var scale: ((dynamic) -> Unit)?
+    var scaled: ((dynamic) -> Unit)?
+    var zoom: ((dynamic) -> Unit)?
+    var zoomed: ((dynamic) -> Unit)?
+}
+
+// For default initialization
+fun Options(): Options = js("({})").unsafeCast<Options>().apply {
+    backdrop = false
+    button = true
+    navbar = true 
+    title = true
+    tooltip = true
+    movable = false
+    zoomable = true
+    rotatable = false
+    scalable = false
+    transition = true
+    fullscreen = false
+    keyboard = true
+    toggleOnDblclick = true
+    zoomRatio = 0.2
+    minZoomRatio = 0.01
+    maxZoomRatio = 100.0
+    zoomOnTouch = true
+    zoomOnWheel = true
+    slideOnTouch = true
+}
