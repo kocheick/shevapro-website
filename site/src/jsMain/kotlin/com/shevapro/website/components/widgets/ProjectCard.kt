@@ -90,7 +90,7 @@ fun ProjectCard(
             // Date
             H3(
                 attrs = {
-                    classes("text-gray-700", "font-light", "text-base")
+                    classes("text-gray-700", "font-medium", "text-base")
                     
                 }
             ) {
