@@ -2,13 +2,11 @@ package com.shevapro.website.pages
 
 import androidx.compose.runtime.*
 import com.shevapro.website.components.layouts.Layout
+import com.shevapro.website.components.widgets.BlogPostCard
 import com.shevapro.website.models.Article
 import com.shevapro.website.utils.getArticles
-import com.varabyte.kobweb.compose.ui.Modifier
-import com.varabyte.kobweb.compose.ui.modifiers.classNames
 import com.varabyte.kobweb.core.Page
 import com.varabyte.kobweb.core.rememberPageContext
-import com.varabyte.kobweb.silk.components.navigation.Link
 import org.jetbrains.compose.web.attributes.InputType
 import org.jetbrains.compose.web.dom.*
 
@@ -140,70 +138,11 @@ private fun BlogListSection(
             Div(attrs = { attr("class", "grid grid-cols-1 gap-8") }) {
                 articles.forEach { article ->
                     BlogPostCard(
-                        title = article.title,
-                        summary = article.description,
-                        date = article.dateAdded,
-                        tags = article.tags,
-                        slug = article.slug
-                        , onClick = {
-                            onClick(article.slug)
-                        }
+                        article = article,
+                        onClick = { onClick(article.slug) }
                     )
                 }
             }
         }
 
-}
-
-@Composable
-private fun BlogPostCard(
-    title: String,
-    summary: String,
-    date: String,
-    tags: List<String>,
-    slug: String,
-    onClick: (() -> Unit)? = null
-) {
-    Div(attrs = {
-        attr("class", "w-full p-6 bg-white rounded-lg shadow-md transition-all hover:shadow-xl")
-    }) {
-        Link(path = "/blog/$slug", modifier = Modifier.classNames(*"no-underline w-full".split(" ").toTypedArray())) {
-            H3(attrs = {
-                attr("class", "text-gray-900 text-2xl font-bold mb-2")
-            }) {
-                Text(title)
-            }
-        }
-        P(attrs = { attr("class", "text-gray-600 text-xs mb-4") }) {
-            Text(date)
-        }
-        P(attrs = { attr("class", "text-gray-700 text-base mb-4 leading-relaxed") }) {
-            Text(summary)
-        }
-        A(href = "/blog/$slug",
-          attrs = {
-
-              onClick {it.preventDefault()
-                  onClick?.invoke() }
-              classes(  "text-blue-500",
-                  "text-base",
-                  "font-semibold",
-                  "mb-4",
-                  "no-underline",
-                  "inline-block",
-                  "hover:text-blue-700")
-          }
-        ) {
-            Text("Read more →")
-        }
-        Div(attrs = { attr("class", "flex flex-wrap gap-2") }) {
-            tags.forEach { tag ->
-                Span(attrs = {
-                    attr("class", "bg-gray-200 text-gray-800 px-2 py-1 rounded text-xs")
-                }) {
-                    Text(tag)
-                }
-            }
-        }
-    }
 }
