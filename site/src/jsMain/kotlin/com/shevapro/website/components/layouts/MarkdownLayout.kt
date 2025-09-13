@@ -203,57 +203,26 @@ fun EnhancedMarkdownLayout(content: @Composable () -> Unit) {
 
 
                                 try {
-//                                    val toolbar =
-//                                        Toolbar(
-//                                            zoomIn = true,
-//                                            zoomOut = true,
-//                                            oneToOne = true,
-//                                            reset = true,
-//                                            prev = true,
-//                                            next = true,
-//                                            rotateLeft = false,
-//                                            rotateRight = false,
-//                                            play = false,
-//                                            flipHorizontal = false,
-//                                            flipVertical = false
-//                                            // play, rotate, flip are off by default!
-//                                        )
+                                    val toolBar =
+                                        Toolbar().apply {
+                                        }
 
 
                                     val options = Options().apply {
                                         backdrop = true
                                         button = true
-                                        toolbar = Toolbar()
+                                        toolbar = toolBar
                                     }
 
-//                                            console.log("About to initialize ViewerJS...")
-//                                            console.log("Container innerHTML:", screenshotsContainer.innerHTML)
-//
-//                                            // Check if we have images
-//                                            val images = screenshotsContainer.querySelectorAll("img")
-//                                            console.log("Found ${images.length} images in container")
-//
-//                                            for (i in 0 until images.length) {
-//                                                val img = images[i] as HTMLElement
-//                                                console.log(
-//                                                    "Image ${i}: src=${img.getAttribute("src")}, alt=${
-//                                                        img.getAttribute(
-//                                                            "alt"
-//                                                        )
-//                                                    }"
-//                                                )
-//                                            }
-
                                     val viewer = Viewer(screenshotsContainer, options)
-//                                    viewer.setDefaults(options)
-                                            console.log("ViewerJS initialized successfully!")
-                                            console.log("ViewerJS instance:", options)
+//                                            console.log("ViewerJS initialized successfully!")
+//                                            console.log("ViewerJS instance:", options)
                                 } catch (e: Exception) {
                                     console.error("Failed to initialize ViewerJS:", e)
                                     console.error("Error details:", e.message)
                                 }
                             } else {
-                                println("No screenshots container found with ID 'screenshots-container'")
+//                                println("No screenshots container found with ID 'screenshots-container'")
                                 // Debug: let's see what IDs are available
 //                                        val allElementsWithIds = kotlinx.browser.document.querySelectorAll("[id]")
 //                                        println("Available elements with IDs:")
