@@ -15,7 +15,12 @@ fun BlogPostCard(
     Div(attrs = {
         classes("w-full", "p-6", "bg-white", "rounded-lg", "shadow-md", "transition-all", "hover:shadow-xl")
     }) {
-        A(href = "/blog/${'$'}{article.slug}", attrs = { classes("no-underline", "w-full", "inline-block") }) {
+        A(href = "/blog/${article.slug}}", attrs = {
+            onClick{
+                it.preventDefault()
+                onClick?.invoke()
+            }
+            classes("no-underline", "w-full", "inline-block") }) {
             H3(attrs = { classes("text-gray-900", "text-2xl", "font-bold", "mb-2") }) {
                 Text(article.title)
             }
@@ -25,7 +30,7 @@ fun BlogPostCard(
             Text(article.description)
         }
         A(
-            href = "/blog/${'$'}{article.slug}",
+            href = "/blog/${article.slug}",
             attrs = {
                 onClick {
                     it.preventDefault()
