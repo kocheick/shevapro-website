@@ -36,7 +36,7 @@ fun ServicesPage() {
             // Hero section using the reusable component
             HeroSection(
                 title = "Services",
-                description = "Specialized software development and consulting services to help you build, improve, and maintain your digital products."
+                description = "I offer development and consulting services to help you build, improve, and maintain software that makes a real difference for your users and business."
                 // Using default gradient - can override with gradientFrom/gradientTo if needed
             )
 
@@ -86,7 +86,7 @@ fun ServicesPage() {
                             }
                         }
                     ) {
-                        Text("Ready to Start Your Project?")
+                        Text("Ready to Start Working Together?")
                     }
 
                     P(
@@ -100,7 +100,7 @@ fun ServicesPage() {
                             }
                         }
                     ) {
-                        Text("Let's discuss how I can help you achieve your goals. Contact me today to schedule a consultation.")
+                        Text("I'd love to discuss how I can help you achieve your goals. Let's have a conversation about your project and see how we can work together.")
                     }
 
                     Link(
@@ -121,7 +121,7 @@ fun ServicesPage() {
                                 "hover:bg-purple-500"
                             )
                     ) {
-                        Text("Contact Me")
+                        Text("Get In Touch")
                     }
                 }
             }

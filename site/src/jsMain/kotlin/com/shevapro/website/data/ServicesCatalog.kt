@@ -6,77 +6,77 @@ val ServicesCatalog = listOf(
     Service(
         id = "mobile",
         title = "Mobile App Development",
-        subtitle = "Delight users and drive retention with high-performing apps.",
+        subtitle = "Create engaging mobile experiences that users love and businesses benefit from.",
         outcomes = listOf(
-            "Increase engagement by 8–15%",
-            "Reduce churn through smoother UX and reliability",
-            "Accelerate time-to-market by up to 40%"
+            "Better user engagement and retention",
+            "Smoother user experience with reliable performance",
+            "Faster development process to get your app to market"
         ),
         valueProps = listOf(
-            "Ship faster with modern development practices",
-            "Unlock new revenue via optimized onboarding and in-app flows",
-            "Integrate seamlessly with business systems"
+            "Modern development practices for efficient delivery",
+            "User-focused design that drives engagement",
+            "Seamless integration with your existing systems"
         ),
         proofPoints = listOf(
-            "Kotlin & Compose Multiplatform",
-            "Clean Architecture & CI/CD pipelines"
+            "Kotlin & Compose Multiplatform expertise",
+            "Clean Architecture & automated deployment"
         )
     ),
     Service(
         id = "web",
         title = "Web Development",
-        subtitle = "Turn browsers into buyers with fast, scalable web experiences.",
+        subtitle = "Build fast, responsive websites that work great on any device.",
         outcomes = listOf(
-            "Improve conversion by 5–12%",
-            "Cut page load times by 30–50%",
-            "Scale to handle launch spikes without downtime"
+            "Better user experience leads to higher conversions",
+            "Fast loading times keep visitors engaged",
+            "Scalable architecture that grows with your business"
         ),
         valueProps = listOf(
-            "Frictionless funnels that boost sales",
-            "Responsive design that reaches every device",
-            "Scalable infrastructure that lowers long-term cost"
+            "Clean, conversion-focused design",
+            "Mobile-first responsive approach",
+            "Performance optimized for real-world usage"
         ),
         proofPoints = listOf(
-            "Kobweb / Compose for Web, PWA support",
-            "SEO, accessibility, and responsive design best practices"
+            "Modern web technologies (Kobweb, Compose for Web)",
+            "SEO-friendly, accessible, and responsive by default"
         )
     ),
     Service(
         id = "consulting",
         title = "Software Consulting",
-        subtitle = "Make smarter technology bets that reduce risk and cost.",
+        subtitle = "Get expert guidance to make smart technology decisions for your project.",
         outcomes = listOf(
-            "Accelerate delivery speed while lowering defects",
-            "Reduce costly rework with aligned architecture decisions",
-            "Optimize infrastructure spend for sustainable growth"
+            "Faster delivery with fewer bugs and issues",
+            "Better architectural decisions that save time later",
+            "Optimized infrastructure costs and performance"
         ),
         valueProps = listOf(
-            "Align tech choices with business objectives",
-            "Spot bottlenecks that slow delivery and fix them",
-            "Lower maintenance costs through proven patterns"
+            "Technology choices aligned with your business goals",
+            "Identify and solve bottlenecks before they become problems",
+            "Proven patterns that reduce maintenance overhead"
         ),
         proofPoints = listOf(
-            "Architecture reviews and code quality audits",
-            "Team process optimization and DX improvements"
+            "Code reviews and architecture assessments",
+            "Team workflow optimization and developer experience improvements"
         )
     ),
     Service(
         id = "custom",
         title = "Custom Software Solutions",
-        subtitle = "Tailored systems that pay for themselves.",
+        subtitle = "Build tailored solutions that solve your specific business challenges.",
         outcomes = listOf(
-            "Automate manual processes to save hours every week",
-            "Lower error rates with validations and monitoring",
-            "Design for scale so systems grow with your business"
+            "Automate repetitive tasks to save valuable time",
+            "Reduce errors with built-in validations and monitoring",
+            "Scalable systems that adapt as your business grows"
         ),
         valueProps = listOf(
-            "Automate workflows to free up team time",
-            "Integrate with your existing tools for visibility",
-            "Deliver secure, scalable platforms built for the long haul"
+            "Streamlined workflows that free up your team",
+            "Integration with tools you already use",
+            "Reliable, secure platforms built for long-term success"
         ),
         proofPoints = listOf(
-            "Event-driven integrations",
-            "Robust testing, SLIs/SLOs, security-minded defaults"
+            "Event-driven architectures and API integrations",
+            "Comprehensive testing and monitoring practices"
         )
     )
 )

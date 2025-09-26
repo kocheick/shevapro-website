@@ -3,7 +3,7 @@ package com.shevapro.website.pages
 import androidx.compose.runtime.Composable
 import com.shevapro.website.components.layouts.Layout
 import com.shevapro.website.components.sections.ArticleListSection
-import com.shevapro.website.components.ui.HomeHero
+import com.shevapro.website.components.widgets.HomeHero
 import com.shevapro.website.components.widgets.BlogPostCard
 import com.shevapro.website.components.widgets.ProjectCard
 import com.shevapro.website.utils.Constants
