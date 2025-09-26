@@ -1,12 +1,18 @@
 package com.shevapro.website.pages
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import com.shevapro.website.components.layouts.Layout
 import com.shevapro.website.components.ui.HeroSection
+import com.shevapro.website.external.Toolbar
+import com.shevapro.website.external.Options
+import com.shevapro.website.external.Viewer
 import com.shevapro.website.styles.SiteTheme
 import com.shevapro.website.utils.Constants
-import com.shevapro.website.utils.getArticles
+import com.shevapro.website.utils.ImageUtils
 import com.varabyte.kobweb.compose.css.ObjectFit
 import com.varabyte.kobweb.compose.foundation.layout.Box
 import com.varabyte.kobweb.compose.foundation.layout.Column
@@ -15,11 +21,16 @@ import com.varabyte.kobweb.compose.ui.Modifier
 import com.varabyte.kobweb.compose.ui.modifiers.*
 import com.varabyte.kobweb.compose.ui.toAttrs
 import com.varabyte.kobweb.core.Page
+import kotlinx.browser.document
+import kotlinx.browser.window
+import kotlinx.coroutines.delay
 import org.jetbrains.compose.web.css.DisplayStyle
 import org.jetbrains.compose.web.css.FlexWrap
 import org.jetbrains.compose.web.css.percent
 import org.jetbrains.compose.web.css.px
 import org.jetbrains.compose.web.dom.*
+import org.w3c.dom.HTMLElement
+import org.w3c.dom.HTMLImageElement
 
 @Page
 @Composable
@@ -56,7 +67,8 @@ fun DesignPage() {
 
 @Composable
 private fun DesignGallerySection() {
-    val designArticles = remember{ getArticles("design") }
+    // Get design images from utility - this is now automated
+    val designImages = remember { ImageUtils.getDesignImages() }
 
     Box(
         modifier = Modifier
@@ -70,100 +82,204 @@ private fun DesignGallerySection() {
                 .maxWidth(1200.px),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Gallery grid
-            Div(
-                attrs = Modifier
-                    .fillMaxWidth()
-                    .display(DisplayStyle.Flex)
-                    .flexWrap(FlexWrap.Wrap)
-                    .justifyContent(org.jetbrains.compose.web.css.JustifyContent.Center)
-                    .gap(SiteTheme.Spacing.lg)
-                    .toAttrs()
-            ) {
-                // Get design articles
-
-                // Display design articles
-                designArticles.forEach { article ->
-                    Div(
-                        attrs = Modifier
-                            .width(300.px)
-                            .margin(SiteTheme.Spacing.md)
-                            .toAttrs()
-                    ) {
-                        // Get category from first 1-2 tags
-                        val category = when {
-                            article.tags.size >= 2 -> "${article.tags[0]}, ${article.tags[1]}"
-                            article.tags.isNotEmpty() -> article.tags[0]
-                            else -> "Design" // Fallback if no tags
-                        }
-                        
+            // Container for ViewerJS
+            Div(attrs = {
+                attr("id", "design-gallery-container")
+            }) {
+                // Gallery grid - masonry-style layout
+                Div(
+                    attrs = {
+                        classes(
+                            "grid",
+                            "grid-cols-1",
+                            "sm:grid-cols-2",
+                            "lg:grid-cols-3",
+                            "xl:grid-cols-4",
+                            "gap-6",
+                            "auto-rows-max"
+                        )
+                    }
+                ) {
+                    // Display design images
+                    designImages.forEach { designImage ->
                         DesignGalleryItem(
-                            imageUrl = article.imageUrl,
-                            title = article.title,
-                            category = category,
-                            href = "/design/${article.slug}"
+                            imageUrl = ImageUtils.getDesignImageUrl(designImage.fileName),
+                            title = designImage.title,
+                            category = designImage.category,
+                            tags = designImage.tags
                         )
                     }
                 }
+
+
+                // Initialize the image viewer with a single instance and proper disposal
+                val viewerHolder = remember { mutableStateOf<Viewer?>(null) }
+                DisposableEffect(Unit) {
+                    val designGalleryContainer = document.getElementById("design-gallery-container") as? HTMLElement
+                    if (designGalleryContainer != null && viewerHolder.value == null) {
+                        val images = designGalleryContainer.querySelectorAll("img")
+                        if (images.length > 0) {
+                            try {
+                                val toolBar = Toolbar().apply { rotateRight = true }
+                                val options = Options().apply {
+                                    backdrop = true
+                                    button = true
+                                    rotatable = true
+                                    toolbar = toolBar
+                                    fullscreen = true
+                                }
+                                val viewer = Viewer(designGalleryContainer, options)
+                                viewerHolder.value = viewer
+                                console.log("ViewerJS created successfully:", viewer)
+                            } catch (e: Exception) {
+                                console.log("ViewerJS initialization failed: ${e.message}")
+                                console.log("Error details:", e)
+                            }
+                        } else {
+                            console.log("No images found in container yet")
+                        }
+                    }
+
+                    onDispose {
+                        viewerHolder.value?.destroy()
+                        viewerHolder.value = null
+                    }
+                }
+
             }
         }
     }
 }
 
 @Composable
-private fun DesignGalleryItem(imageUrl: String, title: String, category: String, href: String) {
+private fun DesignGalleryItem(
+    imageUrl: String,
+    title: String,
+    category: String,
+    tags: List<String> = emptyList()
+) {
+    val imgSrc = if (imageUrl.isBlank()) ImageUtils.getFallbackImageUrl() else imageUrl
+
     Div(
         attrs = {
             classes(
-                "bg-white",
-                "bg-opacity-85", // Slightly darker content area (was 90)
+                "relative",
                 "rounded-2xl",
                 "overflow-hidden",
                 "shadow-lg",
-                "hover:shadow-xl",
+                "hover:shadow-2xl",
                 "transition-all",
-                "cursor-pointer"
+                "duration-300",
+                "cursor-pointer",
+                "group",
+                "bg-white"
             )
         }
     ) {
-        A(
-            href = href,
+        // Image (ViewerJS will hook into this within the container)
+        Img(
+            src = imgSrc,
+            attrs = Modifier
+                .width(100.percent)
+                .height(300.px)
+                .objectFit(ObjectFit.Cover)
+                .toAttrs {
+                    attr("alt", title)
+                    attr("data-title", title) // For ViewerJS title display
+                    classes("transition-transform", "duration-300", "group-hover:scale-105")
+                }
+        )
+
+        // Overlay content - positioned absolutely over the image
+        Div(
             attrs = {
-                classes("block", "text-decoration-none", "text-inherit")
+                classes(
+                    "absolute",
+                    "bottom-0",
+                    "left-0",
+                    "right-0",
+                    "bg-gradient-to-t",
+                    "from-black/80",
+                    "via-black/50",
+                    "to-transparent",
+                    "p-4",
+                    "text-white",
+                    "transform",
+                    "translate-y-2",
+                    "group-hover:translate-y-0",
+                    "transition-all",
+                    "duration-300"
+                )
             }
         ) {
-            // Image
-            Img(
-                src = imageUrl,
-                attrs = Modifier
-                    .width(100.percent)
-                    .height(200.px)
-                    .objectFit(ObjectFit.Cover)
-                    .toAttrs()
-            )
-
-            // Content
-            Div(
-                attrs = Modifier
-                    .padding(SiteTheme.Spacing.md)
-                    .toAttrs()
-            ) {
-                // Category
-                Span(
-                    attrs = {
-                        classes("text-purple-600", "text-sm", "font-medium")
-                    }
-                ) {
-                    Text(category)
+            // Category badge
+            Span(
+                attrs = {
+                    classes(
+                        "inline-block",
+                        "px-2",
+                        "py-1",
+                        "bg-white/20",
+                        "backdrop-blur-sm",
+                        "rounded-full",
+                        "text-xs",
+                        "font-medium",
+                        "text-white/90",
+                        "mb-2"
+                    )
                 }
+            ) {
+                Text(category)
+            }
 
-                // Title
-                H3(
+            // Title
+            H3(
+                attrs = {
+                    classes(
+                        "text-white",
+                        "text-lg",
+                        "font-bold",
+                        "mb-1",
+                        "line-clamp-2"
+                    )
+                }
+            ) {
+                Text(title)
+            }
+
+            // Tags (if available) - only show on hover for cleaner look
+            if (tags.isNotEmpty()) {
+                Div(
                     attrs = {
-                        classes("text-gray-900", "text-lg", "font-bold", "mt-2", "mb-0")
+                        classes(
+                            "flex",
+                            "flex-wrap",
+                            "gap-1",
+                            "mt-2",
+                            "opacity-0",
+                            "group-hover:opacity-100",
+                            "transition-opacity",
+                            "duration-300"
+                        )
                     }
                 ) {
-                    Text(title)
+                    tags.take(3).forEach { tag ->
+                        Span(
+                            attrs = {
+                                classes(
+                                    "px-2",
+                                    "py-1",
+                                    "bg-white/20",
+                                    "backdrop-blur-sm",
+                                    "text-white/80",
+                                    "text-xs",
+                                    "rounded-full"
+                                )
+                            }
+                        ) {
+                            Text("#$tag")
+                        }
+                    }
                 }
             }
         }

@@ -4,6 +4,9 @@ import kotlinext.js.Object
 import org.w3c.dom.Element
 import org.w3c.dom.HTMLElement
 
+@Suppress("unused")
+private val _viewerCss = kotlinext.js.require("viewerjs/dist/viewer.css")
+
 @JsModule("viewerjs")
 @JsNonModule
 external class Viewer(element: HTMLElement, val options: dynamic = definedExternally) {
