@@ -1,0 +1,147 @@
+{
+  "images": [
+    {
+      "fileName": "fit.jpg",
+      "title": "Fitness Branding Design",
+      "category": "Branding",
+      "tags": [
+        "fitness",
+        "health",
+        "branding",
+        "logo",
+        "wellness"
+      ],
+      "description": "Modern fitness brand identity design featuring clean typography and energetic color scheme"
+    },
+    {
+      "fileName": "g1.jpg",
+      "title": "Gallery Exhibition Layout",
+      "category": "Exhibition Design",
+      "tags": [
+        "gallery",
+        "art",
+        "exhibition",
+        "showcase",
+        "contemporary"
+      ],
+      "description": "Contemporary art gallery exhibition layout with thoughtful spacing and lighting"
+    },
+    {
+      "fileName": "m.jpg",
+      "title": "Minimalist Modern Design",
+      "category": "Minimalism",
+      "tags": [
+        "modern",
+        "minimalist",
+        "clean",
+        "simple",
+        "elegant"
+      ],
+      "description": "Clean minimalist design approach emphasizing whitespace and typography"
+    },
+    {
+      "fileName": "s2.jpg",
+      "title": "Professional Studio Setup",
+      "category": "Photography",
+      "tags": [
+        "studio",
+        "photography",
+        "portrait",
+        "professional",
+        "lighting"
+      ],
+      "description": "Professional photography studio setup with optimal lighting configuration"
+    },
+    {
+      "fileName": "s31.jpg",
+      "title": "Creative Studio Environment",
+      "category": "Photography",
+      "tags": [
+        "studio",
+        "creative",
+        "professional",
+        "setup",
+        "workspace"
+      ],
+      "description": "Creative studio environment designed for versatile photography sessions"
+    },
+    {
+      "fileName": "s5.jpg",
+      "title": "Studio Lighting Design",
+      "category": "Photography",
+      "tags": [
+        "studio",
+        "lighting",
+        "setup",
+        "photography",
+        "technical"
+      ],
+      "description": "Specialized studio lighting setup showcasing technical expertise"
+    },
+    {
+      "fileName": "sf.jpg",
+      "title": "Studio Focus Photography",
+      "category": "Photography",
+      "tags": [
+        "studio",
+        "focus",
+        "photography",
+        "professional",
+        "composition"
+      ],
+      "description": "Focused studio photography demonstrating composition and technical skill"
+    },
+    {
+      "fileName": "sheick3.jpg",
+      "title": "Artistic Portrait Photography",
+      "category": "Portrait",
+      "tags": [
+        "portrait",
+        "artistic",
+        "person",
+        "photography",
+        "creative"
+      ],
+      "description": "Artistic portrait photography showcasing creative lighting and composition"
+    },
+    {
+      "fileName": "sp.jpg",
+      "title": "Special Creative Project",
+      "category": "Creative Design",
+      "tags": [
+        "creative",
+        "special",
+        "project",
+        "design",
+        "unique"
+      ],
+      "description": "Special creative design project featuring innovative visual concepts"
+    }
+  ],
+  "categories": [
+    {
+      "name": "Branding",
+      "description": "Brand identity and logo design projects"
+    },
+    {
+      "name": "Photography",
+      "description": "Professional photography and studio work"
+    },
+    {
+      "name": "Portrait",
+      "description": "Portrait photography and people-focused work"
+    },
+    {
+      "name": "Exhibition Design",
+      "description": "Gallery and exhibition layout designs"
+    },
+    {
+      "name": "Minimalism",
+      "description": "Clean, minimal design approaches"
+    },
+    {
+      "name": "Creative Design",
+      "description": "Unique and experimental creative projects"
+    }
+  ]
+}

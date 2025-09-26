@@ -36,42 +36,6 @@ data class ArticleDescriptor(
 // Auto-generated list of articles from markdown files
 private val markdownIndex = listOf(
     ArticleDescriptor(
-    route = "/design/modern-logo-design",
-    filePath = "/content/design/modern_logo_design.md",
-    title = "Modern Logo Design",
-    description = "A sleek and modern logo design for a tech startup, focusing on clean lines and a memorable icon.",
-    date = "October 15, 2023",
-    tags = listOf("branding", "logo", "design"),
-    thumbnail = "modern-logo.png"
-),
-    ArticleDescriptor(
-    route = "/design/event-poster-design",
-    filePath = "/content/design/event_poster_design.md",
-    title = "Event Poster Design",
-    description = "A vibrant and energetic poster design for a music festival, designed to capture the excitement of the event.",
-    date = "November 02, 2023",
-    tags = listOf("poster", "event", "design"),
-    thumbnail = "event-poster.png"
-),
-    ArticleDescriptor(
-    route = "/design/social-media-graphics",
-    filePath = "/content/design/social_media_graphics.md",
-    title = "Social Media Graphics",
-    description = "A collection of engaging social media graphics designed for various platforms to boost brand engagement.",
-    date = "November 20, 2023",
-    tags = listOf("social media", "graphics", "design"),
-    thumbnail = "social-media-graphics.png"
-),
-    ArticleDescriptor(
-    route = "/blog/new-test-article",
-    filePath = "/content/blog/new_test_article.md",
-    title = "New Test Article",
-    description = "This is a test article to verify that the automation system correctly picks up new markdown files and includes them in the website.",
-    date = "January 28, 2025",
-    tags = listOf("test", "automation", "blog", "new"),
-    thumbnail = null
-),
-    ArticleDescriptor(
     route = "/blog/welcome-to-my-blog",
     filePath = "/content/blog/welcome_to_my_blog.md",
     title = "Welcome to My Blog",
@@ -81,58 +45,13 @@ private val markdownIndex = listOf(
     thumbnail = null
 ),
     ArticleDescriptor(
-    route = "/blog/kotlin-multiplatform-guide",
-    filePath = "/content/blog/kotlin_multiplatform_guide.md",
-    title = "Getting Started with Kotlin Multiplatform",
-    description = "Learn how to set up and build your first Kotlin Multiplatform project. This guide covers the basics and best practices for sharing code between Android, iOS, and web platforms.",
-    date = "February 2, 2024",
-    tags = listOf("kotlin", "multiplatform", "mobile", "tutorial"),
-    thumbnail = null
-),
-    ArticleDescriptor(
-    route = "/portfolio/example",
-    filePath = "/content/portfolio/example.md",
-    title = "Example",
-    description = "Testing Table, strikethrough and more.Testing Table, strikethrough and more. Testing Table, strikethrough and more.Testing Table, strikethrough and more",
-    date = "June 1, 2020",
-    tags = listOf("md", "test", "kotlin"),
-    thumbnail = "blank-image.jpeg"
-),
-    ArticleDescriptor(
-    route = "/portfolio/markdown-example",
-    filePath = "/content/portfolio/markdown_example.md",
-    title = "Markdown Example",
-    description = "A comprehensive example showcasing various markdown formatting features and capabilities.",
-    date = "December 1, 2023",
-    tags = listOf("markdown", "example", "formatting", "demo"),
-    thumbnail = "blank-image.jpeg"
-),
-    ArticleDescriptor(
-    route = "/portfolio/unified-test",
-    filePath = "/content/portfolio/unified_test.md",
-    title = "Unified Markdown Processing Test",
-    description = "Testing unified markdown processing with remark-gfm and rehype-raw plugins",
-    date = "January 28, 2025",
-    tags = listOf("unified", "remark", "rehype", "gfm", "test"),
-    thumbnail = "blank-image.jpeg"
-),
-    ArticleDescriptor(
     route = "/portfolio/file-sorter-app",
     filePath = "/content/portfolio/file_sorter_app.md",
     title = "File Sorter",
     description = "Your ultimate solution for keeping your digital life neat and tidy! With File Sorter, you can easily organize your files on your Android device by moving them from one folder to another based on their extensions. No more cluttered folders and lost files!",
     date = "September 8, 2023",
     tags = listOf("android", "app", "hobby", "productivity"),
-    thumbnail = "file-sorter-logo.png"
-),
-    ArticleDescriptor(
-    route = "/portfolio/enhanced-test",
-    filePath = "/content/portfolio/enhanced_test.md",
-    title = "Enhanced Markdown Test",
-    description = "Testing enhanced markdown processing with unified, remark-gfm, and rehype-raw",
-    date = "July 28, 2025",
-    tags = listOf("test"),
-    thumbnail = "blank-image.jpeg"
+    thumbnail = "file-sorter-logo.webp"
 )
 )
 
