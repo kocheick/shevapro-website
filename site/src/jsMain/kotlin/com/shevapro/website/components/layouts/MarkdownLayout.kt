@@ -212,6 +212,7 @@ fun EnhancedMarkdownLayout(content: @Composable () -> Unit) {
                                         backdrop = true
                                         button = true
                                         toolbar = toolBar
+                                        fullscreen = true
                                     }
 
                                     val viewer = Viewer(screenshotsContainer, options)
